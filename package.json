@@ -8,13 +8,19 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^2.11.0",
+    "axios": "^0.21.0",
     "next": "10.0.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-query": "^2.26.3",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.1"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.11.0"
   }
 }
