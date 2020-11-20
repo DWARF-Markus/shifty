@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -22,7 +22,7 @@ model Employee {
   id Int @id @default(autoincrement())
   firstName String
   lastName String
-  email String @unique
+  email String
   password String
   profileImage String
 }
