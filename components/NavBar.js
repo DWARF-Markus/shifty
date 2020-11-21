@@ -104,6 +104,9 @@ const NavBar = () => {
 };
 
 const NavMobile = styled.div`
+  position: fixed;
+  width: 100%;
+  z-index: 10000;
   display: flex;
   padding: 0 ${SIZES.small};
   background: ${COLORS.lightGray};
@@ -116,9 +119,11 @@ const NavMobile = styled.div`
 `
 
 const NavDesktop = styled.div`
+  position: fixed;
   display: none;
   background: ${COLORS.lightGray};
   color: white;
+  z-index: 10000;
   width: 100%;
   height: 75px;
   align-items: center;
@@ -169,6 +174,8 @@ const NavImage = styled.div`
 `;
 
 const NavMobileMenu = styled.div`
+  z-index: 10;
+  padding-top: 70px;
   height: 0px;
   position: absolute;
   background-color: ${COLORS.lightGray};

@@ -24,8 +24,8 @@ const Layout = (props) => {
       </Head>
       <NavBar />
       <PageWrapper>
-        { loading ? 'true' : 'false' }
-        <button onClick={() => handleNewLoadingState()}>Click me to change loading state</button>
+        {/* { loading ? 'true' : 'false' }
+        <button onClick={() => handleNewLoadingState()}>Click me to change loading state</button> */}
         { props.children }
       </PageWrapper>
       <Footer />
@@ -34,8 +34,9 @@ const Layout = (props) => {
 };
 
 const PageWrapper = styled.div`
-  padding: 1rem;
-  min-height: 30rem;
+  /* padding: 1rem; */
+  min-height: 50rem;
+  padding-top: 70px;
 `;
 
 export default Layout;

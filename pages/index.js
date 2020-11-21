@@ -1,4 +1,5 @@
 import Layout from '../components/Layout';
+import HomeHero from '../components/HomeHero';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 
@@ -39,10 +40,10 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <h1>Home</h1>
-      <h1>{ users && users[0].email }</h1>
+      <HomeHero />
+      {/* <h1>{ users && users[0].email }</h1> */}
 
-      <button onClick={() => createUserRequest()}>Click me to add a new user</button>
+      {/* <button onClick={() => createUserRequest()}>Click me to add a new user</button> */}
     </Layout>
   )
 }
