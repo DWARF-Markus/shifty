@@ -1,0 +1,5 @@
+# Prisma Migrate lockfile v1
+
+20201120142801-create-company-model
+20201120174149-new-user-migration
+20201120185013-new-user-model-rewrite
