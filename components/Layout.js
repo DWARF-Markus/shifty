@@ -35,6 +35,7 @@ const Layout = (props) => {
 
 const PageWrapper = styled.div`
   padding: 1rem;
+  min-height: 30rem;
 `;
 
 export default Layout;

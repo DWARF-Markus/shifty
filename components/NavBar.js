@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { COLORS, SIZES, BUTTON } from '../styles/globals';
+import { COLORS, SIZES, BUTTON, BP } from '../styles/globals';
 import { faTimes, faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signIn, signOut, useSession } from 'next-auth/client';
@@ -110,7 +110,7 @@ const NavMobile = styled.div`
   height: 70px;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
-  @media(min-width: 870px) {
+  @media(min-width: ${BP.small}) {
     display: none;
   }
 `
@@ -125,7 +125,7 @@ const NavDesktop = styled.div`
   padding: 0 ${SIZES.small};
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
-  @media(min-width: 870px) {
+  @media(min-width: ${BP.small}) {
     display: flex;
   }
 `;
