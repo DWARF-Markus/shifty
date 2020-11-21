@@ -1,45 +1,196 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { COLORS, SIZES, BUTTON } from '../styles/globals';
+import { faTimes, faBars, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { signIn, signOut, useSession } from 'next-auth/client';
 
 const NavBar = () => {
+
+  const [session] = useSession();
 
   const [open, setOpen] = useState(false);
 
   return (
-    <Wrapper open={open}>
-      <WrapperLink open={open}>
-        <Link href="/">Home</Link>
-      </WrapperLink>
-      <WrapperLink open={open}>
-        <Link href="/about">About</Link>
-      </WrapperLink>
-      <WrapperLink open={open}>
-        <Link href="/login">Login</Link>
-      </WrapperLink>
-      <button onClick={() => setOpen(!open)}>Open menu</button> 
-    </Wrapper>
+    <>
+    <NavDesktop>
+      <NavSide>
+        <NavImage>
+          <Link href="/"><img src={require('../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '75px' }} /></Link>
+        </NavImage>
+      </NavSide>
+      <NavSide>
+        <NavLinks>
+          { session ? <>
+            <WrapperLink>
+              <Link href="/">Home</Link>
+            </WrapperLink>
+            <WrapperLink>
+              <Link href="/about">About</Link>
+            </WrapperLink>
+            <WrapperLink>
+              <Link href="/profile">Profile</Link>
+            </WrapperLink>
+            <UserWrapper>
+              <FontAwesomeIcon onClick={signOut} style={{ width: '11px', color: COLORS.white }} icon={faUser} />
+            </UserWrapper>
+          </> : 
+          <>
+            <WrapperLink>
+              <Link href="/">Home</Link>
+            </WrapperLink>
+            <WrapperLink>
+              <Link href="/about">About</Link>
+            </WrapperLink>
+            <WrapperLink>
+              <Link href="/signup">Sign up</Link>
+            </WrapperLink>
+            <WrapperButton onClick={signIn}>
+              Login
+            </WrapperButton>
+          </>
+          }
+        </NavLinks>
+      </NavSide>
+    </NavDesktop>
+    <NavMobile open={open}>
+      <NavSide>
+        <img src={require('../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '55px' }} />
+      </NavSide>
+      <NavSide>
+        <NavLinks>
+          <button onClick={() => setOpen(!open)}><FontAwesomeIcon style={{ width: '30px', color: COLORS.orange }} icon={open ? faTimes : faBars} /></button> 
+        </NavLinks>
+      </NavSide>
+    </NavMobile>
+    <NavMobileMenu open={open}>
+    { session ? <>
+            <NavWrapperLink>
+              <Link href="/">Home</Link>
+            </NavWrapperLink>
+            <NavWrapperLink>
+              <Link href="/about">About</Link>
+            </NavWrapperLink>
+            <NavWrapperLink>
+              <Link href="/profile">Profile</Link>
+            </NavWrapperLink>
+            <NavWrapperLink>
+              <WrapperButton onClick={signOut}>
+                Sign out
+              </WrapperButton>
+            </NavWrapperLink>
+          </> : 
+          <>
+            <NavWrapperLink>
+              <Link href="/">Home</Link>
+            </NavWrapperLink>
+            <NavWrapperLink>
+              <Link href="/about">About</Link>
+            </NavWrapperLink>
+            <NavWrapperLink>
+              <Link href="/signup">Sign up</Link>
+            </NavWrapperLink>
+            <NavWrapperLink>
+              <WrapperButton onClick={signIn}>
+                Login
+              </WrapperButton>
+            </NavWrapperLink>
+          </>
+          }
+    </NavMobileMenu>
+    </>
   );
 };
 
-const Wrapper = styled.div`
-  background: orange;
-  color: white;
+const NavMobile = styled.div`
+  display: flex;
+  padding: 0 ${SIZES.small};
+  background: ${COLORS.lightGray};
+  height: 70px;
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
-  ${props => props.open && {
-    background: 'blue',
-    color: 'gray'
-  }}
+  @media(min-width: 870px) {
+    display: none;
+  }
+`
+
+const NavDesktop = styled.div`
+  display: none;
+  background: ${COLORS.lightGray};
+  color: white;
+  width: 100%;
+  height: 75px;
+  align-items: center;
+  padding: 0 ${SIZES.small};
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
+
+  @media(min-width: 870px) {
+    display: flex;
+  }
+`;
+
+const NavSide = styled.div`
+  width: 50%;
+  display: flex;
+`;
+
+const NavLinks = styled.div`
+  display: flex;
+  justify-items: flex-end;
+  margin-left: auto;
 `;
 
 const WrapperLink = styled.li`
-  background: red;
-  color: yellow;
+  color: ${COLORS.black};
+  list-style: none;
+  margin: 0 ${SIZES.small};
+  display: grid;
+  cursor: pointer;
+  align-items: center;
+`;
 
-  ${props => props.open && {
-    background: 'green',
-    color: 'yellow'
-  }}
+const WrapperButton = styled.button`
+  background: ${COLORS.orange};
+  color: ${COLORS.white};
+  border-radius: ${BUTTON.borderRadius};
+  padding: ${BUTTON.padding};
+  font-size: 15px;
+`;
+
+const NavButton = styled.button`
+  border-radius: ${BUTTON.borderRadius};
+  padding: ${BUTTON.padding};
+  background: none;
+`;
+
+const NavImage = styled.div`
+  cursor: pointer;
+`;
+
+const NavMobileMenu = styled.div`
+  height: 0px;
+  position: absolute;
+  background-color: ${COLORS.lightGray};
+  width: 100%;
+  overflow: hidden;
+  transition: .3s ease;
+
+  ${props => props.open && { height: '100%' }}
+`;
+
+const NavWrapperLink = styled.div`
+  margin: ${SIZES.small};
+`;
+
+const UserWrapper = styled.div`
+  background-color: ${COLORS.orange};
+  height: 30px;
+  width: 30px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  border-radius: 50%;
 `;
 
 

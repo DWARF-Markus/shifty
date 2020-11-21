@@ -32,22 +32,9 @@ export default (req, res) =>
             }
           })
 
-          
-          // const user = { id: 1, name: 'A', email: 'a@b.dk' }
-
-          // // console.log(credentials);
-          // const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-
-    
           if (user) {
-            // Any object returned will be saved in `user` property of the JWT
-            
             return Promise.resolve(user)
           } else {
-            // If you return null or false then the credentials will be rejected
-            // You can also Reject this callback with an Error or with a URL:
-            // return Promise.reject(new Error('error message')) // Redirect to error page
-            // return Promise.reject('/path/to/redirect')        // Redirect to a URL
             return Promise.resolve(null)
           }
         }

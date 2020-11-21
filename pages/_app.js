@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import '../styles/globals.scss';
 import { Provider } from 'react-redux';
 import { Provider as NextAuthProvider } from 'next-auth/client';
 import store from '../store/index';
