@@ -2,30 +2,18 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import { setLoading } from '../store/actions/appActions';
-import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 const Layout = (props) => {
-
-  const dispatch = useDispatch();
-  const [loading, newLoadingState] = useState(useSelector(state => state.loading));
-
-  const handleNewLoadingState = () => {
-    dispatch(setLoading(!loading));
-    newLoadingState(!loading);
-  }
-
   return (
     <div>
       <Head>
         <title>Shifty</title>
-        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Quicksand" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
       <NavBar />
       <PageWrapper>
-        {/* { loading ? 'true' : 'false' }
-        <button onClick={() => handleNewLoadingState()}>Click me to change loading state</button> */}
         { props.children }
       </PageWrapper>
       <Footer />
@@ -34,9 +22,8 @@ const Layout = (props) => {
 };
 
 const PageWrapper = styled.div`
-  /* padding: 1rem; */
   min-height: 50rem;
-  padding-top: 70px;
+  padding-top: 75px;
 `;
 
 export default Layout;

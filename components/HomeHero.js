@@ -21,7 +21,7 @@ const HomeHero = () => {
 
 const HomeHeroWrapper = styled.div`
   height: 23rem;
-  background: linear-gradient(257deg, rgba(23,23,23,1) 0%, rgba(228,158,92,1) 93%, rgba(228,158,92,1) 100%);
+  background: rgb(152 99 48);
 
   @media (min-width: ${BP.small}) {
     height: 30rem;
@@ -55,6 +55,12 @@ const HeroButton = styled.button`
   border-radius: ${BUTTON.borderRadius};
   padding: ${BUTTON.padding};
   font-size: 15px;
+  transition: .2s ease;
+
+  &:hover {
+    background: ${COLORS.white};
+    color: ${COLORS.orange};
+  }
 `;
 
 export default HomeHero;

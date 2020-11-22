@@ -110,7 +110,7 @@ const NavMobile = styled.div`
   display: flex;
   padding: 0 ${SIZES.small};
   background: ${COLORS.lightGray};
-  height: 70px;
+  height: 75px;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
   @media(min-width: ${BP.small}) {
@@ -153,14 +153,24 @@ const WrapperLink = styled.li`
   display: grid;
   cursor: pointer;
   align-items: center;
+
+  a {
+    font-weight: 100;
+  }
 `;
 
 const WrapperButton = styled.button`
-  background: ${COLORS.orange};
-  color: ${COLORS.white};
+  color: ${COLORS.orange};
+  border: 2px solid ${COLORS.orange};
   border-radius: ${BUTTON.borderRadius};
   padding: ${BUTTON.padding};
   font-size: 15px;
+  transition: .2s ease;
+
+  &:hover {
+    background-color: ${COLORS.orange};
+    color: ${COLORS.white};
+  }
 `;
 
 const NavButton = styled.button`
