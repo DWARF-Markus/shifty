@@ -6,20 +6,43 @@ const SignUpSheet = ({data, step, handlePrevClick, handleNextClick, loading}) =>
 
   const [companyType, setCompanyType] = useState('');
 
-  useEffect(() => {}, []);
+  const nextBtnClick = () => {
+    if (step === 1 && companyType.length) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   return (
     <SignUpWrapper>
-      <SignUpSidebar loading={loading}>
+      <SignUpSidebar loading={loading ? 1 : 0}>
         <p>{ data[step - 1].stepHead }</p>
-        <p>{ loading }</p>
         <h3>{ data[step - 1].stepTitle }</h3>
       </SignUpSidebar>
-      <SignUpContent loading={loading}>
+      <SignUpContent loading={loading ? 1 : 0}>
         <p>{ data[step - 1].stepDescribtion }{ data[step - 1].required ? <span>*</span> : '' }</p>
+
+        { step === 1 ?
+          <p>Step 1 content</p>
+        : '' }
+
+        { step === 2 ?
+          <p>Step 2 content</p>
+        : '' }
+
+        { step === 3 ?
+          <p>Step 3 content</p>
+        : '' }
+
+        { step === 4 ?
+          <p>Step 4 content</p>
+        : '' }
+
+
         <SignUpButtons>
-          { step !== 1 ? <PrevButton loading={loading} step={step} onClick={handlePrevClick}><span><img src={require('../assets/icon-left-arrow.svg')} alt="left arrow" style={{ width: '7px', marginRight: '3px' }} /></span> { data[step - 2].stepTitle }</PrevButton> : ''}
-          <NextButton onClick={handleNextClick}>{ step === 4 ?  <span>Sign up<img src={require('../assets/icon-checkmark-white.svg')} alt="check" style={{ width: '11px', marginLeft: '4px' }} /></span> : <span>Next<img src={require('../assets/icon-right-arrow-white.svg')} alt="check" style={{ width: '7px', marginLeft: '8px' }} /></span> }</NextButton>
+          { step !== 1 ? <PrevButton loading={loading ? 1 : 0} step={step} onClick={handlePrevClick}><span><img src={require('../assets/icon-left-arrow.svg')} alt="left arrow" style={{ width: '7px', marginRight: '3px' }} /></span> { data[step - 2].stepTitle }</PrevButton> : ''}
+          <NextButton active={nextBtnClick()} onClick={handleNextClick}>{ step === 4 ?  <span>Sign up<img src={require('../assets/icon-checkmark-white.svg')} alt="check" style={{ width: '11px', marginLeft: '4px' }} /></span> : <span>Next<img src={require('../assets/icon-right-arrow-white.svg')} alt="check" style={{ width: '7px', marginLeft: '8px' }} /></span> }</NextButton>
         </SignUpButtons>
       </SignUpContent>
     </SignUpWrapper>
@@ -120,6 +143,8 @@ const NextButton = styled.button`
   border-radius: ${BUTTON.borderRadius};
   background-color: ${COLORS.orange};
   color: ${COLORS.white};
+  opacity: ${({ active }) => active ? '1' : '.3' };
+  pointer-events: ${({ active }) => active ? 'all' : 'none' };
 `;
 
 export default SignUpSheet;
