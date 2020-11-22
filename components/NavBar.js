@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { COLORS, SIZES, BUTTON } from '../styles/globals';
+import { COLORS, SIZES, BUTTON, BP } from '../styles/globals';
 import { faTimes, faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signIn, signOut, useSession } from 'next-auth/client';
@@ -104,28 +104,33 @@ const NavBar = () => {
 };
 
 const NavMobile = styled.div`
+  position: fixed;
+  width: 100%;
+  z-index: 10000;
   display: flex;
   padding: 0 ${SIZES.small};
   background: ${COLORS.lightGray};
-  height: 70px;
+  height: 75px;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
-  @media(min-width: 870px) {
+  @media(min-width: ${BP.small}) {
     display: none;
   }
 `
 
 const NavDesktop = styled.div`
+  position: fixed;
   display: none;
   background: ${COLORS.lightGray};
   color: white;
+  z-index: 10000;
   width: 100%;
   height: 75px;
   align-items: center;
   padding: 0 ${SIZES.small};
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
-  @media(min-width: 870px) {
+  @media(min-width: ${BP.small}) {
     display: flex;
   }
 `;
@@ -148,14 +153,24 @@ const WrapperLink = styled.li`
   display: grid;
   cursor: pointer;
   align-items: center;
+
+  a {
+    font-weight: 100;
+  }
 `;
 
 const WrapperButton = styled.button`
-  background: ${COLORS.orange};
-  color: ${COLORS.white};
+  color: ${COLORS.orange};
+  border: 2px solid ${COLORS.orange};
   border-radius: ${BUTTON.borderRadius};
   padding: ${BUTTON.padding};
   font-size: 15px;
+  transition: .2s ease;
+
+  &:hover {
+    background-color: ${COLORS.orange};
+    color: ${COLORS.white};
+  }
 `;
 
 const NavButton = styled.button`
@@ -169,6 +184,8 @@ const NavImage = styled.div`
 `;
 
 const NavMobileMenu = styled.div`
+  z-index: 10;
+  padding-top: 70px;
   height: 0px;
   position: absolute;
   background-color: ${COLORS.lightGray};

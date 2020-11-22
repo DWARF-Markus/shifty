@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import SignUpForm from '../components/SignUpForm';
 
-export default function LoginPage() {
-
+const SignUpPage = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -31,12 +31,15 @@ export default function LoginPage() {
 
   return (
     <Layout>
-      <h1>Sign up!</h1>
+      <SignUpForm />
+      {/* <h1>Sign up!</h1>
       <input type="text" placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} />
       <input type="text" placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} />
       <input type="text" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
       <input type="text" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={() => handleSignup()}>Sign up</button>
+      <button onClick={() => handleSignup()}>Sign up</button> */}
     </Layout>
   )
 }
+
+export default SignUpPage;

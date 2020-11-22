@@ -19,3 +19,7 @@ export const BUTTON = {
   borderRadius: '5px',
   padding: '8px 26px',
 }
+
+export const BP = {
+  small: '870px' 
+}

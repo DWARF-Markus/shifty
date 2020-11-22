@@ -1,0 +1,26 @@
+[
+  {
+    "stepHead": "Signup",
+    "stepTitle": "Business",
+    "stepDescribtion": "Choose type of business",
+    "required": true
+  },
+  {
+    "stepHead": "Signup",
+    "stepTitle": "Size",
+    "stepDescribtion": "Choose amount of employees",
+    "required": true
+  },
+  {
+    "stepHead": "Signup",
+    "stepTitle": "Days",
+    "stepDescribtion": "Choose opening days",
+    "required": true
+  },
+  {
+    "stepHead": "Signup",
+    "stepTitle": "Info",
+    "stepDescribtion": "",
+    "required": false
+  }
+]
