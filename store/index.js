@@ -6,6 +6,15 @@ let store
 
 const initialState = {
   step: 1,
+  businessType: null,
+  businessSize: null,
+  monday: false,
+  tuesday: false,
+  wednesday: false,
+  thursday: false,
+  friday: false,
+  saturday: false,
+  sunday: false,
 }
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +28,51 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         step: state.step - 1,
+      }
+    case 'SET_BUSINESS_TYPE':
+      return {
+        ...state,
+        businessType: action.payload,
+      }
+    case 'SET_BUSINESS_SIZE':
+      return {
+        ...state,
+        businessSize: action.payload
+      }
+    case 'SET_MONDAY':
+      return {
+        ...state,
+        monday: action.payload
+      }
+    case 'SET_TUESDAY':
+      return {
+        ...state,
+        tuesday: action.payload
+      }
+    case 'SET_WEDNESDAY':
+      return {
+        ...state,
+        wednesday: action.payload
+      }
+    case 'SET_THURSDAY':
+      return {
+        ...state,
+        thursday: action.payload
+      }
+    case 'SET_FRIDAY':
+      return {
+        ...state,
+        friday: action.payload
+      }
+    case 'SET_SATURDAY':
+      return {
+        ...state,
+        saturday: action.payload
+      }
+    case 'SET_SUNDAY':
+      return {
+        ...state,
+        sunday: action.payload
       }
     default:
       return state

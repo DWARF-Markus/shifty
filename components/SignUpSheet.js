@@ -1,38 +1,104 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { SIZES, COLORS, BP, BUTTON } from '../styles/globals';
+import SignUpSmallCards from './SignUpSmallCards';
+import SignUpMediumCards from './SignUpMediumCards';
+import CheckBox from './CheckBox';
+
+import { faCoffee, faBeer, faPizzaSlice, faHotel, faClinicMedical, faQuestionCircle, faUserFriends, faUsers } from '@fortawesome/free-solid-svg-icons';
+
 
 const SignUpSheet = ({data, step, handlePrevClick, handleNextClick, loading}) => {
 
-  const [companyType, setCompanyType] = useState('');
+  const GET_BUSINESS_TYPE = useSelector((state) => state.businessType);
+  const GET_BUSINESS_SIZE = useSelector((state) => state.businessSize);
+
+  const businessTypes = [
+    {
+      name: 'Café',
+      icon: faCoffee
+    },
+    {
+      name: 'Bar',
+      icon: faBeer
+    },
+    {
+      name: 'Restuarant',
+      icon: faPizzaSlice
+    },
+    {
+      name: 'Hotel',
+      icon: faHotel
+    },
+    {
+      name: 'Nursing home',
+      icon: faClinicMedical
+    },
+    {
+      name: 'Other',
+      icon: faQuestionCircle
+    },
+  ];
+
+  const businessSizes = [
+    {
+      name: 'Small',
+      amount: '(2-10)',
+      icon: faUserFriends
+    },
+    {
+      name: 'Medium',
+      amount: '(11-49)',
+      icon: faUsers
+    },
+    {
+      name: 'Large',
+      amount: '(50+)',
+      icon: faHotel
+    },
+  ]
 
   const nextBtnClick = () => {
-    if (step === 1 && companyType.length) {
+    if (step === 1 && GET_BUSINESS_TYPE || step === 2 && GET_BUSINESS_SIZE) {
       return true
     } else {
       return false
     }
-  }
+  };
 
   return (
+    <>
     <SignUpWrapper>
       <SignUpSidebar loading={loading ? 1 : 0}>
         <p>{ data[step - 1].stepHead }</p>
         <h3>{ data[step - 1].stepTitle }</h3>
       </SignUpSidebar>
       <SignUpContent loading={loading ? 1 : 0}>
-        <p>{ data[step - 1].stepDescribtion }{ data[step - 1].required ? <span>*</span> : '' }</p>
+        <SignUpContentText loading={loading ? 1 : 0}>{ data[step - 1].stepDescribtion }{ data[step - 1].required ? <span>*</span> : '' }</SignUpContentText>
 
         { step === 1 ?
-          <p>Step 1 content</p>
+          <StepOne loading={loading ? 1 : 0}>
+            <SignUpSmallCards businessTypes={businessTypes} />
+          </StepOne>
         : '' }
 
         { step === 2 ?
-          <p>Step 2 content</p>
+          <StepTwo loading={loading ? 1 : 0}>
+            <SignUpMediumCards businessSizes={businessSizes} />
+          </StepTwo>
         : '' }
 
         { step === 3 ?
-          <p>Step 3 content</p>
+          <StepThree>
+            <CheckBox title={'monday'} index={0} />
+            <CheckBox title={'tuesday'} index={1} />
+            <CheckBox title={'wednesday'} index={2} />
+            <CheckBox title={'thursday'} index={3} />
+            <CheckBox title={'friday'} index={4} />
+            <CheckBox title={'saturday'} index={5} />
+            <CheckBox title={'sunday'} index={6} />
+          </StepThree>
         : '' }
 
         { step === 4 ?
@@ -46,6 +112,7 @@ const SignUpSheet = ({data, step, handlePrevClick, handleNextClick, loading}) =>
         </SignUpButtons>
       </SignUpContent>
     </SignUpWrapper>
+    </>
   );
 }
 
@@ -53,12 +120,12 @@ const SignUpWrapper = styled.div`
   width: 100%;
   display: block;
   padding: ${SIZES.small};
-  height: auto;
+  height: calc(100% + 5rem);
   margin: 0 auto;
   max-width: 1020px;
 
   @media (min-width: ${BP.small}) {
-    height: 33rem;
+    height: 36rem;
     display: flex;
     padding: ${SIZES.big};
   }
@@ -70,9 +137,9 @@ const SignUpSidebar = styled.div`
   width: 100%;
   padding: ${SIZES.small};
   text-align: center;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 
   h3 {
     margin-top: 0;
@@ -87,6 +154,8 @@ const SignUpSidebar = styled.div`
   @media (min-width: ${BP.small}) {
     width: 40%;
     text-align: left;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 5px;
   }
 `;
 
@@ -94,13 +163,25 @@ const SignUpContent = styled.div`
   background-color: ${COLORS.white};
   color: ${COLORS.black};
   width: 100%;
-  border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
   text-align: center;
   position: relative;
+  padding: 1px 0;
 
-  p {
+  @media (min-width: ${BP.small}) {
+    text-align: left;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    padding: 0;
+  }
+
+`;
+
+const SignUpContentText = styled.p`
     padding: ${SIZES.small};
     font-size: 100%;
     font-weight: 100;
@@ -113,11 +194,6 @@ const SignUpContent = styled.div`
       font-weight: 700;
       font-size: 120%;
     }
-  }
-
-  @media (min-width: ${BP.small}) {
-    text-align: left;
-  }
 `;
 
 const SignUpButtons = styled.div`
@@ -126,6 +202,12 @@ const SignUpButtons = styled.div`
   width: 100%;
   padding: ${SIZES.small};
   display: flex;
+  transform: translate(0, 4.5rem);
+
+  @media (min-width: ${BP.small}) {
+    transform: none;
+  }
+
 `;
 
 const PrevButton = styled.button`
@@ -143,8 +225,40 @@ const NextButton = styled.button`
   border-radius: ${BUTTON.borderRadius};
   background-color: ${COLORS.orange};
   color: ${COLORS.white};
+  transition: .2s ease-in;
   opacity: ${({ active }) => active ? '1' : '.3' };
   pointer-events: ${({ active }) => active ? 'all' : 'none' };
+`;
+
+const StepOne = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: ${SIZES.small};
+  grid-gap: ${SIZES.small};
+  opacity: ${props => props.loading ? 0 : 1};
+  transition: .2s ease;
+
+  @media (min-width: ${BP.small}) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+`;
+
+const StepTwo = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: ${SIZES.small};
+  grid-gap: ${SIZES.small};
+  opacity: ${props => props.loading ? 0 : 1};
+  transition: .2s ease;
+
+  @media (min-width: ${BP.small}) {
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 19rem;
+  }
+`;
+
+const StepThree = styled.div`
+  margin: ${SIZES.small};
 `;
 
 export default SignUpSheet;

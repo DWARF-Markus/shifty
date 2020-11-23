@@ -48,6 +48,7 @@ const SignUpForm = () => {
 const SignUpDots = styled.div`
   display: flex;
   justify-content: center;
+  margin: 1.5rem 0;
 `;
 
 export default SignUpForm;
