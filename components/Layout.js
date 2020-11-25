@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import styled from 'styled-components';
+import PopUpBanner from './PopUpBanner';
 
 const Layout = (props) => {
+
+  const [session] = useSession();
+
+  useEffect(() => {
+    console.log(session);
+  }, []);
+
   return (
     <div>
       <Head>
@@ -15,6 +24,7 @@ const Layout = (props) => {
       <NavBar />
       <PageWrapper>
         { props.children }
+        <PopUpBanner />
       </PageWrapper>
       <Footer />
     </div>

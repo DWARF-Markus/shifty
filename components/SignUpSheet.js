@@ -5,14 +5,14 @@ import { SIZES, COLORS, BP, BUTTON } from '../styles/globals';
 import SignUpSmallCards from './SignUpSmallCards';
 import SignUpMediumCards from './SignUpMediumCards';
 import CheckBox from './CheckBox';
+import InputField from './InputField';
 
 import { faCoffee, faBeer, faPizzaSlice, faHotel, faClinicMedical, faQuestionCircle, faUserFriends, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 
 const SignUpSheet = ({data, step, handlePrevClick, handleNextClick, loading}) => {
 
-  const GET_BUSINESS_TYPE = useSelector((state) => state.businessType);
-  const GET_BUSINESS_SIZE = useSelector((state) => state.businessSize);
+  const GET_STATE = useSelector((state) => state);
 
   const businessTypes = [
     {
@@ -59,9 +59,14 @@ const SignUpSheet = ({data, step, handlePrevClick, handleNextClick, loading}) =>
     },
   ]
 
+  const validateEmail = (email) => {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
   const nextBtnClick = () => {
-    if (step === 1 && GET_BUSINESS_TYPE || step === 2 && GET_BUSINESS_SIZE) {
-      return true
+    if (step === 1 && GET_STATE.businessType || step === 2 && GET_STATE.businessSize || step === 3 || step === 4 && GET_STATE.companyName && validateEmail(GET_STATE.email) && GET_STATE.signUpPassword === GET_STATE.signUpPasswordConfirm && GET_STATE.signUpPassword.length >= 7 ) {
+      return true;
     } else {
       return false
     }
@@ -90,25 +95,30 @@ const SignUpSheet = ({data, step, handlePrevClick, handleNextClick, loading}) =>
         : '' }
 
         { step === 3 ?
-          <StepThree>
-            <CheckBox title={'monday'} index={0} />
-            <CheckBox title={'tuesday'} index={1} />
-            <CheckBox title={'wednesday'} index={2} />
-            <CheckBox title={'thursday'} index={3} />
-            <CheckBox title={'friday'} index={4} />
-            <CheckBox title={'saturday'} index={5} />
-            <CheckBox title={'sunday'} index={6} />
+          <StepThree loading={loading ? 1 : 0}>
+            <CheckBox title={'Monday'} index={0} setter={'SET_MONDAY'} getter={'monday'} />
+            <CheckBox title={'Tuesday'} index={1} setter={'SET_TUESDAY'} getter={'tuesday'} />
+            <CheckBox title={'Wednesday'} index={2} setter={'SET_WEDNESDAY'} getter={'wednesday'} />
+            <CheckBox title={'Thursday'} index={3} setter={'SET_THURSDAY'} getter={'thursday'} />
+            <CheckBox title={'Friday'} index={4} setter={'SET_FRIDAY'} getter={'friday'} />
+            <CheckBox title={'Saturday'} index={5} setter={'SET_SATURDAY'} getter={'saturday'} />
+            <CheckBox title={'Sunday'} index={6} setter={'SET_SUNDAY'} getter={'sunday'} />
           </StepThree>
         : '' }
 
         { step === 4 ?
-          <p>Step 4 content</p>
+          <>
+            <InputField type="text" label="Company name" setter={'SET_COMPANY_NAME'} getter={'companyName'} />
+            <InputField type="email" label="Email" setter={'SET_EMAIL'} getter={'email'} />
+            <InputField type="password" label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
+            <InputField type="password" label="Confirm password" setter={'SIGN_UP_PASSWORD_CONFIRM'} getter={'signUpPasswordConfirm'} />
+          </>
         : '' }
 
 
         <SignUpButtons>
           { step !== 1 ? <PrevButton loading={loading ? 1 : 0} step={step} onClick={handlePrevClick}><span><img src={require('../assets/icon-left-arrow.svg')} alt="left arrow" style={{ width: '7px', marginRight: '3px' }} /></span> { data[step - 2].stepTitle }</PrevButton> : ''}
-          <NextButton active={nextBtnClick()} onClick={handleNextClick}>{ step === 4 ?  <span>Sign up<img src={require('../assets/icon-checkmark-white.svg')} alt="check" style={{ width: '11px', marginLeft: '4px' }} /></span> : <span>Next<img src={require('../assets/icon-right-arrow-white.svg')} alt="check" style={{ width: '7px', marginLeft: '8px' }} /></span> }</NextButton>
+          <NextButton loading={loading ? 1 : 0} active={nextBtnClick()} onClick={handleNextClick}>{ step === 4 ?  <span>Sign up<img src={require('../assets/icon-checkmark-white.svg')} alt="check" style={{ width: '11px', marginLeft: '4px' }} /></span> : <span>Next<img src={require('../assets/icon-right-arrow-white.svg')} alt="check" style={{ width: '7px', marginLeft: '8px' }} /></span> }</NextButton>
         </SignUpButtons>
       </SignUpContent>
     </SignUpWrapper>
@@ -203,6 +213,7 @@ const SignUpButtons = styled.div`
   padding: ${SIZES.small};
   display: flex;
   transform: translate(0, 4.5rem);
+  pointer-events: ${props => props.loading ? 'none' : 'all'};
 
   @media (min-width: ${BP.small}) {
     transform: none;
@@ -226,8 +237,8 @@ const NextButton = styled.button`
   background-color: ${COLORS.orange};
   color: ${COLORS.white};
   transition: .2s ease-in;
-  opacity: ${({ active }) => active ? '1' : '.3' };
-  pointer-events: ${({ active }) => active ? 'all' : 'none' };
+  opacity: ${({ loading, active }) => loading || !active ? '.2' : '1' };
+  pointer-events: ${({ loading, active }) => loading || !active ? 'none' : 'all' };
 `;
 
 const StepOne = styled.div`
@@ -259,6 +270,8 @@ const StepTwo = styled.div`
 
 const StepThree = styled.div`
   margin: ${SIZES.small};
+  opacity: ${props => props.loading ? 0 : 1};
+  transition: .2s ease;
 `;
 
 export default SignUpSheet;

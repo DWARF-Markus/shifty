@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+const bcrypt = require('bcrypt');
 
 export default (req, res) =>
   NextAuth(req, res, {
@@ -12,25 +13,29 @@ export default (req, res) =>
           password: {  label: "Password", type: "password" }
         },
         authorize: async (credentials) => {
-          const user = await fetch('http://localhost:3000/api/getuser', {
+          const user = await fetch('http://localhost:3000/api/getcompany', {
             method: 'POST',
             headers: {
               'Content-type': 'application/json'
             },
             body: JSON.stringify({
-              user: {
+              company: {
                 email: credentials.username,
               }
             })
           })
           .then(res => res.json())
-          .then(data => {
+          .then(async (data) => {
             if (data) {
-              if (data.result.email === credentials.username && data.result.password === credentials.password) {
-                return { id: data.result.id, name: data.result.firstName, email: data.result.email }
+              if (data.company.email === credentials.username) {
+                return await bcrypt.compare(credentials.password, data.company.password).then(function(result) {
+                  if (result) {
+                    return { id: data.company.id, name: data.company.name, email: data.company.email, isAdmin: true };
+                  }
+                });
               }
             }
-          })
+          });
 
           if (user) {
             return Promise.resolve(user)
@@ -49,4 +54,9 @@ export default (req, res) =>
     jwt: {
       secret: process.env.JWT_SECRET
     },
+    callbacks: {
+      redirect: async () => {
+        return Promise.resolve('/app')
+      },
+    }
   })

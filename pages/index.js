@@ -1,7 +1,6 @@
 import Layout from '../components/Layout';
 import HomeHero from '../components/HomeHero';
 import { useQuery } from 'react-query';
-import axios from 'axios';
 
 async function createUserRequest() {
   const obj = {

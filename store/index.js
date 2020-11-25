@@ -15,6 +15,13 @@ const initialState = {
   friday: false,
   saturday: false,
   sunday: false,
+  companyName: '',
+  email: '',
+  signUpPassword: '',
+  signUpPasswordConfirm: '',
+  popUpMessage: '',
+  popUpActive: false,
+  popUpStyle: 'error'
 }
 
 const reducer = (state = initialState, action) => {
@@ -73,6 +80,45 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         sunday: action.payload
+      }
+    case 'SET_COMPANY_NAME':
+      return {
+        ...state,
+        companyName: action.payload
+      }
+    case 'SET_EMAIL':
+      return {
+        ...state,
+        email: action.payload
+      }
+    case 'SIGN_UP_PASSWORD':
+      return {
+        ...state,
+        signUpPassword: action.payload
+      }
+    case 'SIGN_UP_PASSWORD_CONFIRM':
+      return {
+        ...state,
+        signUpPasswordConfirm: action.payload
+      }
+    case 'SET_POP_UP_ERROR':
+      return {
+        ...state,
+        popUpMessage: action.payload,
+        popUpActive: true,
+        popUpStyle: 'error'
+      }
+    case 'SET_POP_UP':
+      return {
+        ...state,
+        popUpMessage: action.payload,
+        popUpActive: true,
+        popUpStyle: 'succes'
+      }
+    case 'CLEAR_POP_UP':
+      return {
+        ...state,
+        popUpActive: false
       }
     default:
       return state

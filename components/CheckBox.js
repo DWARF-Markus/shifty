@@ -5,20 +5,19 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { COLORS } from '../styles/globals';
 
-const CheckBox = ({selected, title, index}) => {
+const CheckBox = ({selected, title, index, setter, getter}) => {
 
   const [checked, setChecked] = useState('');
-  const GET_DAYS = useSelector((state) => state);
+  const GET_STATE = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setChecked(GET_DAYS[title]);
-    console.log(GET_DAYS[title]);
+    setChecked(GET_STATE[getter]);
   }, [])
 
   const handleClick = () => {
     dispatch({
-      type: 'SET_' + title.toUpperCase(),
+      type: setter,
       payload: !checked,
     })
     setChecked(!checked);
