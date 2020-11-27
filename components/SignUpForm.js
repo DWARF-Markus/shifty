@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import SignUpSheet from './SignUpSheet';
+import SignUpEmployee from './SignUpEmployee';
 import data from '../assets/sign-up-sheet-data.json';
 import styled from 'styled-components';
 import Router from 'next/router';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faHotel, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { COLORS } from '../styles/globals';
 
@@ -12,6 +13,7 @@ const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(false);
+  const [isCompanySignup, setIsCompanySignup] = useState(true);
 
   const GET_STATE = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -87,23 +89,80 @@ const SignUpForm = () => {
 
   return (
     <>
+    <SwitchWrapper onClick={() => setIsCompanySignup(!isCompanySignup)}>
+      <div>
+        <FontAwesomeIcon icon={isCompanySignup ? faUser : faHotel} />
+        <button>Sign up as {isCompanySignup ? 'an employee' : 'a company'}</button>
+      </div>
+    </SwitchWrapper>
     { submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : '' }
     {/* <ErrorBanner text={'Something went wrong - please try again'} active={error} /> */}
-    <SignUpContainer submitting={submitting}>
-      <SignUpSheet data={data} step={GET_STATE.step} handlePrevClick={decrement} handleNextClick={increment} loading={loading} />
-      <SignUpDots>
-        {data.map((entry, index) => {
-          return <img key={index} src={index + 1 <= GET_STATE.step ? require('../assets/icon-dot-orange.svg') : require('../assets/icon-dot-gray.svg')} alt="dot" style={{ width: '12px', marginLeft: '7px' }} />
-        })}
-      </SignUpDots>
-    </SignUpContainer>
+    <SignUpTransition isCompanySignup={isCompanySignup}>
+      <SignUpEmployeeContainer>
+        <div>
+          <SignUpEmployee />
+        </div>
+      </SignUpEmployeeContainer>
+      <SignUpCompanyContainer submitting={submitting}>
+        <SignUpSheet data={data} step={GET_STATE.step} handlePrevClick={decrement} handleNextClick={increment} loading={loading} />
+        <SignUpDots>
+          {data.map((entry, index) => {
+            return <img key={index} src={index + 1 <= GET_STATE.step ? require('../assets/icon-dot-orange.svg') : require('../assets/icon-dot-gray.svg')} alt="dot" style={{ width: '12px', marginLeft: '7px' }} />
+          })}
+        </SignUpDots>
+      </SignUpCompanyContainer>
+    </SignUpTransition>
     </>
   )
 }
 
-const SignUpContainer = styled.div`
+const SwitchWrapper = styled.div`
+  div {
+    width: 200px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    height: 70px;
+    background: white;
+    color: ${COLORS.darkGray};
+    margin: 2rem auto 0;
+    text-align: center;
+    padding: .3rem;
+    border-radius: 5px;
+    box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+
+    button {
+      background: white;
+      height: 25px;
+      color: ${COLORS.darkGray};
+    }
+
+    svg {
+      width: 25px;
+      height: 25px;
+    }
+  }
+`;
+
+const SignUpTransition = styled.div`
+  display: flex;
+  width: 200%;
+  transition: .7s ease;
+  transform: ${({isCompanySignup}) => isCompanySignup ? 'translate(-50%, 0)' : 'translate(0%, 0)'};
+  overflow: hidden;
+`;
+
+const SignUpEmployeeContainer = styled.div`
+  height: 36rem;
+  width: 100%;
+  text-align: center;
+`;
+
+const SignUpCompanyContainer = styled.div`
   transition: .2s ease;
   opacity: ${({ submitting }) => submitting ? 0.25 : 1 };
+  width: 100%;
 `;
 
 const SignUpDots = styled.div`
