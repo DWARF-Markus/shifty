@@ -4,7 +4,7 @@ import { SIZES, COLORS } from '../styles/globals';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-const InputField = ({ name, type, label, setter, getter }) => {
+const InputField = ({ name, type, label, setter, getter, required }) => {
 
   const [value, setValue] = useState('');
 
@@ -26,7 +26,7 @@ const InputField = ({ name, type, label, setter, getter }) => {
   return (
     <InputPair>
       <label>
-        { label } <br />
+        { label }<span>{ required ? '*' : '' }</span> <br />
         <input name={name} value={value} type={type} onChange={(e) => handleInput(e.target.value)} />
       </label>
     </InputPair>
@@ -42,6 +42,11 @@ const InputPair = styled.div`
 
   label {
     color: ${COLORS.black};
+
+    span {
+      font-size: 15px;
+      color: ${COLORS.orange};
+    }
 
     input {
       width: 100%;

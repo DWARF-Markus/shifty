@@ -16,6 +16,8 @@ const initialState = {
   saturday: false,
   sunday: false,
   companyName: '',
+  firstName: '',
+  lastName: '',
   email: '',
   signUpPassword: '',
   signUpPasswordConfirm: '',
@@ -119,6 +121,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         popUpActive: false
+      }
+    case 'SET_FIRST_NAME':
+      return {
+        ...state,
+        firstName: action.payload
+      }
+    case 'SET_LAST_NAME':
+      return {
+        ...state,
+        lastName: action.payload
       }
     default:
       return state
