@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { COLORS, SIZES, BUTTON, BP } from '../styles/globals';
 import { faTimes, faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { signOut, useSession } from 'next-auth/client';
 
 const NavBar = () => {
 
@@ -30,7 +30,7 @@ const NavBar = () => {
               <Link href="/about">About</Link>
             </WrapperLink>
             <WrapperLink>
-              <Link href="/profile">Profile</Link>
+              <Link href="/app">Overview</Link>
             </WrapperLink>
             <UserWrapper>
               <FontAwesomeIcon onClick={signOut} style={{ width: '11px', color: COLORS.white }} icon={faUser} />
@@ -46,9 +46,11 @@ const NavBar = () => {
             <WrapperLink>
               <Link href="/signup">Sign up</Link>
             </WrapperLink>
-            <WrapperButton onClick={signIn}>
-              Login
-            </WrapperButton>
+            <Link href="/signin">
+              <WrapperButton>
+                Login
+              </WrapperButton>
+            </Link>
           </>
           }
         </NavLinks>
@@ -92,9 +94,11 @@ const NavBar = () => {
               <Link href="/signup">Sign up</Link>
             </NavWrapperLink>
             <NavWrapperLink>
-              <WrapperButton onClick={signIn}>
+            <Link href="/signin">
+              <WrapperButton>
                 Login
               </WrapperButton>
+            </Link>
             </NavWrapperLink>
           </>
           }

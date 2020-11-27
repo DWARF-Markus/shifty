@@ -12,10 +12,27 @@ generator client {
 
 model Company {
   id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
   name String
+  createdAt DateTime @default(now())
   email String @unique
   password String
+  days String
+  CompanyType CompanyType[]
+  CompanySize CompanySize[]
+}
+
+model CompanyType {
+  id Int @id @default(autoincrement())
+  companyId Int?
+  type String  
+  Company Company? @relation(fields: [companyId], references: [id]) 
+}
+
+model CompanySize {
+  id Int @id @default(autoincrement())
+  companyId Int?
+  size String 
+  Company Company? @relation(fields: [companyId], references: [id]) 
 }
 
 model Employee {
