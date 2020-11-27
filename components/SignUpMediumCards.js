@@ -34,7 +34,7 @@ const SignUpMediumCards = ({ businessSizes }) => {
         return (
           <Card active={selected === entry.name} key={index} onClick={() => handleSelect(entry.name)}>
             <div>
-              <FontAwesomeIcon icon={entry.icon} width={'30px'} />
+              <FontAwesomeIcon icon={entry.icon} />
               <p>{ entry.name }</p>
               <p>{ entry.amount }</p>
             </div>
@@ -67,6 +67,7 @@ const Card = styled.div`
     }
 
     svg {
+      width: 25px;
       ${props => props.active && { color: COLORS.white + '!important' }}
     }
 

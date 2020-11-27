@@ -34,7 +34,7 @@ const SignUpSmallCards = ({ businessTypes }) => {
         return (
           <Card active={selected === entry.name} key={index} onClick={() => handleSelect(entry.name)}>
             <div>
-              <FontAwesomeIcon icon={entry.icon} width={'30px'} />
+              <FontAwesomeIcon icon={entry.icon} />
               <p>{ entry.name }</p>
             </div>
           </Card>
@@ -67,6 +67,7 @@ const Card = styled.div`
 
     svg {
       ${props => props.active && { color: COLORS.white + '!important' }}
+      width: 25px;
     }
 
     @media (min-width: ${BP.small}) {

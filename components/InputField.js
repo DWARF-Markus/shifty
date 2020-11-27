@@ -4,7 +4,7 @@ import { SIZES, COLORS } from '../styles/globals';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-const InputField = ({ type, label, setter, getter }) => {
+const InputField = ({ name, type, label, setter, getter }) => {
 
   const [value, setValue] = useState('');
 
@@ -27,7 +27,7 @@ const InputField = ({ type, label, setter, getter }) => {
     <InputPair>
       <label>
         { label } <br />
-        <input value={value} type={type} onChange={(e) => handleInput(e.target.value)} />
+        <input name={name} value={value} type={type} onChange={(e) => handleInput(e.target.value)} />
       </label>
     </InputPair>
   );
@@ -38,9 +38,10 @@ const InputPair = styled.div`
   display: block;
   padding: 0 ${SIZES.small};
   margin: ${SIZES.small} 0;
+  text-align: left;
 
   label {
-    color: ${COLORS.darkGray};
+    color: ${COLORS.black};
 
     input {
       width: 100%;

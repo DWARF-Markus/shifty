@@ -7,8 +7,6 @@ import Router from 'next/router';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { COLORS } from '../styles/globals';
-// import ErrorBanner from './ErrorBanner';
-
 
 const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
@@ -89,7 +87,7 @@ const SignUpForm = () => {
 
   return (
     <>
-    { submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} width={'30px'} /></SignUpSpinner> : '' }
+    { submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : '' }
     {/* <ErrorBanner text={'Something went wrong - please try again'} active={error} /> */}
     <SignUpContainer submitting={submitting}>
       <SignUpSheet data={data} step={GET_STATE.step} handlePrevClick={decrement} handleNextClick={increment} loading={loading} />
@@ -129,6 +127,7 @@ const SignUpSpinner = styled.div`
   }
 
   svg {
+    width: 25px;
     animation: spin 1s infinite linear;
   }
 `;

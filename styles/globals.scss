@@ -61,3 +61,18 @@ button {
   border: none;
   cursor: pointer;
 }
+
+.btn--primary {
+  background-color: #CC7333;
+  color: #FFFFFF;
+  padding: 14px 28px;
+  border-radius: 5px;
+  font-size: 17px;
+  font-weight: bold;
+  transition: .1s ease;
+
+  &:hover {
+    background-color: rgb(230, 127, 53)
+  }
+}
+
