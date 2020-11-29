@@ -26,6 +26,8 @@ const initialState = {
   popUpStyle: 'error',
   loginData: {},
   isAdmin: false,
+  sideBarToggle: true,
+  activeAppPage: 'Overview',
 }
 
 const reducer = (state = initialState, action) => {
@@ -139,6 +141,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         loginData: action.payload.company,
         isAdmin: action.payload.isAdmin
+      }
+    case 'SET_SIDEBAR_TOGGLE':
+      return {
+        ...state,
+        sideBarToggle: action.payload
+      }
+    case 'SET_ACTIVE_APP_PAGE':
+      return {
+        ...state,
+        activeAppPage: action.payload
       }
     default:
       return state

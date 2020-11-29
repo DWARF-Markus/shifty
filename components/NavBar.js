@@ -14,76 +14,76 @@ const NavBar = () => {
 
   return (
     <>
-    <NavDesktop>
-      <NavSide>
-        <NavImage>
-          <Link href="/"><img src={require('../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '75px' }} /></Link>
-        </NavImage>
-      </NavSide>
-      <NavSide>
-        <NavLinks>
-          { session ? <>
-            <WrapperLink>
-              <Link href="/">Home</Link>
-            </WrapperLink>
-            <WrapperLink>
-              <Link href="/about">About</Link>
-            </WrapperLink>
-            <WrapperLink>
-              <Link href="/app">Overview</Link>
-            </WrapperLink>
-            <UserWrapper>
-              <FontAwesomeIcon onClick={signOut} style={{ width: '11px', color: COLORS.white }} icon={faUser} />
-            </UserWrapper>
-          </> : 
+      <NavDesktop>
+        <NavSide>
+          <NavImage>
+            <Link href="/"><img src={require('../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '75px' }} /></Link>
+          </NavImage>
+        </NavSide>
+        <NavSide>
+          <NavLinks>
+            {session ? <>
+              <WrapperLink>
+                <Link href="/">Home</Link>
+              </WrapperLink>
+              <WrapperLink>
+                <Link href="/about">About</Link>
+              </WrapperLink>
+              <WrapperLink>
+                <Link href="/app">Overview</Link>
+              </WrapperLink>
+              <UserWrapper>
+                <FontAwesomeIcon onClick={signOut} style={{ width: '11px', color: COLORS.white }} icon={faUser} />
+              </UserWrapper>
+            </> :
+              <>
+                <WrapperLink>
+                  <Link href="/">Home</Link>
+                </WrapperLink>
+                <WrapperLink>
+                  <Link href="/about">About</Link>
+                </WrapperLink>
+                <WrapperLink>
+                  <Link href="/signup">Sign up</Link>
+                </WrapperLink>
+                <Link href="/signin">
+                  <WrapperButton>
+                    Login
+              </WrapperButton>
+                </Link>
+              </>
+            }
+          </NavLinks>
+        </NavSide>
+      </NavDesktop>
+      <NavMobile open={open}>
+        <NavSide>
+          <img src={require('../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '55px' }} />
+        </NavSide>
+        <NavSide>
+          <NavLinks>
+            <button onClick={() => setOpen(!open)}><FontAwesomeIcon style={{ width: '30px', color: COLORS.orange }} icon={open ? faTimes : faBars} /></button>
+          </NavLinks>
+        </NavSide>
+      </NavMobile>
+      <NavMobileMenu open={open}>
+        {session ? <>
+          <NavWrapperLink>
+            <Link href="/">Home</Link>
+          </NavWrapperLink>
+          <NavWrapperLink>
+            <Link href="/about">About</Link>
+          </NavWrapperLink>
+          <NavWrapperLink>
+            <Link href="/profile">Profile</Link>
+          </NavWrapperLink>
+          <NavWrapperLink>
+            <WrapperButton onClick={signOut}>
+              Sign out
+              </WrapperButton>
+          </NavWrapperLink>
+        </> :
           <>
-            <WrapperLink>
-              <Link href="/">Home</Link>
-            </WrapperLink>
-            <WrapperLink>
-              <Link href="/about">About</Link>
-            </WrapperLink>
-            <WrapperLink>
-              <Link href="/signup">Sign up</Link>
-            </WrapperLink>
-            <Link href="/signin">
-              <WrapperButton>
-                Login
-              </WrapperButton>
-            </Link>
-          </>
-          }
-        </NavLinks>
-      </NavSide>
-    </NavDesktop>
-    <NavMobile open={open}>
-      <NavSide>
-        <img src={require('../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '55px' }} />
-      </NavSide>
-      <NavSide>
-        <NavLinks>
-          <button onClick={() => setOpen(!open)}><FontAwesomeIcon style={{ width: '30px', color: COLORS.orange }} icon={open ? faTimes : faBars} /></button> 
-        </NavLinks>
-      </NavSide>
-    </NavMobile>
-    <NavMobileMenu open={open}>
-    { session ? <>
-            <NavWrapperLink>
-              <Link href="/">Home</Link>
-            </NavWrapperLink>
-            <NavWrapperLink>
-              <Link href="/about">About</Link>
-            </NavWrapperLink>
-            <NavWrapperLink>
-              <Link href="/profile">Profile</Link>
-            </NavWrapperLink>
-            <NavWrapperLink>
-              <WrapperButton onClick={signOut}>
-                Sign out
-              </WrapperButton>
-            </NavWrapperLink>
-          </> : 
-          <>
             <NavWrapperLink>
               <Link href="/">Home</Link>
             </NavWrapperLink>
@@ -94,15 +94,15 @@ const NavBar = () => {
               <Link href="/signup">Sign up</Link>
             </NavWrapperLink>
             <NavWrapperLink>
-            <Link href="/signin">
-              <WrapperButton>
-                Login
+              <Link href="/signin">
+                <WrapperButton>
+                  Login
               </WrapperButton>
-            </Link>
+              </Link>
             </NavWrapperLink>
           </>
-          }
-    </NavMobileMenu>
+        }
+      </NavMobileMenu>
     </>
   );
 };
@@ -148,6 +148,10 @@ const NavLinks = styled.div`
   display: flex;
   justify-items: flex-end;
   margin-left: auto;
+
+  button {
+    background: transparent;
+  }
 `;
 
 const WrapperLink = styled.li`

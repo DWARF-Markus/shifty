@@ -1,10 +1,14 @@
 import { useSession, getSession } from 'next-auth/client';
 import Router from 'next/router';
 import Layout from '../components/Layout';
+import SideBar from '../components/SideBar';
+import Calendar from '../components/Calendar';
+import { useSelector } from 'react-redux';
 
 const App = () => {
 
-  const [session, loading] = useSession()
+  const [session, loading] = useSession();
+  const GET_STATE = useSelector((state) => state);
 
   if (loading) return null
 
@@ -14,7 +18,8 @@ const App = () => {
 
   return (
     <Layout>
-      App page
+      <SideBar state={GET_STATE} />
+      <Calendar />
     </Layout>
   );
 }
