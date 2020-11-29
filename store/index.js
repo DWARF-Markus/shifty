@@ -23,7 +23,9 @@ const initialState = {
   signUpPasswordConfirm: '',
   popUpMessage: '',
   popUpActive: false,
-  popUpStyle: 'error'
+  popUpStyle: 'error',
+  loginData: {},
+  isAdmin: false,
 }
 
 const reducer = (state = initialState, action) => {
@@ -131,6 +133,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         lastName: action.payload
+      }
+    case 'SET_LOGIN_DATA':
+      return {
+        ...state,
+        loginData: action.payload.company,
+        isAdmin: action.payload.isAdmin
       }
     default:
       return state

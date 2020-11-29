@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 
 const App = () => {
 
-  const [ session, loading ] = useSession()
+  const [session, loading] = useSession()
 
   if (loading) return null
 

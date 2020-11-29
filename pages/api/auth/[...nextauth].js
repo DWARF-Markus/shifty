@@ -10,7 +10,7 @@ export default (req, res) =>
         name: 'your email',
         credentials: {
           email: { label: "Email", type: "email", placeholder: "Your email" },
-          password: {  label: "Password", type: "password" }
+          password: { label: "Password", type: "password" }
         },
         authorize: async (credentials) => {
           const user = await fetch('http://localhost:3000/api/getcompany', {
@@ -24,20 +24,20 @@ export default (req, res) =>
               }
             })
           })
-          .then(res => res.json())
-          .then(async (data) => {
-            if (data.company) {
-              if (data.company.email === credentials.email) {
-                return await bcrypt.compare(credentials.password, data.company.password).then(function(result) {
-                  if (result) {
-                    return { id: data.company.id, name: data.company.name, email: data.company.email, isAdmin: true };
-                  } else {
-                    return false;
-                  }
-                });
+            .then(res => res.json())
+            .then(async (data) => {
+              if (data.company) {
+                if (data.company.email === credentials.email) {
+                  return await bcrypt.compare(credentials.password, data.company.password).then(function (result) {
+                    if (result) {
+                      return { id: data.company.id, name: data.company.name, email: data.company.email, isAdmin: true };
+                    } else {
+                      return false;
+                    }
+                  });
+                }
               }
-            }
-          });
+            });
 
           if (user) {
             return Promise.resolve(user)

@@ -4,11 +4,11 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 export default async function (req, res) {
-  const prisma = new PrismaClient({log: ["query"]});
+  const prisma = new PrismaClient({ log: ["query"] });
 
   const { company: companyData } = req.body;
 
-  bcrypt.hash(companyData.password, saltRounds, async function(err, hash) {
+  bcrypt.hash(companyData.password, saltRounds, async function (err, hash) {
     try {
       const company = await prisma.company.create({
         data: {
@@ -28,13 +28,12 @@ export default async function (req, res) {
           }
         }
       })
-      res.json({response: company.id, status: 201})
+      res.json({ response: company.id, status: 201 })
     } catch (e) {
       res.status(500);
-      res.json({error: e});
+      res.json({ error: e });
     } finally {
       await prisma.$disconnect();
     }
   });
 }
-
