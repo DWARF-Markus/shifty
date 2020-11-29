@@ -33,7 +33,7 @@ const NavBar = () => {
                 <Link href="/app">Overview</Link>
               </WrapperLink>
               <UserWrapper>
-                <FontAwesomeIcon onClick={signOut} style={{ width: '11px', color: COLORS.white }} icon={faUser} />
+                <FontAwesomeIcon style={{ width: '11px', color: COLORS.white }} icon={faUser} />
               </UserWrapper>
             </> :
               <>

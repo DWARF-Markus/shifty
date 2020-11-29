@@ -11,6 +11,7 @@ import AppVacations from '../components/AppVacations';
 import AppNotifications from '../components/AppNotifications';
 import AppSettings from '../components/AppSettings';
 import AppInvite from '../components/AppInvite';
+import { BP } from '../styles/globals';
 
 const App = () => {
 
@@ -40,8 +41,12 @@ const App = () => {
 }
 
 const AppContent = styled.div`
-  padding-left: ${({ sidebarOpen }) => sidebarOpen ? '13rem' : '5rem'};
+  padding: 0 .5rem;
   transition: .3s ease;
+
+  @media (min-width: ${BP.small}) {
+    padding-left: ${({ sidebarOpen }) => sidebarOpen ? '13rem' : '5rem'};
+  }
 `;
 
 export default App;

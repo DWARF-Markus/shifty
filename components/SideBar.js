@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faHome, faUsers, faPaperclip, faSun, faCircle, faList, faPaperPlane, faUser, faCrown } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { signOut } from 'next-auth/client';
-import Link from 'next/link';
 
 const SideBar = ({ state }) => {
 
@@ -65,14 +64,14 @@ const SideBar = ({ state }) => {
           <p>Settings</p>
         </SidebarEntry>
 
-        <SideBarBottom>
+        <SideBarBottom show={state.isAdmin}>
           {state.isAdmin ? <>
             <SidebarEntry show={state.isAdmin} active={activePage === 'Invite'} onClick={() => handleNavClick('Invite')}>
               <FontAwesomeIcon style={{ width: '18px' }} icon={faPaperPlane} />
               <p>Invite</p>
             </SidebarEntry>
           </> : ''}
-          <SidebarEntry onClick={signOut}>
+          <SidebarEntry hideOnMobile={true} onClick={signOut}>
             <FontAwesomeIcon style={{ width: '18px' }} icon={faUser} />
             <p>Sign out</p>
           </SidebarEntry>
@@ -83,82 +82,119 @@ const SideBar = ({ state }) => {
 }
 
 const SideBarWrapper = styled.div`
-  width: ${({ toggle }) => toggle ? '12rem' : '4rem'};
-  min-height: calc(100vh - 75px);
-  background-color: ${COLORS.black};
-  transition: .15s ease;
+  width: 100%;
   position: fixed;
-  display: none;
+  bottom: 0%;
+  background-color: ${COLORS.black};
 
   @media (min-width: ${BP.small}) {
     display: block;
+    width: ${({ toggle }) => toggle ? '12rem' : '4rem'};
+    min-height: calc(100vh - 75px);
+    transition: .15s ease;
+    position: fixed;
   }
 `;
 
 const SideBarHeader = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  padding: 1rem 16px;
-  position: absolute;
+  display: none;
 
-  h3 {
-    opacity: ${({ toggle }) => toggle ? 1 : 0};
-    width: ${({ toggle }) => toggle ? 'auto' : '0'};
-    transition: .3s ease;
-    margin: 0;
-    font-size: 10px;
-    color: ${COLORS.lightGray};
+  @media (min-width: ${BP.small}) {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 1rem 16px;
+    position: absolute;
+
+    h3 {
+      opacity: ${({ toggle }) => toggle ? 1 : 0};
+      width: ${({ toggle }) => toggle ? 'auto' : '0'};
+      transition: .3s ease;
+      margin: 0;
+      font-size: 10px;
+      color: ${COLORS.lightGray};
+    }
+
+    button {
+      background: transparent;
+      transform: ${({ toggle }) => toggle ? 'rotate(0deg)' : 'rotate(-180deg)'};
+      transition: .3s ease;
+      margin: ${({ toggle }) => toggle ? 'none' : '0 auto'};
+      margin-left: auto;
+    }
   }
 
-  button {
-    background: transparent;
-    transform: ${({ toggle }) => toggle ? 'rotate(0deg)' : 'rotate(-180deg)'};
-    transition: .3s ease;
-    margin: ${({ toggle }) => toggle ? 'none' : '0 auto'};
-    margin-left: auto;
-  }
 `;
 
 const SideBarNav = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+
+  div {
+    p {
+      display: none;
+    }
+  }
+
+  @media (min-width: ${BP.small}) {
+    padding: 0;
+    div {
+      svg {
+        margin: ${({ toggle }) => toggle ? '0 10px' : '0 0 0 18px'};
+        transition: .3s ease;
+      }
+      p {
+        transition: .2s ease;
+        display: ${({ toggle }) => toggle ? 'block' : 'none'};
+        position: absolute;
+        left: 40px;
+        white-space: pre;
+      }
+    }
   display: block;
   position: absolute;
   width: 100%;
   height: calc(100% - 54px);
   margin-top: 50px;
-
-  div {
-    svg {
-      margin: ${({ toggle }) => toggle ? '0 10px' : '0 0 0 18px'};
-      transition: .3s ease;
-    }
-    p {
-      transition: .2s ease;
-      display: ${({ toggle }) => toggle ? 'block' : 'none'};
-      position: absolute;
-      left: 40px;
-      white-space: pre;
-    }
   }
+
 `;
 
 const SidebarEntry = styled.div`
   color: ${({ active }) => active ? COLORS.orange : COLORS.white};
-  display: flex;
+  display: ${({ hideOnMobile }) => hideOnMobile ? 'none' : 'flex'};
   align-items: center;
   height: 50px;
-  border-left: ${({ active }) => active ? `3px solid ${COLORS.orange}` : `3px solid ${COLORS.black}`}; 
   cursor: pointer;
 
   svg {
     color: ${({ active }) => active ? COLORS.orange : COLORS.white};
   }
+
+  @media (min-width: ${BP.small}) {
+    border-left: ${({ active }) => active ? `3px solid ${COLORS.orange}` : `3px solid ${COLORS.black}`}; 
+    display: flex;
+
+    &:hover {
+      border-left: ${({ active }) => active ? `3px solid ${COLORS.orange}` : `3px solid ${COLORS.darkGray}`}; 
+    }
+  }
 `;
 
 const SideBarBottom = styled.div`
-  margin-top: auto;
-  position: absolute;
-  bottom: 0;
+  display: ${({ show }) => !show ? 'none' : 'flex'};
+
+  &:first-child {
+    display: none;
+  }
+
+  @media (min-width: ${BP.small}) {
+    margin-top: auto;
+    position: absolute;
+    bottom: 0;
+    display: block;
+  }
 `;
 
 export default SideBar;
