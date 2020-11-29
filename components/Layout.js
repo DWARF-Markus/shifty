@@ -1,8 +1,6 @@
 import { useSession, getSession } from 'next-auth/client';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 import styled from 'styled-components';
 import PopUpBanner from './PopUpBanner';
 
@@ -45,18 +43,16 @@ const Layout = (props) => {
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
-      <NavBar />
       <PageWrapper>
         {props.children}
         <PopUpBanner />
       </PageWrapper>
-      <Footer />
     </div>
   );
 };
 
 const PageWrapper = styled.div`
-  min-height: 100%;
+  min-height: 100vh;
   padding: 75px 0 0rem 0;
 `;
 

@@ -58,7 +58,7 @@ const NavBar = () => {
       </NavDesktop>
       <NavMobile open={open}>
         <NavSide>
-          <img src={require('../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '55px' }} />
+          <img src={require('./../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '55px' }} />
         </NavSide>
         <NavSide>
           <NavLinks>
