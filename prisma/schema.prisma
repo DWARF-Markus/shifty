@@ -16,6 +16,7 @@ model Company {
   days        String
   CompanyType CompanyType[]
   CompanySize CompanySize[]
+  Employee    Employee[]
 }
 
 model CompanyType {
@@ -33,10 +34,12 @@ model CompanySize {
 }
 
 model Employee {
-  id           Int    @default(autoincrement()) @id
+  id           Int      @default(autoincrement()) @id
   firstName    String
   lastName     String
-  email        String @unique
+  email        String   @unique
   password     String
   profileImage String
+  companyId    Int?
+  Company      Company? @relation(fields: [companyId], references: [id])
 }
