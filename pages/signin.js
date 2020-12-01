@@ -16,14 +16,14 @@ export default function SignIn({ csrfToken, providers }) {
   const { pid } = router.query;
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const GET_STATE = useSelector((state) => state);
 
   const handleLoading = () => {
-    setLoading(true);
+    setSubmitting(true);
     setTimeout(() => {
-      setLoading(false);
+      setSubmitting(false);
     }, 2000);
   }
 
@@ -44,16 +44,16 @@ export default function SignIn({ csrfToken, providers }) {
 
   return (
     <Layout>
-      { loading ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : '' }
-      <SignInWrapper loading={loading}>
+      {submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : ''}
+      <SignInWrapper loading={submitting}>
         <img src={require('../assets/logo-shifty-orange.svg')} />
         <form method='post' onSubmit={(e) => handleSubmit(e)}>
-          <input name='csrfToken' type='hidden' defaultValue={csrfToken}/>
+          <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
           <InputField name="email" type="email" label="Email" setter={'SET_EMAIL'} getter={'email'} />
           <InputField name="password" type="password" label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
           <button className="btn--primary" onClick={() => handleLoading()}>Sign in</button>
         </form>
-        
+
         <GoogleLogin>
           <div onClick={() => signIn(providers.google.id)} key={providers.google.name}>
             <img src={require('../assets/google.svg')} />
@@ -70,11 +70,11 @@ export default function SignIn({ csrfToken, providers }) {
 
 const SignInWrapper = styled.div`
   transition: .2s ease;
-  opacity: ${({ loading }) => loading ? 0.25 : 1 };
+  opacity: ${({ loading }) => loading ? 0.25 : 1};
   max-width: 600px;
   width: calc(100% - 1rem);
   padding: 2rem .5rem;
-  margin: 10rem auto 1rem;
+  margin: 5rem auto 1rem;
   background: white;
   text-align: center;
   border-radius: 5px;
