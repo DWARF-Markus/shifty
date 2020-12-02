@@ -12,6 +12,7 @@ export default function AppOverview({ state }) {
   const [openingDays, setOpeningDays] = useState([]);
   const [week, setWeek] = useState('');
   const [firstDayOfWeek, setFirstDayOfWeek] = useState('');
+  const [openModal, setOpenModal] = useState(false);
 
   const daysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -74,8 +75,18 @@ export default function AppOverview({ state }) {
     }
   }, [state]);
 
+  const handleModalClick = () => {
+    setOpenModal(!openModal);
+  }
+
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <OverviewOverlay show={openModal} onClick={() => handleModalClick()}>
+        <OverviewModal>
+          <p>Add shift</p>
+        </OverviewModal>
+      </OverviewOverlay>
       <OverviewWrapper>
         <h3>Overview</h3>
         <p>{week ? week : 'Loading week...'}</p>
@@ -104,10 +115,40 @@ export default function AppOverview({ state }) {
             );
           }) : 'Loading...'}
         </Overview>
+        <OverviewButtonWrapper>
+          <button onClick={() => handleModalClick()}>{openModal ? 'x' : '+'}</button>
+        </OverviewButtonWrapper>
       </OverviewWrapper>
     </motion.div>
   )
 }
+
+const OverviewOverlay = styled.div`
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transition: .15s ease;
+  background-color: rgba(196, 196, 196, 0.5);
+  opacity: ${({ show }) => show ? '1' : '0'};
+  pointer-events: ${({ show }) => show ? 'all' : 'none'};
+  display: grid;
+  align-content: center;
+  justify-items: center;
+`;
+
+const OverviewModal = styled.div`
+  width: 100%;
+  max-width: 620px;
+  height: 10rem;
+  background-color: ${COLORS.white};
+  border-radius: 5px;
+  padding: 1rem;
+  border: 1px solid ${COLORS.darkGray};
+  z-index: 300;
+`;
 
 const OverviewWrapper = styled.div`
   h3 {
@@ -184,5 +225,27 @@ const Shift = styled.div`
   &:hover {
     background-color: ${COLORS.darkGray};
     color: ${COLORS.black};
+  }
+`;
+
+const OverviewButtonWrapper = styled.div`
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 200;
+
+  button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    background-color: ${COLORS.orange};
+    color: ${COLORS.white};
+    transition: .2s ease;
+
+    &:hover {
+      background-color: ${COLORS.white};
+      color: ${COLORS.orange};
+    }
   }
 `;
