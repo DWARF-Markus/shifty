@@ -19,7 +19,6 @@ export default function AppInvite() {
         if (data.result.length > 0) {
           setSelectedUsers(data.result);
         }
-        console.log(data);
       })
   }, [])
 
