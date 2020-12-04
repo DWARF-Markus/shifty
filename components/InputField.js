@@ -26,7 +26,7 @@ const InputField = ({ name, type, label, setter, getter, required }) => {
   return (
     <InputPair>
       <label>
-        { label }<span>{ required ? '*' : '' }</span> <br />
+        {label}<span>{required ? '*' : ''}</span> <br />
         <input name={name} value={value} type={type} onChange={(e) => handleInput(e.target.value)} />
       </label>
     </InputPair>
@@ -36,7 +36,7 @@ const InputField = ({ name, type, label, setter, getter, required }) => {
 const InputPair = styled.div`
   width: 100%;
   display: block;
-  padding: 0 ${SIZES.small};
+  /* padding: 0 ${SIZES.small}; */
   margin: ${SIZES.small} 0;
   text-align: left;
 

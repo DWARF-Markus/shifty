@@ -28,6 +28,12 @@ const initialState = {
   isAdmin: false,
   sideBarToggle: true,
   activeAppPage: 'Overview',
+  newShiftEmployeeAmount: 0,
+  newShiftStartTime: '',
+  newShiftEndTime: '',
+  newShiftTitle: '',
+  shifts: [],
+  shiftModalOpen: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -151,6 +157,41 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         activeAppPage: action.payload
+      }
+    case 'SET_SHIFT_TITLE':
+      return {
+        ...state,
+        newShiftTitle: action.payload
+      }
+    case 'SET_SHIFT_STARTTIME':
+      return {
+        ...state,
+        newShiftStartTime: action.payload
+      }
+    case 'SET_SHIFT_ENDTIME':
+      return {
+        ...state,
+        newShiftEndTime: action.payload
+      }
+    case 'SET_SHIFT_EMPLOYEE_AMOUNT':
+      return {
+        ...state,
+        newShiftEmployeeAmount: action.payload
+      }
+    case 'SET_SHIFTS':
+      return {
+        ...state,
+        shifts: action.payload
+      }
+    case 'ADD_SHIFT':
+      return {
+        ...state,
+        shifts: [...state.shifts, action.payload]
+      }
+    case 'SET_SHIFT_MODAL':
+      return {
+        ...state,
+        shiftModalOpen: action.payload
       }
     default:
       return state

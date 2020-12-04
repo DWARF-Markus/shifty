@@ -37,6 +37,7 @@ const PopUpWrapper = styled.div`
   align-items: center;
   text-align: center;
   justify-content: right;
+  z-index: 2000;
   padding: 0 1rem;
 `;
 

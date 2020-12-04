@@ -1,60 +1,26 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { COLORS } from '../styles/globals';
+import { COLORS, BP } from '../styles/globals';
 import { faSpinner, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ShiftForm from './ShiftForm';
+import { useDispatch } from 'react-redux';
 
 import { addDays, format, getWeek, startOfWeek } from 'date-fns'
 
 export default function AppOverview({ state }) {
 
+  const [loading, setLoading] = useState(true);
   const [openingDays, setOpeningDays] = useState([]);
   const [week, setWeek] = useState('');
   const [firstDayOfWeek, setFirstDayOfWeek] = useState('');
   const [openModal, setOpenModal] = useState(false);
 
+  const dispatch = useDispatch();
   const daysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-  const shifts = [
-    {
-      id: 1,
-      day: 'Tuesday',
-      startTime: '2020-12-01 08:00:00',
-      endTime: '2020-12-01 12:00:00',
-      length: 4,
-    },
-    {
-      id: 2,
-      day: 'Tuesday',
-      startTime: '2020-12-01 12:30:00',
-      endTime: '2020-12-01 15:30:00',
-      length: 4,
-    },
-    {
-      id: 3,
-      day: 'Sunday',
-      startTime: '2020-12-01 08:30:00',
-      endTime: '2020-12-01 12:30:00',
-      length: 6,
-    },
-    {
-      id: 4,
-      day: 'Saturday',
-      startTime: '2020-12-01 15:30:00',
-      endTime: '2020-12-01 19:30:00',
-      length: 6,
-    },
-    {
-      id: 5,
-      day: 'Monday',
-      startTime: '2020-12-01 15:30:00',
-      endTime: '2020-12-01 19:30:00',
-      length: 6,
-    }
-  ]
-
-  useEffect(() => {
+  useEffect(async () => {
     if (state.loginData.days && openingDays.length === 0) {
       const days = state.loginData.days.split('');
       const today = new Date();
@@ -72,28 +38,52 @@ export default function AppOverview({ state }) {
           setOpeningDays(prev => [...prev, { dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: false }]);
         }
       });
+
+      const companyId = state.loginData.id;
+
+      await fetch(`/api/getshifts?company=${parseInt(companyId)}`)
+        .then(res => res.json())
+        .then(data => {
+          dispatch({
+            type: 'SET_SHIFTS',
+            payload: data.result
+          });
+          setLoading(false);
+        });
+
     }
   }, [state]);
 
-  const handleModalClick = () => {
-    setOpenModal(!openModal);
+  const handleModalClick = (e) => {
+    dispatch({
+      type: 'SET_SHIFT_MODAL',
+      payload: true
+    });
   }
 
+  const handleModalClose = (e) => {
+    if (e.target.classList[0] && e.target.classList[0].includes('OverviewOverlay')) {
+      dispatch({
+        type: 'SET_SHIFT_MODAL',
+        payload: false
+      })
+    }
+  }
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <OverviewOverlay show={openModal} onClick={() => handleModalClick()}>
+      <OverviewOverlay show={state.shiftModalOpen} onClick={(e) => handleModalClose(e)}>
         <OverviewModal>
-          <p>Add shift</p>
+          <ShiftForm />
         </OverviewModal>
       </OverviewOverlay>
       <OverviewWrapper>
         <h3>Overview</h3>
-        <p>{week ? week : 'Loading week...'}</p>
+        {/* <p>{week ? week : ''}</p> */}
         <Overview>
-          {openingDays ? openingDays.map((day, index) => {
+          {!loading ? openingDays.map((day, index) => {
             return (
-              <DayWrapper>
+              <DayWrapper active={day.active}>
                 <DayHeader key={index}>
                   <div>
                     <span>{day.dayName}</span>
@@ -101,8 +91,8 @@ export default function AppOverview({ state }) {
                   </div>
                 </DayHeader>
                 <DayContent>
-                  {shifts.map((shift) => {
-                    if (shift.day === day.dayName) {
+                  {state.shifts.map((shift) => {
+                    if (format(new Date(shift.startTime), 'iiii') === day.dayName && day.active) {
                       return (
                         <Shift>
                           <p>{format(new Date(shift.startTime), 'HH:mm')} <FontAwesomeIcon icon={faLongArrowAltRight} /> {format(new Date(shift.endTime), 'HH:mm')}</p>
@@ -113,10 +103,10 @@ export default function AppOverview({ state }) {
                 </DayContent>
               </DayWrapper>
             );
-          }) : 'Loading...'}
+          }) : <OverViewPreLoader><FontAwesomeIcon class="spinner-animation" width={'30px'} icon={faSpinner} /> </OverViewPreLoader>}
         </Overview>
-        <OverviewButtonWrapper>
-          <button onClick={() => handleModalClick()}>{openModal ? 'x' : '+'}</button>
+        <OverviewButtonWrapper active={state.shiftModalOpen}>
+          <button onClick={(e) => handleModalClick(e)}>+</button>
         </OverviewButtonWrapper>
       </OverviewWrapper>
     </motion.div>
@@ -142,9 +132,8 @@ const OverviewOverlay = styled.div`
 const OverviewModal = styled.div`
   width: 100%;
   max-width: 620px;
-  height: 10rem;
+  height: auto;
   background-color: ${COLORS.white};
-  border-radius: 5px;
   padding: 1rem;
   border: 1px solid ${COLORS.darkGray};
   z-index: 300;
@@ -163,11 +152,26 @@ const Overview = styled.div`
   background-color: ${COLORS.white};
 `;
 
+const OverViewPreLoader = styled.div`
+  background-color: '#e3e3e3';
+  height: 25rem;
+  width: 100%;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+
+  svg {
+    color: ${COLORS.darkGray};
+  }
+`;
+
 const DayWrapper = styled.div`
-  background-color: ${COLORS.white};
+  background-color: ${({ active }) => active ? COLORS.white : '#e3e3e3'};
+  pointer-events: ${({ active }) => active ? 'all' : 'none'};
   height: 25rem;
   width: 100%;
   border-left: 1px solid ${COLORS.darkGray};
+  opacity: ${({ active }) => active ? '1' : '.4'};
 
   &:first-of-type {
     border-left: none;
@@ -231,21 +235,27 @@ const Shift = styled.div`
 const OverviewButtonWrapper = styled.div`
   position: fixed;
   right: 1rem;
-  bottom: 1rem;
+  bottom: calc(1rem + 50px);
   z-index: 200;
+  transition: .2s ease;
+  transform: ${({ active }) => active ? 'rotate(-45deg)' : 'rotate(0deg)'};
+  transform-origin: center;
 
   button {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    font-size: 20px;
-    background-color: ${COLORS.orange};
+    font-size: 18px;
+    background-color: ${({ active }) => active ? COLORS.red : COLORS.orange};
     color: ${COLORS.white};
-    transition: .2s ease;
 
     &:hover {
       background-color: ${COLORS.white};
       color: ${COLORS.orange};
     }
+  }
+
+  @media (min-width: ${BP.small}) {
+    bottom: 1rem;
   }
 `;
