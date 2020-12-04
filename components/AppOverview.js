@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { COLORS, BP } from '../styles/globals';
-import { faSpinner, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ShiftForm from './ShiftForm';
 import { useDispatch } from 'react-redux';
+import { addDays, format, getWeek, startOfWeek } from 'date-fns';
 
-import { addDays, format, getWeek, startOfWeek } from 'date-fns'
+import ShiftForm from './ShiftForm';
+import EmployeeCard from './EmployeeCard';
+import ShiftCard from './ShiftCard';
 
 export default function AppOverview({ state }) {
 
@@ -95,9 +97,7 @@ export default function AppOverview({ state }) {
             <EmployeesBox>
               {employees ? employees.map((employee) => {
                 return (
-                  <EmployeeCard>
-                    <div><img src={require('../assets/bar-image-two.jpg')} alt="shifty" style={{ width: '20px', height: '20px', objectFit: 'cover', borderRadius: '50%' }} /><p>{employee.firstName} {employee.lastName}</p></div>
-                  </EmployeeCard>
+                  <EmployeeCard id={employee.id} firstName={employee.firstName} lastName={employee.lastName} />
                 )
               }) : 'No employees yet.'}
             </EmployeesBox>
@@ -118,9 +118,7 @@ export default function AppOverview({ state }) {
                   {state.shifts.map((shift) => {
                     if (format(new Date(shift.startTime), 'iiii') === day.dayName && day.active) {
                       return (
-                        <Shift>
-                          <p>{format(new Date(shift.startTime), 'HH:mm')} <FontAwesomeIcon icon={faLongArrowAltRight} /> {format(new Date(shift.endTime), 'HH:mm')}</p>
-                        </Shift>
+                        <ShiftCard shift={shift} />
                       );
                     }
                   })}
@@ -197,32 +195,6 @@ const EmployeesBox = styled.div`
   }
 `;
 
-const EmployeeCard = styled.div`
-  background-color: ${COLORS.white};
-  margin: 5px;
-  padding: 3px 6px;
-  display: grid;
-  align-content: center;
-  cursor: pointer;
-  transition: .15s ease;
-  box-shadow: none;
-
-  &:hover {
-    transform: scale(1.07);
-    box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
-  }
-
-  div {
-    display: flex;
-
-    p {
-      margin: 0 0 0 3px;
-      white-space: pre;
-    }
-  }
-
-`;
-
 const Overview = styled.div`
   display: flex;
   justify-content: space-around;
@@ -279,41 +251,6 @@ const DayHeader = styled.div`
 
 const DayContent = styled.div`
   background-color: ${COLORS.white};
-`;
-
-const Shift = styled.div`
-  text-align: center;
-  position: relative;
-  margin: .3rem;
-  height: 5rem;
-  border-radius: 5px;
-  border-left: 5px solid ${COLORS.green};
-  background-color: ${COLORS.lightGray};
-  color: ${COLORS.black};
-  transition: .2s ease;
-  text-align: center;
-  cursor: pointer;
-
-  p {
-    position: absolute;
-    text-align: right;
-    right: 3px;
-    top: 0px;
-    margin-top: 1px;
-    width: 100%;
-    font-size: 7px;
-  }
-
-  &:hover {
-    background-color: ${COLORS.darkGray};
-    color: ${COLORS.black};
-  }
-
-  @media (min-width: ${BP.small}) {
-    p {
-      font-size: 12px;
-    }
-  }
 `;
 
 const OverviewButtonWrapper = styled.div`

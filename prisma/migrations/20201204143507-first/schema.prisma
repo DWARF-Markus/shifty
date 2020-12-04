@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -62,7 +62,7 @@ model CompanyShift {
 model CompanyShiftEmployee {
   id             Int           @default(autoincrement()) @id
   employeeId     Int?
-  Employees      Employee?     @relation(fields: [employeeId], references: [id])
+  Employees      Employee?     @relation(fields: [companyShiftId], references: [id])
   companyShiftId Int?
   CompanyShift   CompanyShift? @relation(fields: [companyShiftId], references: [id])
 }

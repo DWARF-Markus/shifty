@@ -530,6 +530,13 @@
       "value": "[id]"
     },
     {
+      "tag": "CreateField",
+      "model": "Employee",
+      "field": "CompanyShiftEmployee",
+      "type": "CompanyShiftEmployee",
+      "arity": "List"
+    },
+    {
       "tag": "CreateModel",
       "model": "CompanyShift"
     },
@@ -695,6 +702,166 @@
       "field": "endTime",
       "type": "DateTime",
       "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "CompanyShiftEmployee",
+      "type": "CompanyShiftEmployee",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "CompanyShiftEmployee"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "employeeId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "Employees",
+      "type": "Employee",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "Employees"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "Employees"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[companyShiftId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "Employees"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "companyShiftId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "CompanyShift",
+      "type": "CompanyShift",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "CompanyShift"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "CompanyShift"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[companyShiftId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "CompanyShift"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
     }
   ]
 }
