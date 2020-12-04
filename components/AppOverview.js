@@ -16,6 +16,7 @@ export default function AppOverview({ state }) {
   const [week, setWeek] = useState('');
   const [firstDayOfWeek, setFirstDayOfWeek] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [employees, setEmployees] = useState([]);
 
   const dispatch = useDispatch();
   const daysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -51,6 +52,16 @@ export default function AppOverview({ state }) {
           setLoading(false);
         });
 
+      if (state.isAdmin) {
+        await fetch(`/api/getcompanyusers?company=${companyId}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.result.length > 0) {
+              setEmployees(data.result);
+            }
+          })
+      }
+
     }
   }, [state]);
 
@@ -78,7 +89,20 @@ export default function AppOverview({ state }) {
         </OverviewModal>
       </OverviewOverlay>
       <OverviewWrapper>
-        <h3>Overview</h3>
+        <OverviewTop>
+          <h3>Overview</h3>
+          {state.isAdmin ?
+            <EmployeesBox>
+              {employees ? employees.map((employee) => {
+                return (
+                  <EmployeeCard>
+                    <div><img src={require('../assets/bar-image-two.jpg')} alt="shifty" style={{ width: '20px', height: '20px', objectFit: 'cover', borderRadius: '50%' }} /><p>{employee.firstName} {employee.lastName}</p></div>
+                  </EmployeeCard>
+                )
+              }) : 'No employees yet.'}
+            </EmployeesBox>
+            : ''}
+        </OverviewTop>
         {/* <p>{week ? week : ''}</p> */}
         <Overview>
           {!loading ? openingDays.map((day, index) => {
@@ -144,6 +168,59 @@ const OverviewWrapper = styled.div`
     font-weight: 300;
     line-height: 1.2;
   }
+`;
+
+const OverviewTop = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr;
+
+
+
+  @media (min-width: ${BP.small}) {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
+
+const EmployeesBox = styled.div`
+  width: 100%;
+  background: ${COLORS.white};
+  height: 3rem;
+  margin-bottom: 1rem;
+  background-color: ${COLORS.lightGray};
+  border-radius: 5px;
+  display: flex;
+  overflow-y: scroll;
+
+  @media (min-width: ${BP.small}) {
+    margin-bottom: 0;
+  }
+`;
+
+const EmployeeCard = styled.div`
+  background-color: ${COLORS.white};
+  margin: 5px;
+  padding: 3px 6px;
+  display: grid;
+  align-content: center;
+  cursor: pointer;
+  transition: .15s ease;
+  box-shadow: none;
+
+  &:hover {
+    transform: scale(1.07);
+    box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
+  }
+
+  div {
+    display: flex;
+
+    p {
+      margin: 0 0 0 3px;
+      white-space: pre;
+    }
+  }
+
 `;
 
 const Overview = styled.div`
@@ -224,11 +301,18 @@ const Shift = styled.div`
     top: 0px;
     margin-top: 1px;
     width: 100%;
+    font-size: 7px;
   }
 
   &:hover {
     background-color: ${COLORS.darkGray};
     color: ${COLORS.black};
+  }
+
+  @media (min-width: ${BP.small}) {
+    p {
+      font-size: 12px;
+    }
   }
 `;
 

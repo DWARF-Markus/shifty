@@ -24,6 +24,10 @@ export default function AppInvite() {
           setLoading(false);
         }
       })
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 2500);
   }, [])
 
   const handleUsersSearch = async (e) => {
@@ -78,6 +82,7 @@ export default function AppInvite() {
                 <p>status</p>
               </div>)
             }) : <Loader><FontAwesomeIcon class="spinner-animation" width={'30px'} icon={faSpinner} /></Loader>}
+            <p>{setSelectedUsers.length === 0 ? 'No employees yet.' : ''}</p>
           </OverviewContent>
         </InviteOverview>
       </InviteWrapper>

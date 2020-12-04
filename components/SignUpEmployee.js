@@ -40,51 +40,51 @@ const SignUpEmployee = () => {
       },
       body: JSON.stringify(obj)
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === 201) {
-        setTimeout(() => {
-          setSubmitting(false);
-          dispatch({
-            type: 'SET_POP_UP',
-            payload: 'You have signed up - you can now login!'
-          });
-        }, 1000);
-        setTimeout(() => {
-          Router.push('/');
-        }, 1000);
-      } else {
-        setTimeout(() => {
-          setSubmitting(false);
-          dispatch({
-            type: 'SET_POP_UP_ERROR',
-            payload: 'Something went wrong - try again!'
-          });
-        }, 2000);
-      }
-    });
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 201) {
+          setTimeout(() => {
+            setSubmitting(false);
+            dispatch({
+              type: 'SET_POP_UP',
+              payload: 'You have signed up - you can now login!'
+            });
+          }, 1000);
+          setTimeout(() => {
+            Router.push('/');
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            setSubmitting(false);
+            dispatch({
+              type: 'SET_POP_UP_ERROR',
+              payload: 'Something went wrong - try again!'
+            });
+          }, 2000);
+        }
+      });
   }
 
   return (
     <>
-    <SignUpEmployeeWrapper submitting={submitting}>
-    { submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : '' }
-      <SignUpOpacity submitting={submitting}>
-        <SignUpEmployeeHeader>
-          <h3>Employee</h3>
-        </SignUpEmployeeHeader>
-        <SignUpEmployeeContent>
-          <InputField type="text" required={true} label="First name" setter={'SET_FIRST_NAME'} getter={'firstName'} />
-          <InputField type="text" required={true} label="Last name" setter={'SET_LAST_NAME'} getter={'lastName'} />
-          <InputField type="email" required={true} label="Email" setter={'SET_EMAIL'} getter={'email'} />
-          <InputField type="password" required={true} label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
-          <InputField type="password" required={true} label="Password confirm" setter={'SIGN_UP_PASSWORD_CONFIRM'} getter={'signUpPasswordConfirm'} />
-        </SignUpEmployeeContent>
-        <SignUpEmployeeAction>
-          <button onClick={() => handleEmployeeSignup()} className="btn--primary">Sign up</button>
-        </SignUpEmployeeAction>
-      </SignUpOpacity>
-    </SignUpEmployeeWrapper>
+      <SignUpEmployeeWrapper submitting={submitting}>
+        {submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : ''}
+        <SignUpOpacity submitting={submitting}>
+          <SignUpEmployeeHeader>
+            <h3>Employee</h3>
+          </SignUpEmployeeHeader>
+          <SignUpEmployeeContent>
+            <InputField type="text" required={true} label="First name" setter={'SET_FIRST_NAME'} getter={'firstName'} />
+            <InputField type="text" required={true} label="Last name" setter={'SET_LAST_NAME'} getter={'lastName'} />
+            <InputField type="email" required={true} label="Email" setter={'SET_EMAIL'} getter={'email'} />
+            <InputField type="password" required={true} label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
+            <InputField type="password" required={true} label="Password confirm" setter={'SIGN_UP_PASSWORD_CONFIRM'} getter={'signUpPasswordConfirm'} />
+          </SignUpEmployeeContent>
+          <SignUpEmployeeAction>
+            <button onClick={() => handleEmployeeSignup()} className="btn--primary">Sign up</button>
+          </SignUpEmployeeAction>
+        </SignUpOpacity>
+      </SignUpEmployeeWrapper>
     </>
   );
 }
@@ -108,7 +108,7 @@ const SignUpEmployeeHeader = styled.div`
 
 const SignUpEmployeeContent = styled.div`
   background-color: ${COLORS.white};
-  padding: .5rem 0;
+  padding: .5rem;
 `;
 
 const SignUpEmployeeAction = styled.div`
@@ -137,7 +137,7 @@ const SignUpSpinner = styled.div`
 `;
 
 const SignUpOpacity = styled.div`
-  opacity: ${({ submitting }) => submitting ? 0.25 : 1 };
+  opacity: ${({ submitting }) => submitting ? 0.25 : 1};
 `;
 
 export default SignUpEmployee;

@@ -184,6 +184,7 @@ const SidebarEntry = styled.div`
 
 const SideBarBottom = styled.div`
   display: ${({ show }) => !show ? 'none' : 'flex'};
+  width: 100%;
 
   &:first-child {
     display: none;
