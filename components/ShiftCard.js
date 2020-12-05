@@ -22,8 +22,6 @@ const ShiftCard = ({ shift }) => {
       })
     })
       .then(res => res.json())
-    // console.log('employee ID: ', item.id);
-    // console.log('shift ID: ', shiftId);
   }
 
   const [{ isOver }, drop] = useDrop({

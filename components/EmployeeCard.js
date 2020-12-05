@@ -3,7 +3,7 @@ import { COLORS } from '../styles/globals';
 import { useDrag } from 'react-dnd';
 import { ItemTypes } from '../utils/items';
 
-const EmployeeCard = ({ id, firstName, lastName }) => {
+const EmployeeCard = ({ id, firstName, lastName, image }) => {
 
   const [{ isDragging }, drag] = useDrag({
     item: {
@@ -17,7 +17,7 @@ const EmployeeCard = ({ id, firstName, lastName }) => {
 
   return (
     <Wrapper isDragging={isDragging} ref={drag}>
-      <img src={require('../assets/bar-image-two.jpg')} alt="shifty" style={{ width: '20px', height: '20px', objectFit: 'cover', borderRadius: '50%' }} />
+      <img src={image ? image : require('../assets/icon-dot-orange.svg')} alt="shifty" style={{ width: '20px', height: '20px', objectFit: 'cover', borderRadius: '50%' }} />
       <p>{firstName} {lastName}</p>
     </Wrapper>
   );

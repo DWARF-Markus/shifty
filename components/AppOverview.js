@@ -97,7 +97,7 @@ export default function AppOverview({ state }) {
             <EmployeesBox>
               {employees ? employees.map((employee) => {
                 return (
-                  <EmployeeCard id={employee.id} firstName={employee.firstName} lastName={employee.lastName} />
+                  <EmployeeCard id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} />
                 )
               }) : 'No employees yet.'}
             </EmployeesBox>
@@ -125,7 +125,7 @@ export default function AppOverview({ state }) {
                 </DayContent>
               </DayWrapper>
             );
-          }) : <OverViewPreLoader><FontAwesomeIcon class="spinner-animation" width={'30px'} icon={faSpinner} /> </OverViewPreLoader>}
+          }) : <OverViewPreLoader><FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} /> </OverViewPreLoader>}
         </Overview>
         <OverviewButtonWrapper active={state.shiftModalOpen}>
           <button onClick={(e) => handleModalClick(e)}>+</button>

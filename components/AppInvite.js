@@ -81,7 +81,7 @@ export default function AppInvite() {
                 <p>{user.email}</p>
                 <p>status</p>
               </div>)
-            }) : <Loader><FontAwesomeIcon class="spinner-animation" width={'30px'} icon={faSpinner} /></Loader>}
+            }) : <Loader><FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} /></Loader>}
             <p>{setSelectedUsers.length === 0 ? 'No employees yet.' : ''}</p>
           </OverviewContent>
         </InviteOverview>

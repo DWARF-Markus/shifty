@@ -33,7 +33,8 @@ const initialState = {
   newShiftEndTime: '',
   newShiftTitle: '',
   shifts: [],
-  shiftModalOpen: false
+  shiftModalOpen: false,
+  newProfileImage: '',
 }
 
 const reducer = (state = initialState, action) => {
@@ -135,12 +136,30 @@ const reducer = (state = initialState, action) => {
     case 'SET_FIRST_NAME':
       return {
         ...state,
-        firstName: action.payload
+        firstName: action.payload,
+      }
+    case 'SET_FIRST_NAME_UPDATE':
+      return {
+        ...state,
+        firstName: action.payload,
+        loginData: {
+          ...state.loginData,
+          firstName: action.payload
+        }
       }
     case 'SET_LAST_NAME':
       return {
         ...state,
-        lastName: action.payload
+        lastName: action.payload,
+      }
+    case 'SET_LAST_NAME_UPDATE':
+      return {
+        ...state,
+        lastName: action.payload,
+        loginData: {
+          ...state.loginData,
+          lastName: action.payload
+        }
       }
     case 'SET_LOGIN_DATA':
       return {
@@ -192,6 +211,15 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         shiftModalOpen: action.payload
+      }
+    case 'SET_IMAGE':
+      return {
+        ...state,
+        newProfileImage: action.payload,
+        loginData: {
+          ...state.loginData,
+          profileImage: action.payload
+        }
       }
     default:
       return state
