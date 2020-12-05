@@ -12,7 +12,10 @@ export default async function (req, res) {
       },
       where: {
         companyId: parseInt(company)
-      }
+      },
+      include: {
+        CompanyShiftEmployee: true, // All posts where authorId == 20
+      },
     });
     res.status(200);
     res.json({ result });

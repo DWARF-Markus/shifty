@@ -33,11 +33,13 @@ const ShiftForm = () => {
           dispatch({
             type: 'ADD_SHIFT',
             payload: {
+              id: data.response.id,
               title: GET_STATE.newShiftTitle,
               startTime: GET_STATE.newShiftStartTime,
               endTime: GET_STATE.newShiftEndTime,
               employees: parseInt(GET_STATE.newShiftEmployeeAmount),
-              company: parseInt(GET_STATE.loginData.id)
+              companyId: parseInt(GET_STATE.loginData.id),
+              CompanyShiftEmployee: [],
             }
           });
           dispatch({

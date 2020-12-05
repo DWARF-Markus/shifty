@@ -97,7 +97,7 @@ export default function AppOverview({ state }) {
             <EmployeesBox>
               {employees ? employees.map((employee) => {
                 return (
-                  <EmployeeCard id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} />
+                  <EmployeeCard key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} />
                 )
               }) : 'No employees yet.'}
             </EmployeesBox>
@@ -118,7 +118,7 @@ export default function AppOverview({ state }) {
                   {state.shifts.map((shift) => {
                     if (format(new Date(shift.startTime), 'iiii') === day.dayName && day.active) {
                       return (
-                        <ShiftCard shift={shift} />
+                        <ShiftCard key={shift.id} employeesList={employees} shift={shift} />
                       );
                     }
                   })}

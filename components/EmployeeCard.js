@@ -8,7 +8,9 @@ const EmployeeCard = ({ id, firstName, lastName, image }) => {
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: ItemTypes.CARD,
-      id
+      id,
+      firstName,
+      image
     },
     collect: monitor => ({
       isDragging: !!monitor.isDragging()
