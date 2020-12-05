@@ -5,12 +5,15 @@ import { COLORS, SIZES, BUTTON, BP } from '../styles/globals';
 import { faTimes, faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signOut, useSession } from 'next-auth/client';
+import { useSelector } from 'react-redux';
 
 const NavBar = () => {
 
   const [session] = useSession();
 
   const [open, setOpen] = useState(false);
+
+  const GET_STATE = useSelector((state) => state);
 
   return (
     <>
@@ -33,7 +36,7 @@ const NavBar = () => {
                 <Link href="/app">Overview</Link>
               </WrapperLink>
               <UserWrapper>
-                <FontAwesomeIcon style={{ width: '11px', color: COLORS.white }} icon={faUser} />
+                {GET_STATE.loginData.profileImage ? <img src={GET_STATE.loginData.profileImage} alt="profile image" style={{ width: '30px', borderRadius: '50%' }} /> : <FontAwesomeIcon style={{ width: '11px', color: COLORS.white }} icon={faUser} />}
               </UserWrapper>
             </> :
               <>

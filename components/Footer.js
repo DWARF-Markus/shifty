@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 import { SIZES, COLORS, BP } from '../styles/globals';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
 const Footer = () => {
+
+  const router = useRouter();
+  const GET_STATE = useSelector((state) => state);
+
   return (
-    <FooterWrapper>
+    <FooterWrapper onAppPage={router.pathname.includes('/app')} sidebarOpen={GET_STATE.sideBarToggle}>
       <div>
         <h3>Contact</h3>
         <br />
@@ -31,6 +37,15 @@ const FooterWrapper = styled.footer`
   display: block;
   background-color: ${COLORS.black};
   color: ${COLORS.white};
+  transition: .15s ease;
+
+  ${props => props.onAppPage && `
+     padding-left: ${props.sidebarOpen ? '13rem' : '5rem'}; 
+ `};
+
+  ${props => !props.onAppPage && `
+      padding-left: none!important;
+  `};
 
   @media (min-width: ${BP.small}) {
     display: flex;
@@ -44,6 +59,7 @@ const FooterWrapper = styled.footer`
     &:first-of-type {
       display: grid;
       align-items: center;
+      padding-left:
     }
 
     &:last-of-type {

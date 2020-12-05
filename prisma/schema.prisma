@@ -42,7 +42,7 @@ model Employee {
   password             String
   profileImage         String
   companyId            Int?
-  Company              Company?               @relation(fields: [companyId], references: [id])
+  companyForeign       Company?               @relation(fields: [companyId], references: [id])
   CompanyShiftEmployee CompanyShiftEmployee[]
 }
 

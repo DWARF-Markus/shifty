@@ -7,11 +7,13 @@ import { useDrop } from 'react-dnd';
 import { ItemTypes } from '../utils/items';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { differenceInHours } from 'date-fns';
 
-const ShiftCard = ({ employeesList, shift }) => {
+const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
 
   const [employees, setEmployees] = useState([]);
   const [spotsLeft, setSpotsLeft] = useState([]);
+  const [shiftLength, setShiftLength] = useState('');
 
   const dispatch = useDispatch();
 
@@ -21,11 +23,12 @@ const ShiftCard = ({ employeesList, shift }) => {
     const arr = [];
     for (let i = 0; i < shift.employeeAmount; i++) {
       const entry = i;
-      // setSpotsLeft(spotsLeft.concat([i]));
       arr.push(entry);
     }
 
     setSpotsLeft(arr);
+
+    setShiftLength(differenceInHours(new Date(shift.endTime), new Date(shift.startTime)));
 
     if (shift.CompanyShiftEmployee) {
       setEmployees(shift.CompanyShiftEmployee.map((shift) => {
@@ -35,8 +38,6 @@ const ShiftCard = ({ employeesList, shift }) => {
   }, [])
 
   const handleEmployeeDrop = async (item) => {
-    console.log('item: ', item);
-    console.log('shift id: ', shift.id);
     if (employees.includes(item.id)) {
       dispatch({
         type: 'SET_POP_UP',
@@ -45,7 +46,7 @@ const ShiftCard = ({ employeesList, shift }) => {
       return
     }
 
-    if (employees.length !== shift.employeeAmount) {
+    if (employees.length <= shift.employeeAmount) {
       setEmployees(employees.concat([item.id]));
       await fetch('/api/addusertoshift', {
         method: 'POST',
@@ -72,6 +73,41 @@ const ShiftCard = ({ employeesList, shift }) => {
         payload: 'You cannot add more employees to this shift.'
       });
     }
+  };
+
+  const handleShiftClick = async () => {
+    if (!isAdmin) {
+      if (employees.includes(userId)) {
+        dispatch({
+          type: 'SET_POP_UP',
+          payload: `You are already assigned on this shift.`
+        });
+        return
+      }
+
+      if (employees.length <= shift.employeeAmount) {
+        setEmployees(employees.concat([userId]));
+        await fetch('/api/addusertoshift', {
+          method: 'POST',
+          headers: {
+            'Content-Type': "application/json"
+          },
+          body: JSON.stringify({
+            data: {
+              shiftId: parseInt(shift.id),
+              employeeId: parseInt(userId)
+            }
+          })
+        })
+          .then(res => res.json())
+          .then(data => {
+            dispatch({
+              type: 'SET_POP_UP',
+              payload: `You are now assigned to this shift.`
+            });
+          });
+      }
+    }
   }
 
   const [{ isOver }, drop] = useDrop({
@@ -83,9 +119,9 @@ const ShiftCard = ({ employeesList, shift }) => {
   })
 
   return (
-    <Wrapper isOver={isOver} ref={drop}>
-      <p>{format(new Date(shift.startTime), 'HH:mm')} <FontAwesomeIcon icon={faLongArrowAltRight} /> {format(new Date(shift.endTime), 'HH:mm')}</p>
+    <Wrapper shiftLength={shiftLength} onClick={() => handleShiftClick()} isAssigned={employees.includes(userId) && !isAdmin} isAdmin={isAdmin} isFull={shift.employeeAmount === employees.length} isOver={isOver} ref={drop}>
       <p className="title">{shift.title}</p>
+      <p className="time">{format(new Date(shift.startTime), 'HH:mm')} <FontAwesomeIcon icon={faLongArrowAltRight} /> {format(new Date(shift.endTime), 'HH:mm')}</p>
       <PlaceholderWrapper>
         {spotsLeft ? spotsLeft.map(() => {
           return (
@@ -112,11 +148,41 @@ const Wrapper = styled.div`
   text-align: center;
   position: relative;
   margin: .3rem;
-  height: 5rem;
   border-radius: 5px;
-  border-left: 5px solid ${COLORS.green};
-  background-color: ${({ isOver }) => isOver ? COLORS.orange : COLORS.lightGray};
-  color: ${({ isOver }) => isOver ? COLORS.white : COLORS.black};
+  pointer-events: ${({ isFull }) => isFull ? 'none' : 'all'};
+
+  ${props => props.isAdmin && `
+     border-left: 5px solid ${props.isFull ? COLORS.green : COLORS.red}; 
+ `};
+
+  ${props => !props.isAdmin && props.isFull && `
+      border-left: 5px solid ${COLORS.lightGray}; 
+  `};
+
+  ${props => !props.isAdmin && !props.isFull && `
+      border-left: 5px solid ${COLORS.orange}; 
+  `};
+
+  ${props => props.isAssigned && `
+      border-left: 5px solid ${COLORS.orange}!important
+  `};
+
+  ${props => props.shiftLength <= 5 && `
+      height: 4rem;
+  `}
+
+  ${props => props.shiftLength >= 5 && `
+      height: 5rem;
+  `}
+
+  ${props => props.shiftLength >= 7 && `
+      height: 7rem;
+  `}
+
+
+
+  background-color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.orange : COLORS.lightGray};
+  color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black};
   opacity: ${({ isOver }) => isOver ? '0.7' : '1'};
   transition: .2s ease;
   text-align: center;
@@ -124,7 +190,7 @@ const Wrapper = styled.div`
 
   p {
     position: absolute;
-    text-align: right;
+    text-align: center;
     right: 3px;
     top: 0px;
     margin-top: 1px;
@@ -133,16 +199,21 @@ const Wrapper = styled.div`
   }
 
   .title {
-    text-align: left;
-    color: gray;
-    font-size: 10px;
+    text-align: center;
+    color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black};
+    font-size: 9px;
+    font-weight: 800;
     margin-left: 11px;
-    left: -7px;
+    line-height: 1.3;
+  }
+
+  .time {
+    top: 10px;
   }
 
   &:hover {
-    background-color: ${COLORS.darkGray};
-    color: ${COLORS.black};
+    background-color: ${({ isAssigned }) => isAssigned ? COLORS.orange : COLORS.darkGray};
+    color: ${({ isAssigned }) => isAssigned ? COLORS.white : COLORS.black};
   }
 
   @media (min-width: ${BP.small}) {
@@ -160,6 +231,7 @@ const EmployeeEntry = styled.div`
     object-fit: cover;
     border-radius: 50%;
     z-index: 2;
+    border: 1px solid ${COLORS.darkGray};
   }
 `;
 
@@ -186,6 +258,7 @@ const PlaceholderWrapper = styled.div`
 const EmployeeEntryPlaceholder = styled.div`
   width: 25px;
   height: 25px;
+  border: 1px solid ${COLORS.darkGray};
   border-radius: 50%;
   background-color: ${COLORS.white};
   z-index: 1;

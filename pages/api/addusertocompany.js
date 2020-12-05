@@ -9,7 +9,7 @@ export default async function (req, res) {
     const result = await prisma.employee.update({
       where: { id: parseInt(employee) },
       data: {
-        Company: { connect: { id: parseInt(company) } }
+        companyForeign: { connect: { id: parseInt(company) } }
       }
     })
     res.status(200);

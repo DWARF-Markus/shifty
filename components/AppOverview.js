@@ -19,15 +19,22 @@ export default function AppOverview({ state }) {
   const [firstDayOfWeek, setFirstDayOfWeek] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [employees, setEmployees] = useState([]);
+  const [noCompany, setNoCompany] = useState(false);
 
   const dispatch = useDispatch();
   const daysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   useEffect(async () => {
-    if (state.loginData.days && openingDays.length === 0) {
-      const days = state.loginData.days.split('');
+
+    if (state.loginData.days && openingDays.length === 0 || state.loginData.hasOwnProperty("companyForeign") && openingDays.length === 0) {
+      if (state.loginData.companyId === null) {
+        setNoCompany(true);
+        return
+      };
+      const days = state.isAdmin ? state.loginData.days.split('') : state.loginData.companyForeign.days.split('');
       const today = new Date();
       const weekFirstDay = addDays(startOfWeek(today), 1);
+
 
       setWeek(getWeek(today));
       setFirstDayOfWeek(weekFirstDay);
@@ -42,7 +49,7 @@ export default function AppOverview({ state }) {
         }
       });
 
-      const companyId = state.loginData.id;
+      const companyId = state.isAdmin ? state.loginData.id : state.loginData.companyForeign.id;
 
       await fetch(`/api/getshifts?company=${parseInt(companyId)}`)
         .then(res => res.json())
@@ -54,16 +61,13 @@ export default function AppOverview({ state }) {
           setLoading(false);
         });
 
-      if (state.isAdmin) {
-        await fetch(`/api/getcompanyusers?company=${companyId}`)
-          .then(res => res.json())
-          .then(data => {
-            if (data.result.length > 0) {
-              setEmployees(data.result);
-            }
-          })
-      }
-
+      await fetch(`/api/getcompanyusers?company=${companyId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.result.length > 0) {
+            setEmployees(data.result);
+          }
+        })
     }
   }, [state]);
 
@@ -103,7 +107,6 @@ export default function AppOverview({ state }) {
             </EmployeesBox>
             : ''}
         </OverviewTop>
-        {/* <p>{week ? week : ''}</p> */}
         <Overview>
           {!loading ? openingDays.map((day, index) => {
             return (
@@ -118,18 +121,24 @@ export default function AppOverview({ state }) {
                   {state.shifts.map((shift) => {
                     if (format(new Date(shift.startTime), 'iiii') === day.dayName && day.active) {
                       return (
-                        <ShiftCard key={shift.id} employeesList={employees} shift={shift} />
+                        <ShiftCard userId={state.loginData.id} isAdmin={state.isAdmin} key={shift.id} employeesList={employees} shift={shift} />
                       );
                     }
                   })}
                 </DayContent>
               </DayWrapper>
             );
-          }) : <OverViewPreLoader><FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} /> </OverViewPreLoader>}
+          }) : (
+              <OverViewPreLoader>
+                {noCompany ? <p>You have not been assigned to a company yet.</p> : <FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} />}
+              </OverViewPreLoader>
+            )}
         </Overview>
-        <OverviewButtonWrapper active={state.shiftModalOpen}>
-          <button onClick={(e) => handleModalClick(e)}>+</button>
-        </OverviewButtonWrapper>
+        {state.isAdmin ? (
+          <OverviewButtonWrapper active={state.shiftModalOpen}>
+            <button onClick={(e) => handleModalClick(e)}>+</button>
+          </OverviewButtonWrapper>
+        ) : ''}
       </OverviewWrapper>
     </motion.div>
   )
@@ -221,6 +230,11 @@ const DayWrapper = styled.div`
   width: 100%;
   border-left: 1px solid ${COLORS.darkGray};
   opacity: ${({ active }) => active ? '1' : '.4'};
+  display: ${({ active }) => !active ? 'none' : 'block'};
+
+  @media (min-width: ${BP.small}) {
+    display: block;
+  }
 
   &:first-of-type {
     border-left: none;

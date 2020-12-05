@@ -486,7 +486,7 @@
     {
       "tag": "CreateField",
       "model": "Employee",
-      "field": "Company",
+      "field": "companyForeign",
       "type": "Company",
       "arity": "Optional"
     },
@@ -496,7 +496,7 @@
         "path": {
           "tag": "Field",
           "model": "Employee",
-          "field": "Company"
+          "field": "companyForeign"
         },
         "directive": "relation"
       }
@@ -508,7 +508,7 @@
         "path": {
           "tag": "Field",
           "model": "Employee",
-          "field": "Company"
+          "field": "companyForeign"
         },
         "directive": "relation"
       },
@@ -522,7 +522,7 @@
         "path": {
           "tag": "Field",
           "model": "Employee",
-          "field": "Company"
+          "field": "companyForeign"
         },
         "directive": "relation"
       },
@@ -794,7 +794,7 @@
         "directive": "relation"
       },
       "argument": "fields",
-      "value": "[companyShiftId]"
+      "value": "[employeeId]"
     },
     {
       "tag": "CreateArgument",

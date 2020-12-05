@@ -14,7 +14,7 @@ export default async function (req, res) {
         companyId: parseInt(company)
       },
       include: {
-        CompanyShiftEmployee: true, // All posts where authorId == 20
+        CompanyShiftEmployee: true,
       },
     });
     res.status(200);
