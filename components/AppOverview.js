@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { COLORS, BP } from '../styles/globals';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch } from 'react-redux';
-import { addDays, format, getWeek, startOfWeek } from 'date-fns';
+import { addDays, addWeeks, format, getWeek, isToday, startOfWeek } from 'date-fns';
 
 import ShiftForm from './ShiftForm';
 import EmployeeCard from './EmployeeCard';
@@ -33,19 +33,19 @@ export default function AppOverview({ state }) {
       };
       const days = state.isAdmin ? state.loginData.days.split('') : state.loginData.companyForeign.days.split('');
       const today = new Date();
-      const weekFirstDay = addDays(startOfWeek(today), 1);
+      const weekFirstDay = startOfWeek(today, { weekStartsOn: 1 });
 
 
-      setWeek(getWeek(today));
+      setWeek(getWeek(today, { weekStartsOn: 1 }));
       setFirstDayOfWeek(weekFirstDay);
 
       days.map((day, index) => {
         const futureDate = addDays(new Date(weekFirstDay), index);
 
         if (parseInt(day)) {
-          setOpeningDays(prev => [...prev, { dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: true }]);
+          setOpeningDays(prev => [...prev, { trueDate: futureDate, dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: true }]);
         } else {
-          setOpeningDays(prev => [...prev, { dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: false }]);
+          setOpeningDays(prev => [...prev, { trueDate: futureDate, dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: false }]);
         }
       });
 
@@ -70,6 +70,49 @@ export default function AppOverview({ state }) {
         })
     }
   }, [state]);
+
+  const handleNextWeekClick = () => {
+    setFirstDayOfWeek(addWeeks(firstDayOfWeek, 1));
+    setWeek(prev => prev + 1);
+
+    const weekFirstDay = startOfWeek(addWeeks(firstDayOfWeek, 1), { weekStartsOn: 1 });
+
+    const days = state.isAdmin ? state.loginData.days.split('') : state.loginData.companyForeign.days.split('');
+
+    setOpeningDays([]);
+
+    days.map((day, index) => {
+      const futureDate = addDays(new Date(weekFirstDay), index);
+
+      if (parseInt(day)) {
+        setOpeningDays(prev => [...prev, { trueDate: futureDate, dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: true }]);
+      } else {
+        setOpeningDays(prev => [...prev, { trueDate: futureDate, dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: false }]);
+      }
+    });
+
+  }
+
+  const handlePrevWeekClick = () => {
+    setFirstDayOfWeek(addWeeks(firstDayOfWeek, -1));
+    setWeek(prev => prev - 1);
+
+    const weekFirstDay = startOfWeek(addWeeks(firstDayOfWeek, -1), { weekStartsOn: 1 });
+
+    const days = state.isAdmin ? state.loginData.days.split('') : state.loginData.companyForeign.days.split('');
+
+    setOpeningDays([]);
+
+    days.map((day, index) => {
+      const futureDate = addDays(new Date(weekFirstDay), index);
+
+      if (parseInt(day)) {
+        setOpeningDays(prev => [...prev, { trueDate: futureDate, dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: true }]);
+      } else {
+        setOpeningDays(prev => [...prev, { trueDate: futureDate, dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: false }]);
+      }
+    });
+  }
 
   const handleModalClick = (e) => {
     dispatch({
@@ -110,7 +153,7 @@ export default function AppOverview({ state }) {
         <Overview>
           {!loading ? openingDays.map((day, index) => {
             return (
-              <DayWrapper active={day.active}>
+              <DayWrapper today={isToday(new Date(day.trueDate))} active={day.active}>
                 <DayHeader key={index}>
                   <div>
                     <span>{day.dayName}</span>
@@ -119,7 +162,7 @@ export default function AppOverview({ state }) {
                 </DayHeader>
                 <DayContent>
                   {state.shifts.map((shift) => {
-                    if (format(new Date(shift.startTime), 'iiii') === day.dayName && day.active) {
+                    if (format(new Date(shift.startTime), 'iiii') === day.dayName && day.active && format(new Date(day.trueDate), 'dd/MMM') === format(new Date(shift.startTime), 'dd/MMM')) {
                       return (
                         <ShiftCard userId={state.loginData.id} isAdmin={state.isAdmin} key={shift.id} employeesList={employees} shift={shift} />
                       );
@@ -134,6 +177,11 @@ export default function AppOverview({ state }) {
               </OverViewPreLoader>
             )}
         </Overview>
+        <OverviewWeekButtons>
+          <button onClick={() => handlePrevWeekClick()}><FontAwesomeIcon icon={faCaretLeft} /></button>
+          <p>{week}</p>
+          <button onClick={() => handleNextWeekClick()}><FontAwesomeIcon icon={faCaretRight} /></button>
+        </OverviewWeekButtons>
         {state.isAdmin ? (
           <OverviewButtonWrapper active={state.shiftModalOpen}>
             <button onClick={(e) => handleModalClick(e)}>+</button>
@@ -193,7 +241,7 @@ const EmployeesBox = styled.div`
   width: 100%;
   background: ${COLORS.white};
   height: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   background-color: ${COLORS.lightGray};
   border-radius: 5px;
   display: flex;
@@ -231,6 +279,7 @@ const DayWrapper = styled.div`
   border-left: 1px solid ${COLORS.darkGray};
   opacity: ${({ active }) => active ? '1' : '.4'};
   display: ${({ active }) => !active ? 'none' : 'block'};
+  position: relative;
 
   @media (min-width: ${BP.small}) {
     display: block;
@@ -238,6 +287,27 @@ const DayWrapper = styled.div`
 
   &:first-of-type {
     border-left: none;
+  }
+
+  &::before {
+    content: 'TODAY';
+    position: absolute;
+    height: .5rem;
+    line-height: 1.2;
+    font-size: 8px;
+    font-family: Quicksand, sans-serif;
+    width: calc(100% - 1px);
+    padding: 5px 0;
+    top: -20px;
+    left: -1px;
+    box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: center;
+    display: ${({ today }) => today ? 'block' : 'none'};
+    background-color: ${COLORS.orange};
+    border: 1px solid ${COLORS.orange};
+    color: ${COLORS.white};
   }
 `;
 
@@ -293,4 +363,25 @@ const OverviewButtonWrapper = styled.div`
   @media (min-width: ${BP.small}) {
     bottom: 1rem;
   }
+`;
+
+const OverviewWeekButtons = styled.div`
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+
+    p {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    button {
+      background-color: transparent;
+      svg {
+        color: ${COLORS.orange};
+        width: 30px!important;
+        height: 30px;
+      }
+    }
 `;
