@@ -75,7 +75,8 @@ export default function AppOverview({ state }) {
     }
   }, [state]);
 
-  const handleNextWeekClick = () => {
+  const handleNextWeekClick = async () => {
+    setLoading(true);
     setFirstDayOfWeek(addWeeks(firstDayOfWeek, 1));
     setWeek(prev => prev + 1);
 
@@ -95,9 +96,21 @@ export default function AppOverview({ state }) {
       }
     });
 
+    const companyId = state.isAdmin ? state.loginData.id : state.loginData.companyForeign.id;
+
+    await fetch(`/api/getshifts?company=${parseInt(companyId)}`)
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: 'SET_SHIFTS',
+          payload: data.result
+        });
+        setLoading(false);
+      });
   }
 
-  const handlePrevWeekClick = () => {
+  const handlePrevWeekClick = async () => {
+    setLoading(true);
     setFirstDayOfWeek(addWeeks(firstDayOfWeek, -1));
     setWeek(prev => prev - 1);
 
@@ -116,6 +129,18 @@ export default function AppOverview({ state }) {
         setOpeningDays(prev => [...prev, { trueDate: futureDate, dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: false }]);
       }
     });
+
+    const companyId = state.isAdmin ? state.loginData.id : state.loginData.companyForeign.id;
+
+    await fetch(`/api/getshifts?company=${parseInt(companyId)}`)
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: 'SET_SHIFTS',
+          payload: data.result
+        });
+        setLoading(false);
+      });
   }
 
   const handleModalClick = (e) => {
