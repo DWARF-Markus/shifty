@@ -28,6 +28,13 @@ const initialState = {
   isAdmin: false,
   sideBarToggle: true,
   activeAppPage: 'Overview',
+  newShiftEmployeeAmount: 0,
+  newShiftStartTime: '',
+  newShiftEndTime: '',
+  newShiftTitle: '',
+  shifts: [],
+  shiftModalOpen: false,
+  newProfileImage: '',
 }
 
 const reducer = (state = initialState, action) => {
@@ -129,12 +136,30 @@ const reducer = (state = initialState, action) => {
     case 'SET_FIRST_NAME':
       return {
         ...state,
-        firstName: action.payload
+        firstName: action.payload,
+      }
+    case 'SET_FIRST_NAME_UPDATE':
+      return {
+        ...state,
+        firstName: action.payload,
+        loginData: {
+          ...state.loginData,
+          firstName: action.payload
+        }
       }
     case 'SET_LAST_NAME':
       return {
         ...state,
-        lastName: action.payload
+        lastName: action.payload,
+      }
+    case 'SET_LAST_NAME_UPDATE':
+      return {
+        ...state,
+        lastName: action.payload,
+        loginData: {
+          ...state.loginData,
+          lastName: action.payload
+        }
       }
     case 'SET_LOGIN_DATA':
       return {
@@ -151,6 +176,50 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         activeAppPage: action.payload
+      }
+    case 'SET_SHIFT_TITLE':
+      return {
+        ...state,
+        newShiftTitle: action.payload
+      }
+    case 'SET_SHIFT_STARTTIME':
+      return {
+        ...state,
+        newShiftStartTime: action.payload
+      }
+    case 'SET_SHIFT_ENDTIME':
+      return {
+        ...state,
+        newShiftEndTime: action.payload
+      }
+    case 'SET_SHIFT_EMPLOYEE_AMOUNT':
+      return {
+        ...state,
+        newShiftEmployeeAmount: action.payload
+      }
+    case 'SET_SHIFTS':
+      return {
+        ...state,
+        shifts: action.payload
+      }
+    case 'ADD_SHIFT':
+      return {
+        ...state,
+        shifts: [...state.shifts, action.payload]
+      }
+    case 'SET_SHIFT_MODAL':
+      return {
+        ...state,
+        shiftModalOpen: action.payload
+      }
+    case 'SET_IMAGE':
+      return {
+        ...state,
+        newProfileImage: action.payload,
+        loginData: {
+          ...state.loginData,
+          profileImage: action.payload
+        }
       }
     default:
       return state

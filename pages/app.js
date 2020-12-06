@@ -28,7 +28,7 @@ const App = () => {
     <Layout>
       <SideBar state={GET_STATE} />
       <AppContent sidebarOpen={GET_STATE.sideBarToggle}>
-        {GET_STATE.activeAppPage === 'Overview' ? <AppOverview /> : ''}
+        {GET_STATE.activeAppPage === 'Overview' ? <AppOverview state={GET_STATE} /> : ''}
         {GET_STATE.activeAppPage === 'Employees' ? <AppEmployees /> : ''}
         {GET_STATE.activeAppPage === 'Templates' ? <AppTemplates /> : ''}
         {GET_STATE.activeAppPage === 'Vacations' ? <AppVacations /> : ''}
@@ -46,6 +46,7 @@ const AppContent = styled.div`
 
   @media (min-width: ${BP.small}) {
     padding-left: ${({ sidebarOpen }) => sidebarOpen ? '13rem' : '5rem'};
+    padding-right: 1rem;
   }
 `;
 

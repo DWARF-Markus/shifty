@@ -3,24 +3,27 @@ import { PrismaClient } from '@prisma/client';
 export default async function (req, res) {
   const prisma = new PrismaClient({ log: ["query"] });
 
-  const { company, employee } = req.query
+  const { data: SubmitData } = req.body
+
+  console.log(SubmitData);
 
   try {
     const result = await prisma.employee.update({
-      where: { id: parseInt(employee) },
+      where: { id: SubmitData.id },
       data: {
-        companyForeign: { connect: { id: parseInt(company) } }
+        firstName: SubmitData.firstName,
+        lastName: SubmitData.lastName,
+        profileImage: SubmitData.image
       }
     })
     res.status(200);
-    res.json({ result });
+    res.json({ res: result, status: 200 });
   } catch (e) {
     res.status(500);
     res.json({ error: 'no user' });
   } finally {
     prisma.$disconnect()
   }
-
 
 }
 

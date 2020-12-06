@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { BP, COLORS } from '../styles/globals';
 import { useSelector } from 'react-redux';
+import { faSpinner, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function AppInvite() {
+  const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -18,9 +21,13 @@ export default function AppInvite() {
       .then(data => {
         if (data.result.length > 0) {
           setSelectedUsers(data.result);
+          setLoading(false);
         }
-        console.log(data);
       })
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 2500);
   }, [])
 
   const handleUsersSearch = async (e) => {
@@ -68,13 +75,14 @@ export default function AppInvite() {
             <p>Status</p>
           </OverviewHead>
           <OverviewContent>
-            {selectedUsers.map((user) => {
+            {!loading ? selectedUsers.map((user) => {
               return (<div>
                 <p key={user.id}>{user.firstName} {user.lastName}</p>
                 <p>{user.email}</p>
                 <p>status</p>
               </div>)
-            })}
+            }) : <Loader><FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} /></Loader>}
+            <p>{setSelectedUsers.length === 0 ? 'No employees yet.' : ''}</p>
           </OverviewContent>
         </InviteOverview>
       </InviteWrapper>
@@ -101,6 +109,7 @@ const SearchResults = styled.div`
   position: absolute;
   width: 100%;
   margin: 0 10px;
+  z-index: 1;
   display: ${({ show }) => show ? 'block' : 'none'};
   background-color: ${COLORS.white};
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
@@ -142,6 +151,8 @@ const OverviewHead = styled.div`
 `;
 
 const OverviewContent = styled.div`
+  position: relative;
+
   div {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -151,4 +162,18 @@ const OverviewContent = styled.div`
 const EmployeeEntry = styled.li`
   pointer-events: ${({ alreadySelected }) => alreadySelected ? 'none' : 'all'};
   opacity: ${({ alreadySelected }) => alreadySelected ? '0.3' : '1'};
+`;
+
+const Loader = styled.div`
+  position: absolute;
+  margin: 0 auto;
+  height: 6rem;
+  width: 300%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+
+  svg {
+    color: ${COLORS.darkGray};
+  }
 `;

@@ -163,6 +163,13 @@
       "arity": "List"
     },
     {
+      "tag": "CreateField",
+      "model": "Company",
+      "field": "Shift",
+      "type": "CompanyShift",
+      "arity": "List"
+    },
+    {
       "tag": "CreateModel",
       "model": "CompanyType"
     },
@@ -479,7 +486,7 @@
     {
       "tag": "CreateField",
       "model": "Employee",
-      "field": "Company",
+      "field": "companyForeign",
       "type": "Company",
       "arity": "Optional"
     },
@@ -489,7 +496,7 @@
         "path": {
           "tag": "Field",
           "model": "Employee",
-          "field": "Company"
+          "field": "companyForeign"
         },
         "directive": "relation"
       }
@@ -501,7 +508,7 @@
         "path": {
           "tag": "Field",
           "model": "Employee",
-          "field": "Company"
+          "field": "companyForeign"
         },
         "directive": "relation"
       },
@@ -515,7 +522,341 @@
         "path": {
           "tag": "Field",
           "model": "Employee",
+          "field": "companyForeign"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Employee",
+      "field": "CompanyShiftEmployee",
+      "type": "CompanyShiftEmployee",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "CompanyShift"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShift",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShift",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShift",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShift",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShift",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "companyId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "Company",
+      "type": "Company",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShift",
           "field": "Company"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShift",
+          "field": "Company"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[companyId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShift",
+          "field": "Company"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "title",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "extraWage",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "employeeAmount",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "startTime",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "endTime",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShift",
+      "field": "CompanyShiftEmployee",
+      "type": "CompanyShiftEmployee",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "CompanyShiftEmployee"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "employeeId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "Employees",
+      "type": "Employee",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "Employees"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "Employees"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[employeeId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "Employees"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "companyShiftId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyShiftEmployee",
+      "field": "CompanyShift",
+      "type": "CompanyShift",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "CompanyShift"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "CompanyShift"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[companyShiftId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyShiftEmployee",
+          "field": "CompanyShift"
         },
         "directive": "relation"
       },

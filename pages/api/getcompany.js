@@ -21,7 +21,10 @@ export default async function (req, res) {
       const company = await prisma.employee.findOne({
         where: {
           email: companyData.email
-        }
+        },
+        include: {
+          companyForeign: true,
+        },
       });
 
       res.status(200);

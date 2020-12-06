@@ -34,10 +34,10 @@ const SignUpForm = () => {
     if (GET_STATE.step !== 1) {
       setLoading(true);
       setTimeout(() => {
-      dispatch({
-        type: 'DECREMENT_STEP',
-      })
-      setLoading(false);
+        dispatch({
+          type: 'DECREMENT_STEP',
+        })
+        setLoading(false);
       }, 400);
     }
   }
@@ -62,56 +62,56 @@ const SignUpForm = () => {
       },
       body: JSON.stringify(obj)
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === 201) {
-        setTimeout(() => {
-          setSubmitting(false);
-          dispatch({
-            type: 'SET_POP_UP',
-            payload: 'You have signed up - you can now login!'
-          });
-        }, 1000);
-        setTimeout(() => {
-          Router.push('/');
-        }, 1000);
-      } else {
-        setTimeout(() => {
-          setSubmitting(false);
-          dispatch({
-            type: 'SET_POP_UP_ERROR',
-            payload: 'Something went wrong - try again!'
-          });
-        }, 2000);
-      }
-    });
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 201) {
+          setTimeout(() => {
+            setSubmitting(false);
+            dispatch({
+              type: 'SET_POP_UP',
+              payload: 'You have signed up - you can now login!'
+            });
+          }, 1000);
+          setTimeout(() => {
+            Router.push('/');
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            setSubmitting(false);
+            dispatch({
+              type: 'SET_POP_UP_ERROR',
+              payload: 'Something went wrong - try again!'
+            });
+          }, 2000);
+        }
+      });
   };
 
   return (
     <>
-    <SwitchWrapper onClick={() => setIsCompanySignup(!isCompanySignup)}>
-      <div>
-        <FontAwesomeIcon icon={isCompanySignup ? faUser : faHotel} />
-        <button>Sign up as {isCompanySignup ? 'an employee' : 'a company'}</button>
-      </div>
-    </SwitchWrapper>
-    { submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : '' }
-    {/* <ErrorBanner text={'Something went wrong - please try again'} active={error} /> */}
-    <SignUpTransition isCompanySignup={isCompanySignup}>
-      <SignUpEmployeeContainer>
+      <SwitchWrapper onClick={() => setIsCompanySignup(!isCompanySignup)}>
         <div>
-          <SignUpEmployee />
+          <FontAwesomeIcon icon={isCompanySignup ? faUser : faHotel} />
+          <button>Sign up as {isCompanySignup ? 'an employee' : 'a company'}</button>
         </div>
-      </SignUpEmployeeContainer>
-      <SignUpCompanyContainer submitting={submitting}>
-        <SignUpSheet data={data} step={GET_STATE.step} handlePrevClick={decrement} handleNextClick={increment} loading={loading} />
-        <SignUpDots>
-          {data.map((entry, index) => {
-            return <img key={index} src={index + 1 <= GET_STATE.step ? require('../assets/icon-dot-orange.svg') : require('../assets/icon-dot-gray.svg')} alt="dot" style={{ width: '12px', marginLeft: '7px' }} />
-          })}
-        </SignUpDots>
-      </SignUpCompanyContainer>
-    </SignUpTransition>
+      </SwitchWrapper>
+      {submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : ''}
+      {/* <ErrorBanner text={'Something went wrong - please try again'} active={error} /> */}
+      <SignUpTransition isCompanySignup={isCompanySignup}>
+        <SignUpEmployeeContainer>
+          <div>
+            <SignUpEmployee />
+          </div>
+        </SignUpEmployeeContainer>
+        <SignUpCompanyContainer submitting={submitting}>
+          <SignUpSheet data={data} step={GET_STATE.step} handlePrevClick={decrement} handleNextClick={increment} loading={loading} />
+          <SignUpDots>
+            {data.map((entry, index) => {
+              return <img key={index} src={index + 1 <= GET_STATE.step ? require('../assets/icon-dot-orange.svg') : require('../assets/icon-dot-gray.svg')} alt="dot" style={{ width: '12px', marginLeft: '7px' }} />
+            })}
+          </SignUpDots>
+        </SignUpCompanyContainer>
+      </SignUpTransition>
     </>
   )
 }
@@ -149,7 +149,7 @@ const SignUpTransition = styled.div`
   display: flex;
   width: 200%;
   transition: .7s ease;
-  transform: ${({isCompanySignup}) => isCompanySignup ? 'translate(-50%, 0)' : 'translate(0%, 0)'};
+  transform: ${({ isCompanySignup }) => isCompanySignup ? 'translate(-50%, 0)' : 'translate(0%, 0)'};
   overflow: hidden;
 `;
 
@@ -161,7 +161,7 @@ const SignUpEmployeeContainer = styled.div`
 
 const SignUpCompanyContainer = styled.div`
   transition: .2s ease;
-  opacity: ${({ submitting }) => submitting ? 0.25 : 1 };
+  opacity: ${({ submitting }) => submitting ? 0.25 : 1};
   width: 100%;
 `;
 

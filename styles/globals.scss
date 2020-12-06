@@ -41,7 +41,7 @@ h3 {
   line-height: 15.4px;
 }
 
-p, label, input, li {
+p, label, input, li, span {
   font-family: Quicksand;
   font-size: 14px;
   font-style: normal;
@@ -83,4 +83,13 @@ button {
   outline: none;
   box-shadow: 0;
   transition: .2s ease;
+}
+
+.spinner-animation {
+  @keyframes spin {
+    from {transform: rotate(0deg)}
+    to {transform: rotate(360deg)}
+  }
+
+  animation: spin 1s infinite linear;
 }
