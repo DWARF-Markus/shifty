@@ -511,6 +511,13 @@
     {
       "tag": "CreateField",
       "model": "Employee",
+      "field": "acceptedCompanyDateTime",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Employee",
       "field": "companyId",
       "type": "Int",
       "arity": "Optional"

@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { BP, COLORS } from '../styles/globals';
-import { useSelector } from 'react-redux';
-import { faSpinner, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
+import { useSelector, useDispatch } from 'react-redux';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch } from 'react-redux';
 
 export default function AppInvite() {
   const [loading, setLoading] = useState(true);
