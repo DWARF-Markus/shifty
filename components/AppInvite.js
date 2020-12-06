@@ -5,6 +5,7 @@ import { BP, COLORS } from '../styles/globals';
 import { useSelector } from 'react-redux';
 import { faSpinner, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch } from 'react-redux';
 
 export default function AppInvite() {
   const [loading, setLoading] = useState(true);
@@ -13,6 +14,7 @@ export default function AppInvite() {
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const GET_STATE = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   useEffect(async () => {
     const companyId = GET_STATE.loginData.id;
@@ -51,7 +53,10 @@ export default function AppInvite() {
     await fetch(`/api/addusertocompany?company=${companyId}&employee=${employeeId}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        dispatch({
+          type: 'SET_POP_UP',
+          payload: 'Invite has been sent!'
+        })
       })
   }
 
@@ -79,7 +84,7 @@ export default function AppInvite() {
               return (<div>
                 <p key={user.id}>{user.firstName} {user.lastName}</p>
                 <p>{user.email}</p>
-                <p>status</p>
+                <p>{user.acceptedCompany ? 'Accepted' : 'Not accepted'}</p>
               </div>)
             }) : <Loader><FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} /></Loader>}
             <p>{setSelectedUsers.length === 0 ? 'No employees yet.' : ''}</p>

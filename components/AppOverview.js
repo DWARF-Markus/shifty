@@ -20,6 +20,7 @@ export default function AppOverview({ state }) {
   const [openModal, setOpenModal] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [noCompany, setNoCompany] = useState(false);
+  const [acceptCompanyModal, setAcceptCompanyModal] = useState(false);
 
   const dispatch = useDispatch();
   const daysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -31,6 +32,9 @@ export default function AppOverview({ state }) {
         setNoCompany(true);
         return
       };
+      if (state.loginData.companyId && !state.loginData.acceptedCompany) {
+        setAcceptCompanyModal(true);
+      }
       const days = state.isAdmin ? state.loginData.days.split('') : state.loginData.companyForeign.days.split('');
       const today = new Date();
       const weekFirstDay = startOfWeek(today, { weekStartsOn: 1 });
@@ -130,6 +134,16 @@ export default function AppOverview({ state }) {
     }
   }
 
+  const handleCompanyAccept = async () => {
+    await fetch(`/api/acceptcompany?id=${state.loginData.id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 200) {
+          setAcceptCompanyModal(false);
+        }
+      })
+  }
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <OverviewOverlay show={state.shiftModalOpen} onClick={(e) => handleModalClose(e)}>
@@ -143,15 +157,17 @@ export default function AppOverview({ state }) {
           {state.isAdmin ?
             <EmployeesBox>
               {employees ? employees.map((employee) => {
-                return (
-                  <EmployeeCard key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} />
-                )
+                if (employee.acceptedCompany) {
+                  return (
+                    <EmployeeCard key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} />
+                  )
+                }
               }) : 'No employees yet.'}
             </EmployeesBox>
             : ''}
         </OverviewTop>
         <Overview>
-          {!loading ? openingDays.map((day, index) => {
+          {!loading && !acceptCompanyModal ? openingDays.map((day, index) => {
             return (
               <DayWrapper today={isToday(new Date(day.trueDate))} active={day.active}>
                 <DayHeader key={index}>
@@ -173,7 +189,14 @@ export default function AppOverview({ state }) {
             );
           }) : (
               <OverViewPreLoader>
-                {noCompany ? <p>You have not been assigned to a company yet.</p> : <FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} />}
+                {acceptCompanyModal ? (
+                  <div style={{ textAlign: 'center' }}>
+                    <p>You have been invited to join {state.loginData.companyForeign.name}.</p>
+                    <button onClick={() => handleCompanyAccept()} className="btn--primary">Accept</button>
+                  </div>
+                ) : ''}
+                {noCompany ? <p>You have not been assigned to a company yet.</p> : ''}
+                {!acceptCompanyModal && !noCompany ? <FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} /> : ''}
               </OverViewPreLoader>
             )}
         </Overview>

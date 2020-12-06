@@ -134,7 +134,7 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
           if (employees.includes(employee.id)) {
             return (
               <EmployeeEntry key={employee.id}>
-                <img src={employee.profileImage} />
+                <img src={employee.profileImage ? employee.profileImage : require('../assets/icon-dot-orange.svg')} />
               </EmployeeEntry>
             );
           }

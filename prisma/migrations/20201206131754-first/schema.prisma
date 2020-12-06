@@ -41,6 +41,7 @@ model Employee {
   email                String                 @unique
   password             String
   profileImage         String
+  acceptedCompany      Boolean                @default(false)
   companyId            Int?
   companyForeign       Company?               @relation(fields: [companyId], references: [id])
   CompanyShiftEmployee CompanyShiftEmployee[]
