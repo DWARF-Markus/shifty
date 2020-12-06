@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import HomeHero from '../components/HomeHero';
 import { useQuery } from 'react-query';
+import { motion } from 'framer-motion';
 
 async function createUserRequest() {
   const obj = {
@@ -18,10 +19,10 @@ async function createUserRequest() {
     },
     body: JSON.stringify(obj)
   })
-  .then(res => res.json())
-  .then(data => {
-    console.log(data);
-  });
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+    });
 }
 
 
@@ -35,14 +36,13 @@ async function fetchUserData() {
 
 export default function HomePage() {
 
-  const {data: users} = useQuery('user', fetchUserData);
+  const { data: users } = useQuery('user', fetchUserData);
 
   return (
-    <Layout>
-      <HomeHero />
-      {/* <h1>{ users && users[0].email }</h1> */}
-
-      {/* <button onClick={() => createUserRequest()}>Click me to add a new user</button> */}
-    </Layout>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <Layout>
+        <HomeHero />
+      </Layout>
+    </motion.div>
   )
 }

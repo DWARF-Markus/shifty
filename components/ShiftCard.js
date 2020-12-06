@@ -209,6 +209,10 @@ const Wrapper = styled.div`
 
   .time {
     top: 10px;
+
+    svg {
+      max-width: 9px;
+    }
   }
 
   &:hover {

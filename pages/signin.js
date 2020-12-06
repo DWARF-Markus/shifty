@@ -8,7 +8,8 @@ import { BP, COLORS } from '../styles/globals';
 import Link from 'next/link';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
 
 export default function SignIn({ csrfToken, providers }) {
 
@@ -39,32 +40,35 @@ export default function SignIn({ csrfToken, providers }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     signIn('credentials', { email: GET_STATE.email, password: GET_STATE.signUpPassword });
+    router.push('/app');
   }
 
 
   return (
-    <Layout>
-      {submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : ''}
-      <SignInWrapper loading={submitting}>
-        <img src={require('../assets/logo-shifty-orange.svg')} />
-        <form method='post' onSubmit={(e) => handleSubmit(e)}>
-          <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
-          <InputField name="email" type="email" label="Email" setter={'SET_EMAIL'} getter={'email'} />
-          <InputField name="password" type="password" label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
-          <button className="btn--primary" onClick={() => handleLoading()}>Sign in</button>
-        </form>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <Layout>
+        {submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : ''}
+        <SignInWrapper loading={submitting}>
+          <img src={require('../assets/logo-shifty-orange.svg')} />
+          <form method='post' onSubmit={(e) => handleSubmit(e)}>
+            <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
+            <InputField name="email" type="email" label="Email" setter={'SET_EMAIL'} getter={'email'} />
+            <InputField name="password" type="password" label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
+            <button className="btn--primary" onClick={() => handleLoading()}>Sign in</button>
+          </form>
 
-        <GoogleLogin>
-          <div onClick={() => signIn(providers.google.id)} key={providers.google.name}>
-            <img src={require('../assets/google.svg')} />
-            <button>Sign in with {providers.google.name}</button>
-          </div>
-        </GoogleLogin>
-      </SignInWrapper>
-      <SignUpDisclaimer>
-        <Link href="/signup"><p>Not signed up? Sign up here!</p></Link>
-      </SignUpDisclaimer>
-    </Layout>
+          <GoogleLogin>
+            <div onClick={() => signIn(providers.google.id)} key={providers.google.name}>
+              <img src={require('../assets/google.svg')} />
+              <button>Sign in with {providers.google.name}</button>
+            </div>
+          </GoogleLogin>
+        </SignInWrapper>
+        <SignUpDisclaimer>
+          <Link href="/signup"><p>Not signed up? Sign up here!</p></Link>
+        </SignUpDisclaimer>
+      </Layout>
+    </motion.div>
   )
 }
 

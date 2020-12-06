@@ -56,11 +56,11 @@ export default (req, res) =>
     jwt: {
       secret: process.env.JWT_SECRET
     },
-    callbacks: {
-      redirect: async () => {
-        return Promise.resolve('/app')
-      },
-    },
+    // callbacks: {
+    //   redirect: async () => {
+    //     return Promise.resolve('/app')
+    //   },
+    // },
     pages: {
       signIn: '/signin',
     }
