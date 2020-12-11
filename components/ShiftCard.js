@@ -7,7 +7,7 @@ import { useDrop } from 'react-dnd';
 import { ItemTypes } from '../utils/items';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { differenceInHours } from 'date-fns';
+import { differenceInHours, isWithinInterval } from 'date-fns';
 
 const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
 
@@ -17,6 +17,16 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
 
   const dispatch = useDispatch();
 
+  const GET_SHIFT = useSelector((state) => state.shifts.find((entry) => entry.id === shift.id));
+
+  useEffect(() => {
+    if (GET_SHIFT) {
+      setTimeout(() => {
+        const newEmployeeArr = GET_SHIFT.CompanyShiftEmployee.map((shift) => shift.employeeId)
+        setEmployees(newEmployeeArr);
+      }, 500);
+    };
+  }, [GET_SHIFT, shift]);
 
   useEffect(() => {
 
@@ -128,7 +138,7 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
   })
 
   return (
-    <Wrapper shiftLength={shiftLength} onClick={() => handleShiftClick()} isAssigned={employees.includes(userId) && !isAdmin} isAdmin={isAdmin} isFull={shift.employeeAmount === employees.length} isOver={isOver} ref={drop}>
+    <Wrapper isNow={isWithinInterval(new Date(), { start: new Date(shift.startTime), end: new Date(shift.endTime) })} shiftLength={shiftLength} onClick={() => handleShiftClick()} isAssigned={employees.includes(userId) && !isAdmin} isAdmin={isAdmin} isFull={shift.employeeAmount === employees.length} isOver={isOver} ref={drop}>
       <p className="title">{shift.title}</p>
       <p className="time">{format(new Date(shift.startTime), 'HH:mm')} <FontAwesomeIcon icon={faLongArrowAltRight} /> {format(new Date(shift.endTime), 'HH:mm')}</p>
       <PlaceholderWrapper>
@@ -188,7 +198,20 @@ const Wrapper = styled.div`
       height: 7rem;
   `}
 
-
+@keyframes active {
+    0% {
+      background-color: #e7a87a;
+      transform: scale(1.05);
+    }
+    50% {
+      background-color: ${COLORS.lightGray};
+      transform: scale(1.0);
+    }
+    100% {
+      background-color: #e7a87a;
+      transform: scale(1.05);
+    }
+  } 
 
   background-color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.orange : COLORS.lightGray};
   color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black};
@@ -196,6 +219,7 @@ const Wrapper = styled.div`
   transition: .2s ease;
   text-align: center;
   cursor: pointer;
+  animation: ${({ isNow }) => isNow ? 'active 2s infinite' : ''};
 
   p {
     position: absolute;

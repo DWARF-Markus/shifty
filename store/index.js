@@ -244,6 +244,22 @@ const reducer = (state = initialState, action) => {
         ...state,
         shifts: newShiftArray
       }
+    case 'REMOVE_USER_FROM_SHIFT':
+      const shiftIndex = state.shifts.findIndex((shift) => shift.id === action.payload.shiftId);
+
+      return {
+        ...state,
+        shifts: [
+          ...state.shifts.slice(0, shiftIndex),
+          { ...state.shifts[shiftIndex], CompanyShiftEmployee: state.shifts[shiftIndex].CompanyShiftEmployee.filter((employee) => employee.employeeId !== action.payload.employeeId) },
+          ...state.shifts.slice(shiftIndex + 1)
+        ],
+        shiftGettingEdited: {
+          ...state.shiftGettingEdited,
+          CompanyShiftEmployee: state.shiftGettingEdited.CompanyShiftEmployee.filter((employee) => employee.employeeId !== action.payload.employeeId)
+        }
+      }
+
     default:
       return state
   }
