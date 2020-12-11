@@ -13,11 +13,9 @@ export default async function (req, res) {
     });
 
     if (company) {
-      console.log('company');
       res.status(200);
       res.json({ company, isAdmin: true });
     } else {
-      console.log('employee');
       const company = await prisma.employee.findOne({
         where: {
           email: companyData.email

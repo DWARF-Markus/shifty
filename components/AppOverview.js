@@ -10,6 +10,7 @@ import { addDays, addWeeks, format, getWeek, isToday, startOfWeek } from 'date-f
 import ShiftForm from './ShiftForm';
 import EmployeeCard from './EmployeeCard';
 import ShiftCard from './ShiftCard';
+import ShiftEditorModal from './ShiftEditorModal';
 
 export default function AppOverview({ state }) {
 
@@ -76,7 +77,7 @@ export default function AppOverview({ state }) {
   }, [state]);
 
   const handleNextWeekClick = async () => {
-    setLoading(true);
+    // setLoading(true);
     setFirstDayOfWeek(addWeeks(firstDayOfWeek, 1));
     setWeek(prev => prev + 1);
 
@@ -96,21 +97,21 @@ export default function AppOverview({ state }) {
       }
     });
 
-    const companyId = state.isAdmin ? state.loginData.id : state.loginData.companyForeign.id;
+    // const companyId = state.isAdmin ? state.loginData.id : state.loginData.companyForeign.id;
 
-    await fetch(`/api/getshifts?company=${parseInt(companyId)}`)
-      .then(res => res.json())
-      .then(data => {
-        dispatch({
-          type: 'SET_SHIFTS',
-          payload: data.result
-        });
-        setLoading(false);
-      });
+    // await fetch(`/api/getshifts?company=${parseInt(companyId)}`)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     dispatch({
+    //       type: 'SET_SHIFTS',
+    //       payload: data.result
+    //     });
+    //     setLoading(false);
+    //   });
   }
 
   const handlePrevWeekClick = async () => {
-    setLoading(true);
+    // setLoading(true);
     setFirstDayOfWeek(addWeeks(firstDayOfWeek, -1));
     setWeek(prev => prev - 1);
 
@@ -130,17 +131,17 @@ export default function AppOverview({ state }) {
       }
     });
 
-    const companyId = state.isAdmin ? state.loginData.id : state.loginData.companyForeign.id;
+    // const companyId = state.isAdmin ? state.loginData.id : state.loginData.companyForeign.id;
 
-    await fetch(`/api/getshifts?company=${parseInt(companyId)}`)
-      .then(res => res.json())
-      .then(data => {
-        dispatch({
-          type: 'SET_SHIFTS',
-          payload: data.result
-        });
-        setLoading(false);
-      });
+    // await fetch(`/api/getshifts?company=${parseInt(companyId)}`)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     dispatch({
+    //       type: 'SET_SHIFTS',
+    //       payload: data.result
+    //     });
+    //     setLoading(false);
+    //   });
   }
 
   const handleModalClick = (e) => {
@@ -154,6 +155,10 @@ export default function AppOverview({ state }) {
     if (e.target.classList[0] && e.target.classList[0].includes('OverviewOverlay')) {
       dispatch({
         type: 'SET_SHIFT_MODAL',
+        payload: false
+      })
+      dispatch({
+        type: 'SET_SHIFT_MODAL_OPEN',
         payload: false
       })
     }
@@ -171,10 +176,15 @@ export default function AppOverview({ state }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <OverviewOverlay show={state.shiftModalOpen} onClick={(e) => handleModalClose(e)}>
-        <OverviewModal>
-          <ShiftForm />
-        </OverviewModal>
+      <OverviewOverlay show={state.shiftModalOpen || state.shiftEditorModalOpen} onClick={(e) => handleModalClose(e)}>
+        {state.shiftModalOpen ?
+          <>
+            <OverviewModal>
+              <ShiftForm />
+            </OverviewModal>
+          </>
+          : ''}
+        {state.shiftEditorModalOpen ? <ShiftEditorModal active={state.shiftEditorModalOpen} shiftObj={state.shiftGettingEdited} employeesList={employees} /> : ''}
       </OverviewOverlay>
       <OverviewWrapper>
         <OverviewTop>
@@ -187,7 +197,7 @@ export default function AppOverview({ state }) {
                     <EmployeeCard key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} />
                   )
                 }
-              }) : 'No employees yet.'}
+              }) : ''}
             </EmployeesBox>
             : ''}
         </OverviewTop>
@@ -248,7 +258,7 @@ const OverviewOverlay = styled.div`
   top: 0;
   z-index: 100;
   transition: .15s ease;
-  background-color: rgba(196, 196, 196, 0.5);
+  background-color: rgba(129, 129, 129, .7);
   opacity: ${({ show }) => show ? '1' : '0'};
   pointer-events: ${({ show }) => show ? 'all' : 'none'};
   display: grid;
@@ -344,7 +354,7 @@ const DayWrapper = styled.div`
     line-height: 1.2;
     font-size: 8px;
     font-family: Quicksand, sans-serif;
-    width: calc(100% - 1px);
+    width: 100%;
     padding: 5px 0;
     top: -20px;
     left: -1px;

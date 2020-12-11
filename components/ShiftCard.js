@@ -66,6 +66,10 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
             type: 'SET_POP_UP',
             payload: `You have added ${item.firstName} to this shift`
           });
+          dispatch({
+            type: 'SET_EMPLOYEE_TO_SHIFT',
+            payload: { shiftId: shift.id, employee: item }
+          })
         });
     } else {
       dispatch({
@@ -107,6 +111,11 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
             });
           });
       }
+    } else {
+      dispatch({
+        type: 'SET_SHIFT_MODAL_CONTENT',
+        payload: shift
+      });
     }
   }
 
@@ -149,7 +158,7 @@ const Wrapper = styled.div`
   position: relative;
   margin: .3rem;
   border-radius: 5px;
-  pointer-events: ${({ isFull }) => isFull ? 'none' : 'all'};
+  pointer-events: ${({ isFull, isAdmin }) => isFull && !isAdmin ? 'none' : 'all'};
 
   ${props => props.isAdmin && `
      border-left: 5px solid ${props.isFull ? COLORS.green : COLORS.red}; 

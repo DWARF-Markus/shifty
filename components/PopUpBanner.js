@@ -22,10 +22,16 @@ const PopUpBanner = ({ text, active, error }) => {
 
   return (
     <PopUpWrapper active={GET_ACTIVE}>
-      <Banner bannerStyle={GET_STYLE}><p><span><FontAwesomeIcon style={{ width: '25px', color: COLORS.white }} icon={GET_STYLE === 'error' ? faExclamationTriangle : faCheck} /></span><br />{GET_MESSAGE}</p></Banner>
+      <Banner bannerStyle={GET_STYLE}>
+        <p>
+          <span><FontAwesomeIcon style={{ width: '25px', color: COLORS.white }} icon={GET_STYLE === 'error' ? faExclamationTriangle : faCheck} /></span>
+          <br />{GET_MESSAGE}
+        </p></Banner>
     </PopUpWrapper>
   );
 }
+
+export default PopUpBanner;
 
 const PopUpWrapper = styled.div`
   position: fixed;
@@ -50,5 +56,3 @@ const Banner = styled.div`
   border-top-right-radius: 5px;
   box-shadow: 3px 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 `;
-
-export default PopUpBanner;

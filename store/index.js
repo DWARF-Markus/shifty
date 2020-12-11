@@ -35,6 +35,8 @@ const initialState = {
   shifts: [],
   shiftModalOpen: false,
   newProfileImage: '',
+  shiftGettingEdited: {},
+  shiftEditorModalOpen: false,
 }
 
 const reducer = (state = initialState, action) => {
@@ -220,6 +222,27 @@ const reducer = (state = initialState, action) => {
           ...state.loginData,
           profileImage: action.payload
         }
+      }
+    case 'SET_SHIFT_MODAL_CONTENT':
+      return {
+        ...state,
+        shiftGettingEdited: action.payload,
+        shiftEditorModalOpen: true,
+      }
+    case 'SET_SHIFT_MODAL_OPEN':
+      return {
+        ...state,
+        shiftEditorModalOpen: action.payload,
+      }
+    case 'SET_EMPLOYEE_TO_SHIFT':
+      const index = state.shifts.findIndex((shift) => shift.id === action.payload.shiftId);
+      const newShiftArray = [...state.shifts];
+
+      newShiftArray[index].CompanyShiftEmployee.push({ employeeId: action.payload.employee.id })
+
+      return {
+        ...state,
+        shifts: newShiftArray
       }
     default:
       return state

@@ -52,15 +52,18 @@ export default function AppEmployee() {
           <EmployeesContainer>
             {employees.map((employee) => {
               return (
-                <Employee>
-                  <EmployeeAdded><p>Added {formatDistanceToNow(new Date(employee.acceptedCompanyDateTime))} ago</p></EmployeeAdded>
-                  <EmployeeRemoveBtn onClick={() => handleEmployeeRemove(employee.id)}><FontAwesomeIcon icon={faTimes} /></EmployeeRemoveBtn>
-                  <img src={employee.profileImage ? employee.profileImage : require('../assets/icon-dot-orange.svg')} alt="shifty" />
-                  <EmployeeInfo>
-                    <p className="name">{employee.firstName} {employee.lastName}</p>
-                    <p>{employee.email}</p>
-                  </EmployeeInfo>
-                </Employee>
+                <EmployeeWrapper>
+                  <EmployeeNotAccepted accepted={employee.acceptedCompany}>Not accepted yet</EmployeeNotAccepted>
+                  <Employee accepted={employee.acceptedCompany}>
+                    <EmployeeAdded accepted={employee.acceptedCompany}><p>Added {formatDistanceToNow(new Date(employee.acceptedCompanyDateTime))} ago</p></EmployeeAdded>
+                    <EmployeeRemoveBtn onClick={() => handleEmployeeRemove(employee.id)}><FontAwesomeIcon icon={faTimes} /></EmployeeRemoveBtn>
+                    <img src={employee.profileImage ? employee.profileImage : require('../assets/icon-dot-orange.svg')} alt="shifty" />
+                    <EmployeeInfo>
+                      <p className="name">{employee.firstName} {employee.lastName}</p>
+                      <p>{employee.email}</p>
+                    </EmployeeInfo>
+                  </Employee>
+                </EmployeeWrapper>
               );
             })
             } </EmployeesContainer>
@@ -98,6 +101,10 @@ const EmployeesLoader = styled.div`
   }
 `;
 
+const EmployeeWrapper = styled.div`
+  position: relative;
+`;
+
 const Employee = styled.div`
   width: 100%;
   border-radius: 5px;
@@ -108,6 +115,8 @@ const Employee = styled.div`
   align-items: center;
   position: relative;
   transition: .15s ease;
+  pointer-events: ${({ accepted }) => accepted ? 'all' : 'none'};
+  opacity: ${({ accepted }) => accepted ? '1' : '.15'};
 
   img {
     width: 65px;
@@ -119,6 +128,16 @@ const Employee = styled.div`
   &:hover {
     transform: scale(1.01);
   }
+`;
+
+const EmployeeNotAccepted = styled.h2`
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin: 3px 0 0;
+  color: ${COLORS.red};
 `;
 
 const EmployeeInfo = styled.div`
@@ -150,6 +169,7 @@ const EmployeeAdded = styled.div`
   position: absolute;
   left: 5px;
   top: 0px;
+  display: ${({ accepted }) => accepted ? 'block' : 'none'};
 
   p {
     margin: 0%;
