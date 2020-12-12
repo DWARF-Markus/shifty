@@ -259,6 +259,19 @@ const reducer = (state = initialState, action) => {
           CompanyShiftEmployee: state.shiftGettingEdited.CompanyShiftEmployee.filter((employee) => employee.employeeId !== action.payload.employeeId)
         }
       }
+    case 'DELETE_SHIFT':
+      // const shiftIndexInArr = state.shifts.findIndex((shift) => shift.id === action.payload);
+
+      return {
+        ...state,
+        shifts: state.shifts.filter(item => item.id !== action.payload),
+        // shifts: [
+
+        //   ...state.shifts.slice(0, shiftIndexInArr),
+        //   ...state.shifts.slice(shiftIndexInArr + 1)
+        // ],
+        shiftGettingEdited: {}
+      }
 
     default:
       return state

@@ -30,7 +30,7 @@ const ShiftEditorModal = ({ shiftObj, employeesList }) => {
 
   const variants = {
     open: () => ({
-      transform: 'translateX(0px)',
+      transform: 'translateY(0px)',
       opacity: 1,
       transition: {
         type: "spring",
@@ -38,14 +38,30 @@ const ShiftEditorModal = ({ shiftObj, employeesList }) => {
       }
     }),
     closed: () => ({
-      transform: 'translateX(-50px)',
+      transform: 'translateY(20px)',
+      opacity: 0,
+      transition: {
+        type: "spring",
+        damping: 40
+      },
+    }),
+    openTwo: () => ({
+      transform: 'translateY(0px)',
+      opacity: 1,
+      transition: {
+        type: "spring",
+        restDelta: 2
+      }
+    }),
+    closedTwo: () => ({
+      transform: 'translateY(40px)',
       opacity: 0,
       transition: {
         type: "spring",
         damping: 40
       }
-    }),
-  };
+    })
+  }
 
   const handleEmployeeRemove = async (employeeId) => {
     await fetch(`/api/removeuserfromshift?employeeId=${employeeId}&shiftId=${shiftObj.id}`)
@@ -62,13 +78,35 @@ const ShiftEditorModal = ({ shiftObj, employeesList }) => {
       })
   }
 
+  const handleShiftDelete = async () => {
+    await fetch(`/api/removeshift?id=${shiftObj.id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 200) {
+          dispatch({
+            type: 'SET_SHIFT_MODAL_OPEN',
+            payload: false
+          });
+          dispatch({
+            type: 'DELETE_SHIFT',
+            payload: shiftObj.id
+          });
+          dispatch({
+            type: 'SET_POP_UP',
+            payload: 'Shift has been deleted.'
+          });
+        }
+      })
+  }
+
   return (
-    <ShiftEditorContainer>
-      <motion.div
-        animate={active ? "open" : "closed"}
-        variants={variants}
-        transition={{ duration: 2 }}
-      >
+    <motion.div
+      animate={active ? "open" : "closed"}
+      variants={variants}
+      transition={{ duration: 4 }}
+      style={{ width: '100%', display: 'grid', alignItems: 'center', justifyItems: 'center' }}
+    >
+      <ShiftEditorContainer>
         <ShiftEditorHeader>
           <div>
             <p>{format(new Date(shiftObj.startTime), 'dd MMMM yyyy @ HH:mm')} to {format(new Date(shiftObj.endTime), 'HH:mm')}</p>
@@ -91,30 +129,41 @@ const ShiftEditorModal = ({ shiftObj, employeesList }) => {
           <EmployeesCount isFull={shiftObj.CompanyShiftEmployee.length === shiftObj.employeeAmount}>
             <p><FontAwesomeIcon style={{ width: '30px' }} icon={shiftObj.CompanyShiftEmployee.length === shiftObj.employeeAmount ? faCheckCircle : faExclamationTriangle} />{shiftObj.CompanyShiftEmployee.length}/{shiftObj.employeeAmount} employees</p>
           </EmployeesCount>
-          {employeesList ? employeesList.map((employee) => {
-            if (employees.includes(employee.id)) {
-              return (
-                <EmployeeCard>
-                  <img src={employee.profileImage ? employee.profileImage : require('../assets/icon-dot-orange.svg')} />
-                  <div>
-                    <p>{employee.firstName} {employee.lastName}</p>
-                  </div>
-                  <button onClick={() => handleEmployeeRemove(employee.id)}>Remove</button>
-                </EmployeeCard>
-              );
-            }
-          }) : ''}
+          <EmployeesContainer>
+            {employeesList ? employeesList.map((employee) => {
+              if (employees.includes(employee.id)) {
+                return (
+                  <motion.div
+                    animate={active ? "openTwo" : "closedTwo"}
+                    variants={variants}
+                    transition={{ duration: 4 }}
+                  >
+                    <EmployeeCard>
+                      <img src={employee.profileImage ? employee.profileImage : require('../assets/icon-dot-orange.svg')} />
+                      <div>
+                        <p>{employee.firstName} {employee.lastName}</p>
+                      </div>
+                      <button onClick={() => handleEmployeeRemove(employee.id)}>Remove</button>
+                    </EmployeeCard>
+                  </motion.div>
+                );
+              }
+            }) : ''}
+          </EmployeesContainer>
         </ShiftEditorBody>
-      </motion.div>
-    </ShiftEditorContainer>
+        <ShiftEditorActions>
+          <button onClick={() => handleShiftDelete()} class="btn--danger">Delete shift</button>
+        </ShiftEditorActions>
+      </ShiftEditorContainer >
+    </motion.div>
   );
 }
 
 const ShiftEditorContainer = styled.div`
   width: 100%;
   max-width: 45rem;
+  min-height: 30rem;
   position: absolute;
-  margin-top: 7rem;
   background-color: white;
   border: 1px solid ${COLORS.lightGray};
   padding: 1rem;
@@ -132,11 +181,6 @@ const ShiftEditorHeader = styled.div`
     grid-template-columns: 1fr 1fr;
     text-align: left;
   }
-  
-
-  h1 {
-    margin: .3rem 0 .8rem;
-  }
 
   p {
     color: ${COLORS.black};
@@ -146,10 +190,16 @@ const ShiftEditorHeader = styled.div`
   }
 `;
 
+const EmployeesContainer = styled.div`
+  overflow-y: scroll;
+  min-height: 12rem;
+  max-height: 12rem;
+`;
+
 const Employees = styled.div`
   display: none;
   text-align: right;
-  margin: auto 0 auto auto;
+  margin: 3px 0 auto auto;
 
   @media (min-width: ${BP.small}) {
     display: flex;
@@ -182,6 +232,17 @@ const ShiftEditorBody = styled.div`
   }
 `;
 
+const ShiftEditorActions = styled.div`
+  position: absolute;
+  width: calc(100% - 2rem);
+  bottom: 1rem;
+
+  button {
+    float: right;
+  }
+
+`;
+
 const EmployeesCount = styled.div`
   color: ${({ isFull }) => isFull ? COLORS.green : COLORS.red};
   font-weight: ${({ isFull }) => isFull ? 'bold' : 'thin'};
@@ -198,7 +259,7 @@ const EmployeeCard = styled.div`
 
   img {
     width: 100%;
-    max-width: 60px;
+    max-width: 75px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     height: 100%;
@@ -214,11 +275,6 @@ const EmployeeCard = styled.div`
     background: ${COLORS.white};
     color: ${COLORS.red};
     transition: .15s ease;
-
-    &:hover {
-      background: ${COLORS.red};
-      color: ${COLORS.white};
-    }
   }
 `;
 

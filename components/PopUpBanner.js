@@ -38,7 +38,7 @@ const PopUpWrapper = styled.div`
   bottom: -10rem;
   transition: .4s ease-in;
   transform: ${props => props.active ? 'translate(0, -10rem)' : 'translate(0,0)'};
-  width: 100%;
+  right: 0%;
   display: grid;
   align-items: center;
   text-align: center;

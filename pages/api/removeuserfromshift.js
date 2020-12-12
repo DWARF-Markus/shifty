@@ -5,8 +5,6 @@ export default async function (req, res) {
 
   const { employeeId, shiftId } = req.query
 
-  console.log(employeeId, shiftId);
-
   try {
     const result = await prisma.companyShiftEmployee.deleteMany({
       where: {
