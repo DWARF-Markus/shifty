@@ -48,6 +48,15 @@ model Employee {
   CompanyShiftEmployee    CompanyShiftEmployee[]
 }
 
+model EmployeeVacation {
+  id         Int       @default(autoincrement()) @id
+  employeeId Int?
+  Employee   Employee? @relation(fields: [employeeId], references: [id])
+  dateStart  DateTime
+  dateEnd    DateTime
+  approved   Boolean
+}
+
 model CompanyShift {
   id                   Int                    @default(autoincrement()) @id
   createdAt            DateTime               @default(now())

@@ -277,6 +277,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         vacationEnd: action.payload
       }
+    case 'CLEAR_VACATION':
+      return {
+        ...state,
+        vacationStart: '',
+        vacationEnd: ''
+      }
 
     default:
       return state
