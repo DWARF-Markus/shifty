@@ -268,6 +268,11 @@ const EmployeeCard = styled.div`
 
   p {
     margin: auto .5rem;
+
+    svg {
+      max-width: 15px;
+      margin-right: .2rem;
+    }
   }
 
   button {
