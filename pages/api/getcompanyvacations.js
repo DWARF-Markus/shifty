@@ -11,7 +11,20 @@ export default async function (req, res) {
         dateStart: 'asc',
       },
       where: {
-        employeeId: parseInt(id)
+        Employee: {
+          companyId: parseInt(id)
+        }
+      },
+      include: {
+        Employee: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            profileImage: true,
+            companyId: true,
+          }
+        }
       }
     })
     res.json({ response: vacation, status: 201 })

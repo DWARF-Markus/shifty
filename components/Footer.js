@@ -35,6 +35,7 @@ const FooterWrapper = styled.footer`
   padding: ${SIZES.small};
   height: 25rem;
   display: block;
+  margin-top: 1rem;
   background-color: ${COLORS.black};
   color: ${COLORS.white};
   transition: .15s ease;
