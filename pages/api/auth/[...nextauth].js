@@ -13,7 +13,7 @@ export default (req, res) =>
           password: { label: "Password", type: "password" }
         },
         authorize: async (credentials) => {
-          const user = await fetch('http://localhost:3000/api/getcompany', {
+          const user = await fetch('http://localhost:3000/api/getcompanyoruser', {
             method: 'POST',
             headers: {
               'Content-type': 'application/json'
@@ -30,7 +30,7 @@ export default (req, res) =>
                 if (data.company.email === credentials.email) {
                   return await bcrypt.compare(credentials.password, data.company.password).then(function (result) {
                     if (result) {
-                      return { id: data.company.id, name: data.company.name, email: data.company.email, isAdmin: true };
+                      return { id: data.company.id, name: data.company.name, email: data.company.email };
                     } else {
                       return false;
                     }
@@ -56,11 +56,11 @@ export default (req, res) =>
     jwt: {
       secret: process.env.JWT_SECRET
     },
-    callbacks: {
-      redirect: async () => {
-        return Promise.resolve('/app')
-      },
-    },
+    // callbacks: {
+    //   redirect: async () => {
+    //     return Promise.resolve('/app')
+    //   },
+    // },
     pages: {
       signIn: '/signin',
     }

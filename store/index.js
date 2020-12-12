@@ -35,6 +35,8 @@ const initialState = {
   shifts: [],
   shiftModalOpen: false,
   newProfileImage: '',
+  shiftGettingEdited: {},
+  shiftEditorModalOpen: false,
 }
 
 const reducer = (state = initialState, action) => {
@@ -221,6 +223,56 @@ const reducer = (state = initialState, action) => {
           profileImage: action.payload
         }
       }
+    case 'SET_SHIFT_MODAL_CONTENT':
+      return {
+        ...state,
+        shiftGettingEdited: action.payload,
+        shiftEditorModalOpen: true,
+      }
+    case 'SET_SHIFT_MODAL_OPEN':
+      return {
+        ...state,
+        shiftEditorModalOpen: action.payload,
+      }
+    case 'SET_EMPLOYEE_TO_SHIFT':
+      const index = state.shifts.findIndex((shift) => shift.id === action.payload.shiftId);
+      const newShiftArray = [...state.shifts];
+
+      newShiftArray[index].CompanyShiftEmployee.push({ employeeId: action.payload.employee.id })
+
+      return {
+        ...state,
+        shifts: newShiftArray
+      }
+    case 'REMOVE_USER_FROM_SHIFT':
+      const shiftIndex = state.shifts.findIndex((shift) => shift.id === action.payload.shiftId);
+
+      return {
+        ...state,
+        shifts: [
+          ...state.shifts.slice(0, shiftIndex),
+          { ...state.shifts[shiftIndex], CompanyShiftEmployee: state.shifts[shiftIndex].CompanyShiftEmployee.filter((employee) => employee.employeeId !== action.payload.employeeId) },
+          ...state.shifts.slice(shiftIndex + 1)
+        ],
+        shiftGettingEdited: {
+          ...state.shiftGettingEdited,
+          CompanyShiftEmployee: state.shiftGettingEdited.CompanyShiftEmployee.filter((employee) => employee.employeeId !== action.payload.employeeId)
+        }
+      }
+    case 'DELETE_SHIFT':
+      // const shiftIndexInArr = state.shifts.findIndex((shift) => shift.id === action.payload);
+
+      return {
+        ...state,
+        shifts: state.shifts.filter(item => item.id !== action.payload),
+        // shifts: [
+
+        //   ...state.shifts.slice(0, shiftIndexInArr),
+        //   ...state.shifts.slice(shiftIndexInArr + 1)
+        // ],
+        shiftGettingEdited: {}
+      }
+
     default:
       return state
   }

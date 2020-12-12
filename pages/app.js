@@ -12,6 +12,7 @@ import AppNotifications from '../components/AppNotifications';
 import AppSettings from '../components/AppSettings';
 import AppInvite from '../components/AppInvite';
 import { BP } from '../styles/globals';
+import { motion } from 'framer-motion';
 
 const App = () => {
 
@@ -25,18 +26,20 @@ const App = () => {
   }
 
   return (
-    <Layout>
-      <SideBar state={GET_STATE} />
-      <AppContent sidebarOpen={GET_STATE.sideBarToggle}>
-        {GET_STATE.activeAppPage === 'Overview' ? <AppOverview state={GET_STATE} /> : ''}
-        {GET_STATE.activeAppPage === 'Employees' ? <AppEmployees /> : ''}
-        {GET_STATE.activeAppPage === 'Templates' ? <AppTemplates /> : ''}
-        {GET_STATE.activeAppPage === 'Vacations' ? <AppVacations /> : ''}
-        {GET_STATE.activeAppPage === 'Notifications' ? <AppNotifications /> : ''}
-        {GET_STATE.activeAppPage === 'Settings' ? <AppSettings /> : ''}
-        {GET_STATE.activeAppPage === 'Invite' ? <AppInvite /> : ''}
-      </AppContent>
-    </Layout>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <Layout>
+        <SideBar state={GET_STATE} />
+        <AppContent sidebarOpen={GET_STATE.sideBarToggle}>
+          {GET_STATE.activeAppPage === 'Overview' ? <AppOverview state={GET_STATE} /> : ''}
+          {GET_STATE.activeAppPage === 'Employees' ? <AppEmployees /> : ''}
+          {GET_STATE.activeAppPage === 'Templates' ? <AppTemplates /> : ''}
+          {GET_STATE.activeAppPage === 'Vacations' ? <AppVacations /> : ''}
+          {GET_STATE.activeAppPage === 'Notifications' ? <AppNotifications /> : ''}
+          {GET_STATE.activeAppPage === 'Settings' ? <AppSettings /> : ''}
+          {GET_STATE.activeAppPage === 'Invite' ? <AppInvite /> : ''}
+        </AppContent>
+      </Layout>
+    </motion.div>
   );
 }
 

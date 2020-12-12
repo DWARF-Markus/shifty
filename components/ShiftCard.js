@@ -7,7 +7,7 @@ import { useDrop } from 'react-dnd';
 import { ItemTypes } from '../utils/items';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { differenceInHours } from 'date-fns';
+import { differenceInHours, isWithinInterval } from 'date-fns';
 
 const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
 
@@ -17,6 +17,16 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
 
   const dispatch = useDispatch();
 
+  const GET_SHIFT = useSelector((state) => state.shifts.find((entry) => entry.id === shift.id));
+
+  useEffect(() => {
+    if (GET_SHIFT) {
+      setTimeout(() => {
+        const newEmployeeArr = GET_SHIFT.CompanyShiftEmployee.map((shift) => shift.employeeId)
+        setEmployees(newEmployeeArr);
+      }, 500);
+    };
+  }, [GET_SHIFT, shift]);
 
   useEffect(() => {
 
@@ -66,6 +76,10 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
             type: 'SET_POP_UP',
             payload: `You have added ${item.firstName} to this shift`
           });
+          dispatch({
+            type: 'SET_EMPLOYEE_TO_SHIFT',
+            payload: { shiftId: shift.id, employee: item }
+          })
         });
     } else {
       dispatch({
@@ -107,6 +121,11 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
             });
           });
       }
+    } else {
+      dispatch({
+        type: 'SET_SHIFT_MODAL_CONTENT',
+        payload: shift
+      });
     }
   }
 
@@ -119,7 +138,7 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
   })
 
   return (
-    <Wrapper shiftLength={shiftLength} onClick={() => handleShiftClick()} isAssigned={employees.includes(userId) && !isAdmin} isAdmin={isAdmin} isFull={shift.employeeAmount === employees.length} isOver={isOver} ref={drop}>
+    <Wrapper isNow={isWithinInterval(new Date(), { start: new Date(shift.startTime), end: new Date(shift.endTime) })} shiftLength={shiftLength} onClick={() => handleShiftClick()} isAssigned={employees.includes(userId) && !isAdmin} isAdmin={isAdmin} isFull={shift.employeeAmount === employees.length} isOver={isOver} ref={drop}>
       <p className="title">{shift.title}</p>
       <p className="time">{format(new Date(shift.startTime), 'HH:mm')} <FontAwesomeIcon icon={faLongArrowAltRight} /> {format(new Date(shift.endTime), 'HH:mm')}</p>
       <PlaceholderWrapper>
@@ -134,7 +153,7 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
           if (employees.includes(employee.id)) {
             return (
               <EmployeeEntry key={employee.id}>
-                <img src={employee.profileImage} />
+                <img src={employee.profileImage ? employee.profileImage : require('../assets/icon-dot-orange.svg')} />
               </EmployeeEntry>
             );
           }
@@ -149,7 +168,7 @@ const Wrapper = styled.div`
   position: relative;
   margin: .3rem;
   border-radius: 5px;
-  pointer-events: ${({ isFull }) => isFull ? 'none' : 'all'};
+  pointer-events: ${({ isFull, isAdmin }) => isFull && !isAdmin ? 'none' : 'all'};
 
   ${props => props.isAdmin && `
      border-left: 5px solid ${props.isFull ? COLORS.green : COLORS.red}; 
@@ -179,7 +198,20 @@ const Wrapper = styled.div`
       height: 7rem;
   `}
 
-
+@keyframes active {
+    0% {
+      background-color: #e7a87a;
+      transform: scale(1.05);
+    }
+    50% {
+      background-color: ${COLORS.lightGray};
+      transform: scale(1.0);
+    }
+    100% {
+      background-color: #e7a87a;
+      transform: scale(1.05);
+    }
+  } 
 
   background-color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.orange : COLORS.lightGray};
   color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black};
@@ -187,6 +219,7 @@ const Wrapper = styled.div`
   transition: .2s ease;
   text-align: center;
   cursor: pointer;
+  animation: ${({ isNow }) => isNow ? 'active 2s infinite' : ''};
 
   p {
     position: absolute;
@@ -209,6 +242,10 @@ const Wrapper = styled.div`
 
   .time {
     top: 10px;
+
+    svg {
+      max-width: 9px;
+    }
   }
 
   &:hover {

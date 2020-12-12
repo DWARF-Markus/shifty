@@ -166,6 +166,8 @@ const SidebarEntry = styled.div`
   display: ${({ hideOnMobile }) => hideOnMobile ? 'none' : 'flex'};
   align-items: center;
   height: 50px;
+  text-align: center;
+  width: 100%;
   cursor: pointer;
 
   svg {

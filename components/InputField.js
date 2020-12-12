@@ -33,6 +33,8 @@ const InputField = ({ name, type, label, setter, getter, required }) => {
   );
 }
 
+export default InputField;
+
 const InputPair = styled.div`
   width: 100%;
   display: block;
@@ -58,5 +60,3 @@ const InputPair = styled.div`
     }
   }
 `;
-
-export default InputField;

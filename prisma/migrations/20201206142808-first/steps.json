@@ -479,6 +479,45 @@
     {
       "tag": "CreateField",
       "model": "Employee",
+      "field": "acceptedCompany",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Employee",
+          "field": "acceptedCompany"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Employee",
+          "field": "acceptedCompany"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Employee",
+      "field": "acceptedCompanyDateTime",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Employee",
       "field": "companyId",
       "type": "Int",
       "arity": "Optional"

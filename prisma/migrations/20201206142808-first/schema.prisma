@@ -35,15 +35,17 @@ model CompanySize {
 }
 
 model Employee {
-  id                   Int                    @default(autoincrement()) @id
-  firstName            String
-  lastName             String
-  email                String                 @unique
-  password             String
-  profileImage         String
-  companyId            Int?
-  companyForeign       Company?               @relation(fields: [companyId], references: [id])
-  CompanyShiftEmployee CompanyShiftEmployee[]
+  id                      Int                    @default(autoincrement()) @id
+  firstName               String
+  lastName                String
+  email                   String                 @unique
+  password                String
+  profileImage            String
+  acceptedCompany         Boolean                @default(false)
+  acceptedCompanyDateTime DateTime?
+  companyId               Int?
+  companyForeign          Company?               @relation(fields: [companyId], references: [id])
+  CompanyShiftEmployee    CompanyShiftEmployee[]
 }
 
 model CompanyShift {

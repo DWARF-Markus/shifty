@@ -39,7 +39,7 @@ const CheckBox = ({selected, title, index, setter, getter}) => {
 
 const CheckBoxWrapper = styled.div`
   cursor: pointer;
-  color: ${props => props.selected ? COLORS.orange : COLORS.darkGray };
+  color: ${props => props.selected ? COLORS.orange + '!important' : COLORS.darkGray + '!important' };
 
   p {
     display: flex;
@@ -52,7 +52,7 @@ const CheckBoxWrapper = styled.div`
       display: flex;
       align-items: center;
       border-radius: 5px;
-      border: 1px solid ${props => props.selected ? COLORS.orange : COLORS.darkGray };
+      border: 1px solid ${props => props.selected ? COLORS.orange + '!important' : COLORS.darkGray + '!important' };
       height: 19px;
       width: 19px;
     }

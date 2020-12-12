@@ -10,9 +10,9 @@ import { addDays, addWeeks, format, getWeek, isToday, startOfWeek } from 'date-f
 import ShiftForm from './ShiftForm';
 import EmployeeCard from './EmployeeCard';
 import ShiftCard from './ShiftCard';
+import ShiftEditorModal from './ShiftEditorModal';
 
 export default function AppOverview({ state }) {
-
   const [loading, setLoading] = useState(true);
   const [openingDays, setOpeningDays] = useState([]);
   const [week, setWeek] = useState('');
@@ -20,21 +20,22 @@ export default function AppOverview({ state }) {
   const [openModal, setOpenModal] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [noCompany, setNoCompany] = useState(false);
-
+  const [acceptCompanyModal, setAcceptCompanyModal] = useState(false);
   const dispatch = useDispatch();
   const daysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   useEffect(async () => {
-
     if (state.loginData.days && openingDays.length === 0 || state.loginData.hasOwnProperty("companyForeign") && openingDays.length === 0) {
       if (state.loginData.companyId === null) {
         setNoCompany(true);
         return
       };
+      if (state.loginData.companyId && !state.loginData.acceptedCompany) {
+        setAcceptCompanyModal(true);
+      }
       const days = state.isAdmin ? state.loginData.days.split('') : state.loginData.companyForeign.days.split('');
       const today = new Date();
       const weekFirstDay = startOfWeek(today, { weekStartsOn: 1 });
-
 
       setWeek(getWeek(today, { weekStartsOn: 1 }));
       setFirstDayOfWeek(weekFirstDay);
@@ -71,7 +72,7 @@ export default function AppOverview({ state }) {
     }
   }, [state]);
 
-  const handleNextWeekClick = () => {
+  const handleNextWeekClick = async () => {
     setFirstDayOfWeek(addWeeks(firstDayOfWeek, 1));
     setWeek(prev => prev + 1);
 
@@ -90,10 +91,9 @@ export default function AppOverview({ state }) {
         setOpeningDays(prev => [...prev, { trueDate: futureDate, dayName: daysArr[index], dayIndex: index, date: (index === 0 ? format(weekFirstDay, 'dd. MMM') : format(futureDate, 'dd. MMM')), active: false }]);
       }
     });
-
   }
 
-  const handlePrevWeekClick = () => {
+  const handlePrevWeekClick = async () => {
     setFirstDayOfWeek(addWeeks(firstDayOfWeek, -1));
     setWeek(prev => prev - 1);
 
@@ -127,15 +127,34 @@ export default function AppOverview({ state }) {
         type: 'SET_SHIFT_MODAL',
         payload: false
       })
+      dispatch({
+        type: 'SET_SHIFT_MODAL_OPEN',
+        payload: false
+      })
     }
+  }
+
+  const handleCompanyAccept = async () => {
+    await fetch(`/api/acceptcompany?id=${state.loginData.id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 200) {
+          setAcceptCompanyModal(false);
+        }
+      })
   }
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <OverviewOverlay show={state.shiftModalOpen} onClick={(e) => handleModalClose(e)}>
-        <OverviewModal>
-          <ShiftForm />
-        </OverviewModal>
+      <OverviewOverlay show={state.shiftModalOpen || state.shiftEditorModalOpen} onClick={(e) => handleModalClose(e)}>
+        {state.shiftModalOpen ?
+          <>
+            <OverviewModal>
+              <ShiftForm />
+            </OverviewModal>
+          </>
+          : ''}
+        {state.shiftEditorModalOpen ? <ShiftEditorModal active={state.shiftEditorModalOpen} shiftObj={state.shiftGettingEdited} employeesList={employees} /> : ''}
       </OverviewOverlay>
       <OverviewWrapper>
         <OverviewTop>
@@ -143,15 +162,17 @@ export default function AppOverview({ state }) {
           {state.isAdmin ?
             <EmployeesBox>
               {employees ? employees.map((employee) => {
-                return (
-                  <EmployeeCard key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} />
-                )
-              }) : 'No employees yet.'}
+                if (employee.acceptedCompany) {
+                  return (
+                    <EmployeeCard key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} />
+                  )
+                }
+              }) : ''}
             </EmployeesBox>
             : ''}
         </OverviewTop>
         <Overview>
-          {!loading ? openingDays.map((day, index) => {
+          {!loading && !acceptCompanyModal ? openingDays.map((day, index) => {
             return (
               <DayWrapper today={isToday(new Date(day.trueDate))} active={day.active}>
                 <DayHeader key={index}>
@@ -173,7 +194,14 @@ export default function AppOverview({ state }) {
             );
           }) : (
               <OverViewPreLoader>
-                {noCompany ? <p>You have not been assigned to a company yet.</p> : <FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} />}
+                {acceptCompanyModal ? (
+                  <div style={{ textAlign: 'center' }}>
+                    <p>You have been invited to join {state.loginData.companyForeign.name}.</p>
+                    <button onClick={() => handleCompanyAccept()} className="btn--primary">Accept</button>
+                  </div>
+                ) : ''}
+                {noCompany ? <p>You have not been assigned to a company yet.</p> : ''}
+                {!acceptCompanyModal && !noCompany ? <FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} /> : ''}
               </OverViewPreLoader>
             )}
         </Overview>
@@ -200,7 +228,7 @@ const OverviewOverlay = styled.div`
   top: 0;
   z-index: 100;
   transition: .15s ease;
-  background-color: rgba(196, 196, 196, 0.5);
+  background-color: rgba(129, 129, 129, .7);
   opacity: ${({ show }) => show ? '1' : '0'};
   pointer-events: ${({ show }) => show ? 'all' : 'none'};
   display: grid;
@@ -296,7 +324,7 @@ const DayWrapper = styled.div`
     line-height: 1.2;
     font-size: 8px;
     font-family: Quicksand, sans-serif;
-    width: calc(100% - 1px);
+    width: 100%;
     padding: 5px 0;
     top: -20px;
     left: -1px;

@@ -4,6 +4,7 @@ import InputField from './InputField';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { COLORS } from '../styles/globals';
+import CheckBox from './CheckBox';
 
 export default function AppSettings() {
 
@@ -95,15 +96,25 @@ export default function AppSettings() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <SettingsWrapper>
         {GET_STATE.isAdmin ? (
-          <p>Admin settings here</p>
+          <>
+              <h3>Settings</h3>
+              <h4>Opening days</h4>
+              <CheckBox title={'Monday'} index={0} setter={'SET_MONDAY'} getter={'monday'} />
+              <CheckBox title={'Tuesday'} index={1} setter={'SET_TUESDAY'} getter={'tuesday'} />
+              <CheckBox title={'Wednesday'} index={2} setter={'SET_WEDNESDAY'} getter={'wednesday'} />
+              <CheckBox title={'Thursday'} index={3} setter={'SET_THURSDAY'} getter={'thursday'} />
+              <CheckBox title={'Friday'} index={4} setter={'SET_FRIDAY'} getter={'friday'} />
+              <CheckBox title={'Saturday'} index={5} setter={'SET_SATURDAY'} getter={'saturday'} />
+              <CheckBox title={'Sunday'} index={6} setter={'SET_SUNDAY'} getter={'sunday'} />
+          </>
         ) : (
             <>
               <h3>Settings</h3>
-              <p>Change name</p>
+              <h4>Change name</h4>
               <span>Current: {GET_STATE.loginData.firstName} {GET_STATE.loginData.lastName}</span>
               <input placeholder="First name" type="text" onChange={(e) => handleFirstName(e)} />
               <input placeholder="Last name" type="text" onChange={(e) => handleLastName(e)} />
-              <p>Choose profile picture</p>
+              <h4>Choose profile picture</h4>
               <input
                 type="file"
                 name="file"
@@ -130,14 +141,14 @@ const SettingsWrapper = styled.div`
     line-height: 1.2;
   }
   
-  p {
+  h4 {
     color: ${COLORS.orange};
     font-weight: 700;
   }
 
   span {
-    font-style: italic;
-    font-size: 10px;
+    /* font-style: italic;
+    font-size: 10px; */
   }
 
   button {

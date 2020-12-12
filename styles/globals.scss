@@ -41,6 +41,15 @@ h3 {
   line-height: 15.4px;
 }
 
+h4 {
+  font-family: Quicksand;
+  font-size: 1rem;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 15.4px;
+}
+
 p, label, input, li, span {
   font-family: Quicksand;
   font-size: 14px;
@@ -73,6 +82,22 @@ button {
 
   &:hover {
     background-color: rgb(230, 127, 53)
+  }
+}
+
+.btn--danger {
+  background-color: white;
+  color: #CF0000;
+  padding: 7px 14px;
+  border-radius: 5px;
+  border: 1px solid #CF0000;
+  font-size: 17px;
+  font-weight: normal;
+  transition: .1s ease;
+
+  &:hover {
+    background-color: #CF0000;
+    color: white;
   }
 }
 
