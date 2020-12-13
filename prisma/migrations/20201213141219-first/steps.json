@@ -576,6 +576,13 @@
       "arity": "List"
     },
     {
+      "tag": "CreateField",
+      "model": "Employee",
+      "field": "EmployeeVacation",
+      "type": "EmployeeVacation",
+      "arity": "List"
+    },
+    {
       "tag": "CreateModel",
       "model": "EmployeeVacation"
     },

@@ -164,7 +164,7 @@ export default function AppOverview({ state }) {
               {employees ? employees.map((employee) => {
                 if (employee.acceptedCompany) {
                   return (
-                    <EmployeeCard key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} />
+                    <EmployeeCard key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} vacations={employee.EmployeeVacation} />
                   )
                 }
               }) : ''}
