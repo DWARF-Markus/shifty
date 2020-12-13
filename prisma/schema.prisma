@@ -46,6 +46,16 @@ model Employee {
   companyId               Int?
   companyForeign          Company?               @relation(fields: [companyId], references: [id])
   CompanyShiftEmployee    CompanyShiftEmployee[]
+  EmployeeVacation        EmployeeVacation[]
+}
+
+model EmployeeVacation {
+  id         Int       @default(autoincrement()) @id
+  employeeId Int?
+  Employee   Employee? @relation(fields: [employeeId], references: [id])
+  dateStart  DateTime
+  dateEnd    DateTime
+  approved   Boolean
 }
 
 model CompanyShift {

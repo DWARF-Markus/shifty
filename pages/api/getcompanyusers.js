@@ -9,6 +9,9 @@ export default async function (req, res) {
     const result = await prisma.employee.findMany({
       where: {
         companyId: parseInt(company)
+      },
+      include: {
+        EmployeeVacation: true
       }
     });
     res.status(200);

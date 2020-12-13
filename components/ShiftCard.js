@@ -56,37 +56,48 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
       return
     }
 
-    if (employees.length <= shift.employeeAmount) {
-      setEmployees(employees.concat([item.id]));
-      await fetch('/api/addusertoshift', {
-        method: 'POST',
-        headers: {
-          'Content-Type': "application/json"
-        },
-        body: JSON.stringify({
-          data: {
-            shiftId: parseInt(shift.id),
-            employeeId: parseInt(item.id)
-          }
-        })
-      })
-        .then(res => res.json())
-        .then(data => {
-          dispatch({
-            type: 'SET_POP_UP',
-            payload: `You have added ${item.firstName} to this shift`
-          });
-          dispatch({
-            type: 'SET_EMPLOYEE_TO_SHIFT',
-            payload: { shiftId: shift.id, employee: item }
-          })
-        });
-    } else {
+    const overlappingVacations = item.vacations.filter((vacation) => isWithinInterval(new Date(shift.startTime), { start: new Date(vacation.dateStart), end: new Date(vacation.dateEnd) }));
+
+    if (overlappingVacations.length > 0) {
       dispatch({
         type: 'SET_POP_UP_ERROR',
-        payload: 'You cannot add more employees to this shift.'
+        payload: 'This employee is on vacation on this date.'
       });
+      return
+    } else {
+      if (employees.length <= shift.employeeAmount) {
+        setEmployees(employees.concat([item.id]));
+        await fetch('/api/addusertoshift', {
+          method: 'POST',
+          headers: {
+            'Content-Type': "application/json"
+          },
+          body: JSON.stringify({
+            data: {
+              shiftId: parseInt(shift.id),
+              employeeId: parseInt(item.id)
+            }
+          })
+        })
+          .then(res => res.json())
+          .then(data => {
+            dispatch({
+              type: 'SET_POP_UP',
+              payload: `You have added ${item.firstName} to this shift`
+            });
+            dispatch({
+              type: 'SET_EMPLOYEE_TO_SHIFT',
+              payload: { shiftId: shift.id, employee: item }
+            })
+          });
+      } else {
+        dispatch({
+          type: 'SET_POP_UP_ERROR',
+          payload: 'You cannot add more employees to this shift.'
+        });
+      }
     }
+
   };
 
   const handleShiftClick = async () => {

@@ -101,6 +101,20 @@ button {
   }
 }
 
+.btn--success {
+  background-color: #6DC55F;
+  color: white;
+  padding: 7px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: normal;
+  transition: .1s ease;
+
+  &:hover {
+    background-color: rgb(127, 231, 111);
+  }
+}
+
 .shifty__search {
   padding: 10px;
   width: 100%;

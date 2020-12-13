@@ -97,21 +97,23 @@ const SignUpForm = () => {
       </SwitchWrapper>
       {submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : ''}
       {/* <ErrorBanner text={'Something went wrong - please try again'} active={error} /> */}
-      <SignUpTransition isCompanySignup={isCompanySignup}>
-        <SignUpEmployeeContainer>
-          <div>
-            <SignUpEmployee />
-          </div>
-        </SignUpEmployeeContainer>
-        <SignUpCompanyContainer submitting={submitting}>
-          <SignUpSheet data={data} step={GET_STATE.step} handlePrevClick={decrement} handleNextClick={increment} loading={loading} />
-          <SignUpDots>
-            {data.map((entry, index) => {
-              return <img key={index} src={index + 1 <= GET_STATE.step ? require('../assets/icon-dot-orange.svg') : require('../assets/icon-dot-gray.svg')} alt="dot" style={{ width: '12px', marginLeft: '7px' }} />
-            })}
-          </SignUpDots>
-        </SignUpCompanyContainer>
-      </SignUpTransition>
+      <SignUpTransitionWrapper>
+        <SignUpTransition isCompanySignup={isCompanySignup}>
+          <SignUpEmployeeContainer>
+            <div>
+              <SignUpEmployee />
+            </div>
+          </SignUpEmployeeContainer>
+          <SignUpCompanyContainer submitting={submitting}>
+            <SignUpSheet data={data} step={GET_STATE.step} handlePrevClick={decrement} handleNextClick={increment} loading={loading} />
+            <SignUpDots>
+              {data.map((entry, index) => {
+                return <img key={index} src={index + 1 <= GET_STATE.step ? require('../assets/icon-dot-orange.svg') : require('../assets/icon-dot-gray.svg')} alt="dot" style={{ width: '12px', marginLeft: '7px' }} />
+              })}
+            </SignUpDots>
+          </SignUpCompanyContainer>
+        </SignUpTransition>
+      </SignUpTransitionWrapper>
     </>
   )
 }
@@ -143,6 +145,11 @@ const SwitchWrapper = styled.div`
       height: 25px;
     }
   }
+`;
+
+const SignUpTransitionWrapper = styled.div`
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 const SignUpTransition = styled.div`

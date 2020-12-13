@@ -37,6 +37,8 @@ const initialState = {
   newProfileImage: '',
   shiftGettingEdited: {},
   shiftEditorModalOpen: false,
+  vacationStart: '',
+  vacationEnd: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -260,17 +262,26 @@ const reducer = (state = initialState, action) => {
         }
       }
     case 'DELETE_SHIFT':
-      // const shiftIndexInArr = state.shifts.findIndex((shift) => shift.id === action.payload);
-
       return {
         ...state,
         shifts: state.shifts.filter(item => item.id !== action.payload),
-        // shifts: [
-
-        //   ...state.shifts.slice(0, shiftIndexInArr),
-        //   ...state.shifts.slice(shiftIndexInArr + 1)
-        // ],
         shiftGettingEdited: {}
+      }
+    case 'SET_VACATION_START':
+      return {
+        ...state,
+        vacationStart: action.payload
+      }
+    case 'SET_VACATION_END':
+      return {
+        ...state,
+        vacationEnd: action.payload
+      }
+    case 'CLEAR_VACATION':
+      return {
+        ...state,
+        vacationStart: '',
+        vacationEnd: ''
       }
 
     default:

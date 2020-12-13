@@ -576,6 +576,134 @@
       "arity": "List"
     },
     {
+      "tag": "CreateField",
+      "model": "Employee",
+      "field": "EmployeeVacation",
+      "type": "EmployeeVacation",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "EmployeeVacation"
+    },
+    {
+      "tag": "CreateField",
+      "model": "EmployeeVacation",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "EmployeeVacation",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "EmployeeVacation",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "EmployeeVacation",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "EmployeeVacation",
+      "field": "employeeId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "EmployeeVacation",
+      "field": "Employee",
+      "type": "Employee",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "EmployeeVacation",
+          "field": "Employee"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "EmployeeVacation",
+          "field": "Employee"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[employeeId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "EmployeeVacation",
+          "field": "Employee"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "EmployeeVacation",
+      "field": "dateStart",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "EmployeeVacation",
+      "field": "dateEnd",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "EmployeeVacation",
+      "field": "approved",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
       "tag": "CreateModel",
       "model": "CompanyShift"
     },
