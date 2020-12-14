@@ -36,6 +36,7 @@ const NavBar = () => {
                 <Link href="/app">Overview</Link>
               </WrapperLink>
               <UserWrapper>
+                {GET_STATE.notifications.length > 0 ? <NotificationsCount>{GET_STATE.notifications.length}</NotificationsCount> : ''}
                 {GET_STATE.loginData.profileImage ? <img src={GET_STATE.loginData.profileImage} alt="profile image" style={{ width: '30px', borderRadius: '50%' }} /> : <FontAwesomeIcon style={{ width: '11px', color: COLORS.white }} icon={faUser} />}
               </UserWrapper>
             </> :
@@ -219,6 +220,25 @@ const UserWrapper = styled.div`
   align-items: center;
   justify-items: center;
   border-radius: 50%;
+
+  img {
+    height: 30px;
+    object-fit: cover;
+    width: 30px;
+  }
+`;
+
+const NotificationsCount = styled.span`
+  position: absolute;
+  right: .5rem;
+  top: 1rem;
+  background-color: ${COLORS.blue};
+  width: 1rem;
+  font-size: 14px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  text-align: center;
 `;
 
 

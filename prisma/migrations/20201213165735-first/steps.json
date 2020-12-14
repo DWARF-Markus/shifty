@@ -170,6 +170,13 @@
       "arity": "List"
     },
     {
+      "tag": "CreateField",
+      "model": "Company",
+      "field": "CompanyEmployeeNotifications",
+      "type": "CompanyEmployeeNotifications",
+      "arity": "List"
+    },
+    {
       "tag": "CreateModel",
       "model": "CompanyType"
     },
@@ -580,6 +587,13 @@
       "model": "Employee",
       "field": "EmployeeVacation",
       "type": "EmployeeVacation",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Employee",
+      "field": "CompanyEmployeeNotifications",
+      "type": "CompanyEmployeeNotifications",
       "arity": "List"
     },
     {
@@ -1029,6 +1043,237 @@
       },
       "argument": "references",
       "value": "[id]"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "CompanyEmployeeNotifications"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyEmployeeNotifications",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyEmployeeNotifications",
+      "field": "employeeId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyEmployeeNotifications",
+      "field": "Employee",
+      "type": "Employee",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "Employee"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "Employee"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[employeeId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "Employee"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyEmployeeNotifications",
+      "field": "companyId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyEmployeeNotifications",
+      "field": "companyForeign",
+      "type": "Company",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "companyForeign"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "companyForeign"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[companyId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "companyForeign"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyEmployeeNotifications",
+      "field": "adminMessage",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyEmployeeNotifications",
+      "field": "employeeMessage",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyEmployeeNotifications",
+      "field": "adminActive",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "adminActive"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "adminActive"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CompanyEmployeeNotifications",
+      "field": "EmployeeActive",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "EmployeeActive"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CompanyEmployeeNotifications",
+          "field": "EmployeeActive"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "true"
     }
   ]
 }

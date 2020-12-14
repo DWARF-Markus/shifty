@@ -9,7 +9,16 @@ export default async function (req, res) {
     const company = await prisma.company.findOne({
       where: {
         email: companyData.email
-      }
+      },
+      include: {
+        CompanyEmployeeNotifications: {
+          where: {
+            companyForeign: {
+              email: companyData.email
+            }
+          }
+        }
+      },
     });
 
     if (company) {
@@ -22,6 +31,13 @@ export default async function (req, res) {
         },
         include: {
           companyForeign: true,
+          CompanyEmployeeNotifications: {
+            where: {
+              Employee: {
+                email: companyData.email
+              }
+            }
+          }
         },
       });
 

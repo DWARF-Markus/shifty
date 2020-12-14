@@ -38,7 +38,8 @@ const initialState = {
   shiftGettingEdited: {},
   shiftEditorModalOpen: false,
   vacationStart: '',
-  vacationEnd: ''
+  vacationEnd: '',
+  notifications: 0,
 }
 
 const reducer = (state = initialState, action) => {
@@ -282,6 +283,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         vacationStart: '',
         vacationEnd: ''
+      }
+    case 'SET_NOTIFICATIONS':
+      return {
+        ...state,
+        notifications: action.payload
       }
 
     default:

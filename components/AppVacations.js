@@ -41,7 +41,9 @@ export default function AppVacations() {
       },
       body: JSON.stringify({
         data: {
+          fullName: `${GET_STATE.loginData.firstName} ${GET_STATE.loginData.lastName}`,
           employeeId: GET_STATE.loginData.id,
+          companyId: GET_STATE.loginData.companyId,
           startDate: GET_STATE.vacationStart,
           endDate: GET_STATE.vacationEnd
         }
@@ -62,8 +64,8 @@ export default function AppVacations() {
       })
   }
 
-  const handleVacationAccept = async (id) => {
-    await fetch(`/api/acceptvacation?id=${id}`)
+  const handleVacationAccept = async (id, employeeId, companyId, firstName, lastName) => {
+    await fetch(`/api/acceptvacation?id=${id}&employeeId=${employeeId}&companyId=${companyId}&firstName=${firstName}&lastName=${lastName}`)
       .then(res => res.json())
       .then(data => {
         if (data.status === 200) {
@@ -127,7 +129,7 @@ export default function AppVacations() {
                         <p>{format(new Date(vacation.dateEnd), 'dd. MMM yyyy')}</p>
                       </div>
                       <div className="cta">
-                        {vacation.approved ? <p>Approved</p> : <button onClick={() => handleVacationAccept(vacation.id)} className="btn--secondary btn--success">Accept</button>}
+                        {vacation.approved ? <p>Approved</p> : <button onClick={() => handleVacationAccept(vacation.id, vacation.Employee.id, vacation.Employee.companyId, vacation.Employee.firstName, vacation.Employee.lastName)} className="btn--secondary btn--success">Accept</button>}
                       </div>
                     </AdminVacationCard>
                   )

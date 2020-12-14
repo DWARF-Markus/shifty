@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { format } from 'date-fns';
 
 export default async function (req, res) {
   const prisma = new PrismaClient({ log: ["query"] });
@@ -14,7 +15,17 @@ export default async function (req, res) {
         approved: false
       }
     })
-    res.json({ response: vacation, status: 201 })
+
+    const notification = await prisma.companyEmployeeNotifications.create({
+      data: {
+        Employee: { connect: { id: vacationData.employeeId } },
+        companyForeign: { connect: { id: vacationData.companyId } },
+        adminMessage: `${vacationData.fullName} has requested a vacation from ${format(new Date(vacationData.startDate), 'dd. MMM yyyy')} to ${format(new Date(vacationData.endDate), 'dd. MMM yyyy')}`,
+        employeeMessage: `You have requested a vacation from ${format(new Date(vacationData.startDate), 'dd. MMM yyyy')} to ${format(new Date(vacationData.endDate), 'dd. MMM yyyy')}`
+      }
+    })
+
+    res.json({ response: vacation, notification, status: 201 })
   } catch (e) {
     res.status(500);
     res.json({ error: e });

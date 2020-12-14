@@ -31,8 +31,20 @@ const Layout = (props) => {
               type: 'SET_LOGIN_DATA',
               payload: data
             })
+
+            const countNotifications = data.isAdmin ? data.company.CompanyEmployeeNotifications.filter((notification) => notification.adminActive) : data.company.CompanyEmployeeNotifications.filter((notification) => notification.EmployeeActive);
+
+            dispatch({
+              type: 'SET_NOTIFICATIONS',
+              payload: countNotifications
+            })
           }
-        })
+
+
+
+        });
+
+
     }
   }, []);
 
