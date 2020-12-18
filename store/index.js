@@ -289,6 +289,30 @@ const reducer = (state = initialState, action) => {
         ...state,
         notifications: action.payload
       }
+    case 'CLEAR_NOTIFICATIONS_COUNT_EMPLOYEE':
+      return {
+        ...state,
+        notifications: state.notifications.map((notification) => {
+          if (notification.EmployeeActive) {
+            notification.EmployeeActive = false;
+            return notification;
+          } else {
+            return notification
+          }
+        })
+      }
+    case 'CLEAR_NOTIFICATIONS_COUNT_ADMIN':
+      return {
+        ...state,
+        notifications: state.notifications.map((notification) => {
+          if (notification.adminActive) {
+            notification.adminActive = false;
+            return notification;
+          } else {
+            return notification
+          }
+        })
+      }
 
     default:
       return state

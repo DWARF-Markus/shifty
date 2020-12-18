@@ -57,7 +57,7 @@ model EmployeeVacation {
   Employee   Employee? @relation(fields: [employeeId], references: [id])
   dateStart  DateTime
   dateEnd    DateTime
-  approved   Boolean
+  approved   Boolean   @default(false)
 }
 
 model CompanyShift {
@@ -91,4 +91,5 @@ model CompanyEmployeeNotifications {
   employeeMessage String
   adminActive     Boolean   @default(true)
   EmployeeActive  Boolean   @default(true)
+  timestamp       DateTime  @default(now())
 }
