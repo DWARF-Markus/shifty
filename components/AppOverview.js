@@ -185,7 +185,7 @@ export default function AppOverview({ state }) {
                   {state.shifts.map((shift) => {
                     if (format(new Date(shift.startTime), 'iiii') === day.dayName && day.active && format(new Date(day.trueDate), 'dd/MMM') === format(new Date(shift.startTime), 'dd/MMM')) {
                       return (
-                        <ShiftCard userId={state.loginData.id} isAdmin={state.isAdmin} key={shift.id} employeesList={employees} shift={shift} />
+                        <ShiftCard loginData={state.loginData} userId={state.loginData.id} companyId={state.loginData.companyId} isAdmin={state.isAdmin} key={shift.id} employeesList={employees} shift={shift} />
                       );
                     }
                   })}

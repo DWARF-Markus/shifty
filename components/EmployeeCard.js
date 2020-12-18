@@ -3,14 +3,16 @@ import { COLORS } from '../styles/globals';
 import { useDrag } from 'react-dnd';
 import { ItemTypes } from '../utils/items';
 
-const EmployeeCard = ({ id, firstName, lastName, image, vacations }) => {
+const EmployeeCard = ({ id, companyId, firstName, lastName, image, vacations }) => {
 
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: ItemTypes.CARD,
       id,
       firstName,
+      lastName,
       image,
+      companyId,
       vacations
     },
     collect: monitor => ({

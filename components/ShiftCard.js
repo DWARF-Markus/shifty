@@ -2,14 +2,13 @@ import styled from 'styled-components';
 import { COLORS, BP } from '../styles/globals';
 import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { format } from 'date-fns';
 import { useDrop } from 'react-dnd';
 import { ItemTypes } from '../utils/items';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { differenceInHours, isWithinInterval } from 'date-fns';
+import { format, differenceInHours, isWithinInterval } from 'date-fns';
 
-const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
+const ShiftCard = ({ employeesList, shift, isAdmin, userId, loginData }) => {
 
   const [employees, setEmployees] = useState([]);
   const [spotsLeft, setSpotsLeft] = useState([]);
@@ -75,7 +74,10 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
           body: JSON.stringify({
             data: {
               shiftId: parseInt(shift.id),
-              employeeId: parseInt(item.id)
+              employeeId: parseInt(item.id),
+              companyId: parseInt(shift.companyId),
+              shiftStart: format(new Date(shift.startTime), 'dd. MMM yyyy'),
+              fullName: `${item.firstName} ${item.lastName}`
             }
           })
         })
@@ -120,7 +122,10 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
           body: JSON.stringify({
             data: {
               shiftId: parseInt(shift.id),
-              employeeId: parseInt(userId)
+              employeeId: parseInt(userId),
+              companyId: parseInt(shift.companyId),
+              shiftStart: format(new Date(shift.startTime), 'dd. MMM yyyy'),
+              fullName: `${loginData.firstName} ${loginData.lastName}`
             }
           })
         })
@@ -149,7 +154,7 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId }) => {
   })
 
   return (
-    <Wrapper isNow={isWithinInterval(new Date(), { start: new Date(shift.startTime), end: new Date(shift.endTime) })} shiftLength={shiftLength} onClick={() => handleShiftClick()} isAssigned={employees.includes(userId) && !isAdmin} isAdmin={isAdmin} isFull={shift.employeeAmount === employees.length} isOver={isOver} ref={drop}>
+    <Wrapper isOver={isOver} ref={drop} isNow={isWithinInterval(new Date(), { start: new Date(shift.startTime), end: new Date(shift.endTime) })} shiftLength={shiftLength} onClick={() => handleShiftClick()} isAssigned={employees.includes(userId) && !isAdmin} isAdmin={isAdmin} isFull={shift.employeeAmount === employees.length}>
       <p className="title">{shift.title}</p>
       <p className="time">{format(new Date(shift.startTime), 'HH:mm')} <FontAwesomeIcon icon={faLongArrowAltRight} /> {format(new Date(shift.endTime), 'HH:mm')}</p>
       <PlaceholderWrapper>
