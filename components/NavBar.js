@@ -111,7 +111,7 @@ const NavBar = () => {
       <NavDesktopNotifications active={notificationsOpen}>
         {GET_STATE.notifications ? GET_STATE.notifications.slice(0).reverse().map((entry) => {
           return (
-            <NotificationCard isAdmin={GET_STATE.isAdmin} active={GET_STATE.isAdmin ? entry.adminActive : entry.EmployeeActive}>
+            <NotificationCard isAdmin={GET_STATE.isAdmin} active={GET_STATE.isAdmin ? entry.adminActive : entry.EmployeeActive} brightTheme={GET_STATE.toggleLightBright}>
               <div className="dot"><FontAwesomeIcon icon={faDotCircle} /></div>
               <div className="text">
                 <p className="timestamp">{formatDistanceToNow(new Date(entry.timestamp))} ago</p>
@@ -338,13 +338,21 @@ const NavDesktopNotifications = styled.div`
 `;
 
 const NotificationCard = styled.div`
-  background-color: ${({ active }) => active ? COLORS.orange : COLORS.white};
-  opacity: ${({ active }) => active ? '1' : '0.4'};
+  /* background-color: ${({ active }) => active ? COLORS.orange : COLORS.white}; */
+  /* opacity: ${({ active }) => active ? '1' : '0.4'}; */
   padding: .4rem .5rem .6rem;
-  border-bottom: 1px solid ${COLORS.darkGray};
+  border-bottom: 1px solid ${({ brightTheme }) => brightTheme ? COLORS.darkGray : '#525252'};
   display: flex;
   position: relative;
-  color: ${({ active }) => active ? COLORS.white : COLORS.black};
+  color: ${({ brightTheme }) => brightTheme ? 'rgba(197, 197, 197, .9)' : 'rgba(0, 0, 0, .7)'};
+
+  ${props => props.active && `
+     background-color: ${props.brightTheme ? COLORS.orange : COLORS.orange}; 
+ `};
+
+  ${props => !props.active && `
+      background-color: ${props.brightTheme ? COLORS.white : COLORS.black}; 
+  `};
 
   .dot {
     display: grid;

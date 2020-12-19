@@ -302,7 +302,7 @@ const DayWrapper = styled.div`
   pointer-events: ${({ active }) => active ? 'all' : 'none'};
   height: 25rem;
   width: 100%;
-  border-left: 1px solid ${({ brightMode }) => brightMode ? COLORS.darkGray : 'black'};
+  border-left: 1px solid ${({ brightMode }) => brightMode ? COLORS.darkGray : '#2a2a2a'};
   /* opacity: ${({ active }) => active ? '1' : '.4'}; */
   display: ${({ active }) => !active ? 'none' : 'block'};
   position: relative;
@@ -347,7 +347,7 @@ const DayWrapper = styled.div`
 
 const DayHeader = styled.div`
   text-align: center;
-  border-bottom: 1px solid ${({ brightMode }) => brightMode ? COLORS.darkGray : 'black'};
+  border-bottom: 1px solid ${({ brightMode }) => brightMode ? COLORS.darkGray : '#2a2a2a'};
   color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
 
   div {

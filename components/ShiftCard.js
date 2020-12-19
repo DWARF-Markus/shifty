@@ -185,9 +185,10 @@ const Wrapper = styled.div`
   margin: .3rem;
   border-radius: 5px;
   pointer-events: ${({ isFull, isAdmin }) => isFull && !isAdmin ? 'none' : 'all'};
-  border-top: 1px solid ${COLORS.darkGray};
+  /* border-top: 1px solid ${COLORS.darkGray};
   border-right: 1px solid ${COLORS.darkGray};
-  border-bottom: 1px solid ${COLORS.darkGray};
+  border-bottom: 1px solid ${COLORS.darkGray}; */
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
   ${props => props.isAdmin && `
      border-left: 5px solid ${props.isFull ? COLORS.green : COLORS.red}; 

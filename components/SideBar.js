@@ -130,6 +130,7 @@ const SideBarNav = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 1rem;
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
   div {
     p {

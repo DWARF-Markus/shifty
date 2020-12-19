@@ -154,12 +154,12 @@ export default function AppSettings() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <SettingsWrapper>
+      <SettingsWrapper brightMode={GET_STATE.toggleLightBright}>
         {GET_STATE.isAdmin ? (
           <>
             <h3>Settings</h3>
             <h4>Change company name</h4>
-            <span>Current: {GET_STATE.loginData.name}</span>
+            <span className="current">Current: {GET_STATE.loginData.name}</span>
             <input placeholder="First name" type="text" onChange={(e) => handleCompanyName(e)} />
             <h4>Opening days</h4>
             {daysLoading ? <p>Loading opening days...</p> : (
@@ -192,7 +192,7 @@ export default function AppSettings() {
             <>
               <h3>Settings</h3>
               <h4>Change name</h4>
-              <span>Current: {GET_STATE.loginData.firstName} {GET_STATE.loginData.lastName}</span>
+              <span className="current">Current: {GET_STATE.loginData.firstName} {GET_STATE.loginData.lastName}</span>
               <input placeholder="First name" type="text" onChange={(e) => handleFirstName(e)} />
               <input placeholder="Last name" type="text" onChange={(e) => handleLastName(e)} />
               <h4>Choose profile picture</h4>
@@ -218,22 +218,22 @@ export default function AppSettings() {
 
 const SettingsWrapper = styled.div`
   h3 {
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     font-weight: 300;
     line-height: 1.2;
   }
   
   h4 {
-    color: ${COLORS.orange};
+    color: ${({ brightMode }) => brightMode ? COLORS.orange : COLORS.white};
     font-weight: 700;
   }
 
-  span {
-    /* font-style: italic;
-    font-size: 10px; */
+  .current {
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
   }
 
   button {
-    margin-top: 10px;
+    margin: 1rem 0;
   }
 
   input[type="text"] {
@@ -243,5 +243,8 @@ const SettingsWrapper = styled.div`
     border-radius: 5px;
     border: none;
     margin-top: 5px;
+    border: 1px solid ${COLORS.darkGray};
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
+    background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
   }
 `;
