@@ -66,7 +66,7 @@ const NavBar = () => {
       <NavDesktop brightTheme={GET_STATE.toggleLightBright}>
         <NavSide>
           <NavImage>
-            <Link href="/"><img src={require('../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '75px' }} /></Link>
+            <Link href="/"><img src={require(GET_STATE.toggleLightBright ? '../assets/logo-shifty-orange.svg' : '../assets/logo-shifty-white-fill.svg')} alt="shifty" style={{ width: '75px' }} /></Link>
           </NavImage>
         </NavSide>
         <NavSide>
@@ -88,19 +88,19 @@ const NavBar = () => {
               </UserWrapper>
             </> :
               <>
-                <WrapperLink>
+                <WrapperLink brightTheme={GET_STATE.toggleLightBright}>
                   <Link href="/">Home</Link>
                 </WrapperLink>
-                <WrapperLink>
+                <WrapperLink brightTheme={GET_STATE.toggleLightBright}>
                   <Link href="/about">About</Link>
                 </WrapperLink>
-                <WrapperLink>
+                <WrapperLink brightTheme={GET_STATE.toggleLightBright}>
                   <Link href="/signup">Sign up</Link>
                 </WrapperLink>
                 <Link href="/signin">
-                  <WrapperButton>
+                  <WrapperButton brightTheme={GET_STATE.toggleLightBright}>
                     Login
-              </WrapperButton>
+                  </WrapperButton>
                 </Link>
               </>
             }
@@ -124,7 +124,7 @@ const NavBar = () => {
           //   <p>{GET_STATE.isAdmin ? notification.adminMessage : notification.employeeMessage}</p>
           // </NotificationCard> */}
       </NavDesktopNotifications>
-      <NavMobile open={open}>
+      <NavMobile brightTheme={GET_STATE.toggleLightBright} open={open}>
         <NavSide>
           <img src={require('./../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '55px' }} />
         </NavSide>
@@ -134,36 +134,36 @@ const NavBar = () => {
           </NavLinks>
         </NavSide>
       </NavMobile>
-      <NavMobileMenu open={open}>
+      <NavMobileMenu brightTheme={GET_STATE.toggleLightBright} open={open}>
         {session ? <>
-          <NavWrapperLink>
-            <Link href="/">Home</Link>
+          <NavWrapperLink brightTheme={GET_STATE.toggleLightBright}>
+            <Link href="/app">Overview</Link>
           </NavWrapperLink>
-          <NavWrapperLink>
+          <NavWrapperLink brightTheme={GET_STATE.toggleLightBright}>
             <Link href="/about">About</Link>
           </NavWrapperLink>
-          <NavWrapperLink>
+          <NavWrapperLink brightTheme={GET_STATE.toggleLightBright}>
             <Link href="/profile">Profile</Link>
           </NavWrapperLink>
           <NavWrapperLink>
-            <WrapperButton onClick={signOut}>
+            <WrapperButton brightTheme={GET_STATE.toggleLightBright} onClick={signOut}>
               Sign out
               </WrapperButton>
           </NavWrapperLink>
         </> :
           <>
-            <NavWrapperLink>
+            <NavWrapperLink brightTheme={GET_STATE.toggleLightBright}>
               <Link href="/">Home</Link>
             </NavWrapperLink>
-            <NavWrapperLink>
+            <NavWrapperLink brightTheme={GET_STATE.toggleLightBright}>
               <Link href="/about">About</Link>
             </NavWrapperLink>
-            <NavWrapperLink>
+            <NavWrapperLink brightTheme={GET_STATE.toggleLightBright}>
               <Link href="/signup">Sign up</Link>
             </NavWrapperLink>
             <NavWrapperLink>
               <Link href="/signin">
-                <WrapperButton>
+                <WrapperButton brightTheme={GET_STATE.toggleLightBright}>
                   Login
               </WrapperButton>
               </Link>
@@ -181,7 +181,7 @@ const NavMobile = styled.div`
   z-index: 10000;
   display: flex;
   padding: 0 ${SIZES.small};
-  background: ${COLORS.lightGray};
+  background: ${({ brightTheme }) => brightTheme ? COLORS.lightGray : COLORS.black};
   height: 75px;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
@@ -236,16 +236,17 @@ const WrapperLink = styled.li`
 `;
 
 const WrapperButton = styled.button`
-  color: ${COLORS.orange};
-  border: 2px solid ${COLORS.orange};
+  color: ${({ brightTheme }) => brightTheme ? COLORS.orange : COLORS.white};
+  border: 2px solid ${({ brightTheme }) => brightTheme ? COLORS.orange : COLORS.white};
   border-radius: ${BUTTON.borderRadius};
+  background: ${({ brightTheme }) => brightTheme ? COLORS.lightGray : 'transparent'};
   padding: ${BUTTON.padding};
   font-size: 15px;
   transition: .2s ease;
 
   &:hover {
-    background-color: ${COLORS.orange};
-    color: ${COLORS.white};
+    background-color: ${({ brightTheme }) => brightTheme ? COLORS.orange : COLORS.white};
+    color: ${({ brightTheme }) => brightTheme ? COLORS.white : COLORS.black};
   }
 `;
 
@@ -263,8 +264,8 @@ const NavMobileMenu = styled.div`
   z-index: 10;
   padding-top: 70px;
   height: 0px;
-  position: absolute;
-  background-color: ${COLORS.lightGray};
+  position: fixed;
+  background-color: ${({ brightTheme }) => brightTheme ? COLORS.lightGray : COLORS.black};
   width: 100%;
   overflow: hidden;
   transition: .3s ease;
@@ -274,6 +275,8 @@ const NavMobileMenu = styled.div`
 
 const NavWrapperLink = styled.div`
   margin: ${SIZES.small};
+
+  color: ${({ brightTheme }) => brightTheme ? COLORS.black : COLORS.white};
 `;
 
 const UserWrapper = styled.div`

@@ -4,7 +4,7 @@ import { SIZES, COLORS } from '../styles/globals';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-const InputField = ({ name, type, label, setter, getter, required }) => {
+const InputField = ({ brightMode, name, type, label, setter, getter, required }) => {
 
   const [value, setValue] = useState('');
 
@@ -24,7 +24,7 @@ const InputField = ({ name, type, label, setter, getter, required }) => {
   }
 
   return (
-    <InputPair>
+    <InputPair brightMode={brightMode}>
       <label>
         {label}<span>{required ? '*' : ''}</span> <br />
         <input name={name} value={value} type={type} onChange={(e) => handleInput(e.target.value)} />
@@ -43,7 +43,7 @@ const InputPair = styled.div`
   text-align: left;
 
   label {
-    color: ${COLORS.black};
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
 
     span {
       font-size: 15px;
@@ -51,6 +51,8 @@ const InputPair = styled.div`
     }
 
     input {
+      background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
+      color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
       width: 100%;
       margin-top: 2px;
       padding: .5rem;

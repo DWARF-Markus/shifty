@@ -157,10 +157,10 @@ export default function AppOverview({ state }) {
         {state.shiftEditorModalOpen ? <ShiftEditorModal active={state.shiftEditorModalOpen} shiftObj={state.shiftGettingEdited} employeesList={employees} /> : ''}
       </OverviewOverlay>
       <OverviewWrapper>
-        <OverviewTop>
+        <OverviewTop brightMode={state.toggleLightBright}>
           <h3>Overview</h3>
           {state.isAdmin ?
-            <EmployeesBox>
+            <EmployeesBox brightMode={state.toggleLightBright}>
               {employees ? employees.map((employee) => {
                 if (employee.acceptedCompany) {
                   return (
@@ -174,8 +174,8 @@ export default function AppOverview({ state }) {
         <Overview>
           {!loading && !acceptCompanyModal ? openingDays.map((day, index) => {
             return (
-              <DayWrapper today={isToday(new Date(day.trueDate))} active={day.active}>
-                <DayHeader key={index}>
+              <DayWrapper brightMode={state.toggleLightBright} today={isToday(new Date(day.trueDate))} active={day.active}>
+                <DayHeader brightMode={state.toggleLightBright} key={index}>
                   <div>
                     <span>{day.dayName}</span>
                     <p>{day.date}</p>
@@ -205,7 +205,7 @@ export default function AppOverview({ state }) {
               </OverViewPreLoader>
             )}
         </Overview>
-        <OverviewWeekButtons>
+        <OverviewWeekButtons brightMode={state.toggleLightBright}>
           <button onClick={() => handlePrevWeekClick()}><FontAwesomeIcon icon={faCaretLeft} /></button>
           <p>{week}</p>
           <button onClick={() => handleNextWeekClick()}><FontAwesomeIcon icon={faCaretRight} /></button>
@@ -246,19 +246,18 @@ const OverviewModal = styled.div`
   z-index: 300;
 `;
 
-const OverviewWrapper = styled.div`
-  h3 {
-    font-weight: 300;
-    line-height: 1.2;
-  }
-`;
+const OverviewWrapper = styled.div``;
 
 const OverviewTop = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 1fr;
-
-
+  
+  h3 {
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
+    font-weight: 300;
+    line-height: 1.2;
+  }
 
   @media (min-width: ${BP.small}) {
     grid-template-columns: 1fr 1fr;
@@ -267,10 +266,9 @@ const OverviewTop = styled.div`
 
 const EmployeesBox = styled.div`
   width: 100%;
-  background: ${COLORS.white};
+  background: ${({ brightMode }) => brightMode ? COLORS.lightGray : 'transparent'};
   height: 3rem;
   margin-bottom: 2rem;
-  background-color: ${COLORS.lightGray};
   border-radius: 5px;
   display: flex;
   overflow-y: scroll;
@@ -283,7 +281,7 @@ const EmployeesBox = styled.div`
 const Overview = styled.div`
   display: flex;
   justify-content: space-around;
-  background-color: ${COLORS.white};
+  /* background-color: ${COLORS.white}; */
 `;
 
 const OverViewPreLoader = styled.div`
@@ -300,14 +298,22 @@ const OverViewPreLoader = styled.div`
 `;
 
 const DayWrapper = styled.div`
-  background-color: ${({ active }) => active ? COLORS.white : '#e3e3e3'};
+  /* background-color: ${({ active }) => active ? COLORS.white : '#e3e3e3'}; */
   pointer-events: ${({ active }) => active ? 'all' : 'none'};
   height: 25rem;
   width: 100%;
-  border-left: 1px solid ${COLORS.darkGray};
-  opacity: ${({ active }) => active ? '1' : '.4'};
+  border-left: 1px solid ${({ brightMode }) => brightMode ? COLORS.darkGray : 'black'};
+  /* opacity: ${({ active }) => active ? '1' : '.4'}; */
   display: ${({ active }) => !active ? 'none' : 'block'};
   position: relative;
+
+  ${props => props.active && `
+     background-color: ${props.brightMode ? COLORS.white : COLORS.black}; 
+  `};
+
+  ${props => !props.active && `
+    background-color: ${props.brightMode ? '#e3e3e3' : '#434343'}; 
+  `};
 
   @media (min-width: ${BP.small}) {
     display: block;
@@ -341,7 +347,8 @@ const DayWrapper = styled.div`
 
 const DayHeader = styled.div`
   text-align: center;
-  border-bottom: 1px solid ${COLORS.darkGray};
+  border-bottom: 1px solid ${({ brightMode }) => brightMode ? COLORS.darkGray : 'black'};
+  color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
 
   div {
     padding: 6px 0 0 0;
@@ -349,7 +356,7 @@ const DayHeader = styled.div`
 
   span {
     font-size: 10px;
-    color: ${COLORS.black};
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     font-weight: 600;
   }
 
@@ -361,9 +368,7 @@ const DayHeader = styled.div`
   }
 `;
 
-const DayContent = styled.div`
-  background-color: ${COLORS.white};
-`;
+const DayContent = styled.div``;
 
 const OverviewButtonWrapper = styled.div`
   position: fixed;
@@ -402,12 +407,13 @@ const OverviewWeekButtons = styled.div`
     p {
       font-size: 20px;
       margin: 0;
+      color: ${({ brightMode }) => brightMode ? COLORS.orange : COLORS.white};
     }
 
     button {
       background-color: transparent;
       svg {
-        color: ${COLORS.orange};
+        color: ${({ brightMode }) => brightMode ? COLORS.orange : COLORS.white};
         width: 30px!important;
         height: 30px;
       }

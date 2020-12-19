@@ -33,7 +33,7 @@ const Footer = () => {
 const FooterWrapper = styled.footer`
   width: 100%;
   padding: ${SIZES.small};
-  border-top: 1px solid ${COLORS.darkGray};
+  border-top: 1px solid black;
   height: 25rem;
   display: block;
   background-color: ${COLORS.black};

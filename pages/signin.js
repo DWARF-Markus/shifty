@@ -48,16 +48,16 @@ export default function SignIn({ csrfToken, providers }) {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Layout>
         {submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : ''}
-        <SignInWrapper loading={submitting}>
-          <img src={require('../assets/logo-shifty-orange.svg')} />
+        <SignInWrapper brightMode={GET_STATE.toggleLightBright} loading={submitting}>
+          <img src={require(GET_STATE.toggleLightBright ? '../assets/logo-shifty-orange.svg' : '../assets/logo-shifty-white-fill.svg')} />
           <form method='post' onSubmit={(e) => handleSubmit(e)}>
             <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
-            <InputField name="email" type="email" label="Email" setter={'SET_EMAIL'} getter={'email'} />
-            <InputField name="password" type="password" label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
+            <InputField brightMode={GET_STATE.toggleLightBright} name="email" type="email" label="Email" setter={'SET_EMAIL'} getter={'email'} />
+            <InputField brightMode={GET_STATE.toggleLightBright} name="password" type="password" label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
             <button className="btn--primary" onClick={() => handleLoading()}>Sign in</button>
           </form>
 
-          <GoogleLogin>
+          <GoogleLogin brightMode={GET_STATE.toggleLightBright}>
             <div onClick={() => signIn(providers.google.id)} key={providers.google.name}>
               <img src={require('../assets/google.svg')} />
               <button>Sign in with {providers.google.name}</button>
@@ -79,7 +79,7 @@ const SignInWrapper = styled.div`
   width: calc(100% - 1rem);
   padding: 2rem .5rem;
   margin: 5rem auto 1rem;
-  background: white;
+  background: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
   text-align: center;
   border-radius: 5px;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
@@ -103,7 +103,7 @@ const GoogleLogin = styled.div`
     display: flex;
     margin: 0 auto;
     justify-content: center;
-    border-top: 1px solid ${COLORS.lightGray};
+    border-top: 1px solid ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
     padding: .5rem 0 0;
     cursor: pointer;
     img {
@@ -111,8 +111,8 @@ const GoogleLogin = styled.div`
     }
 
     button {
-      background: white;
-      color: gray;
+      background: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
+      color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     }
   }
 `;

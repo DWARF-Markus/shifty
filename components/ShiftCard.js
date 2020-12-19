@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { format, differenceInHours, isWithinInterval } from 'date-fns';
 
-const ShiftCard = ({ employeesList, shift, isAdmin, userId, loginData }) => {
+const ShiftCard = ({ brightMode, employeesList, shift, isAdmin, userId, loginData }) => {
 
   const [employees, setEmployees] = useState([]);
   const [spotsLeft, setSpotsLeft] = useState([]);
@@ -154,7 +154,7 @@ const ShiftCard = ({ employeesList, shift, isAdmin, userId, loginData }) => {
   })
 
   return (
-    <Wrapper isOver={isOver} ref={drop} isNow={isWithinInterval(new Date(), { start: new Date(shift.startTime), end: new Date(shift.endTime) })} shiftLength={shiftLength} onClick={() => handleShiftClick()} isAssigned={employees.includes(userId) && !isAdmin} isAdmin={isAdmin} isFull={shift.employeeAmount === employees.length}>
+    <Wrapper brightMode={brightMode} isOver={isOver} ref={drop} isNow={isWithinInterval(new Date(), { start: new Date(shift.startTime), end: new Date(shift.endTime) })} shiftLength={shiftLength} onClick={() => handleShiftClick()} isAssigned={employees.includes(userId) && !isAdmin} isAdmin={isAdmin} isFull={shift.employeeAmount === employees.length}>
       <p className="title">{shift.title}</p>
       <p className="time">{format(new Date(shift.startTime), 'HH:mm')} <FontAwesomeIcon icon={faLongArrowAltRight} /> {format(new Date(shift.endTime), 'HH:mm')}</p>
       <PlaceholderWrapper>

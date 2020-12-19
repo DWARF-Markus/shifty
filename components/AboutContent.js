@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { COLORS } from '../styles/globals';
 
-const AboutContent = () => {
+const AboutContent = ({ brightMode }) => {
   return (
-    <Wrapper>
-      <img src={require('../assets/logo-shifty-black.svg')} alt="shifty" style={{ width: '350px' }} />
+    <Wrapper brightMode={brightMode}>
+      <img src={require(brightMode ? '../assets/logo-shifty-black.svg' : '../assets/logo-shifty-white-fill.svg')} alt="shifty" style={{ width: '350px' }} />
       <p>© 2020</p>
       <p>Developed by Markus Hylleberg</p>
       <div className="divider">
@@ -21,19 +21,26 @@ const AboutContent = () => {
 
 const Wrapper = styled.div`
   text-align: center;
+  background-color: ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
 
   img {
     margin: 10rem 0 1rem;
   }
 
+  p {
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
+    padding: 0;
+    margin: 0;
+  }
+
   .divider {
     h4 {
-      color: ${COLORS.orange};
+      color: ${({ brightMode }) => brightMode ? COLORS.orange : COLORS.white};
     }
 
-    margin: 4rem 0;
-    padding-top: 4rem;
-    border-top: 1px solid #D1D1D1;
+    margin: 2rem 0 0;
+    padding: 4rem 0;
+    border-top: 1px solid ${({ brightMode }) => brightMode ? '#D4D4D4' : 'black'};
   }
 
 `;

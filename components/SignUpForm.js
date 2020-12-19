@@ -88,8 +88,8 @@ const SignUpForm = () => {
   };
 
   return (
-    <>
-      <SwitchWrapper onClick={() => setIsCompanySignup(!isCompanySignup)}>
+    <Wrapper brightMode={GET_STATE.toggleLightBright}>
+      <SwitchWrapper brightMode={GET_STATE.toggleLightBright} onClick={() => setIsCompanySignup(!isCompanySignup)}>
         <div>
           <FontAwesomeIcon icon={isCompanySignup ? faUser : faHotel} />
           <button>Sign up as {isCompanySignup ? 'an employee' : 'a company'}</button>
@@ -101,11 +101,11 @@ const SignUpForm = () => {
         <SignUpTransition isCompanySignup={isCompanySignup}>
           <SignUpEmployeeContainer>
             <div>
-              <SignUpEmployee />
+              <SignUpEmployee brightMode={GET_STATE.toggleLightBright} />
             </div>
           </SignUpEmployeeContainer>
           <SignUpCompanyContainer submitting={submitting}>
-            <SignUpSheet data={data} step={GET_STATE.step} handlePrevClick={decrement} handleNextClick={increment} loading={loading} />
+            <SignUpSheet brightMode={GET_STATE.toggleLightBright} data={data} step={GET_STATE.step} handlePrevClick={decrement} handleNextClick={increment} loading={loading} />
             <SignUpDots>
               {data.map((entry, index) => {
                 return <img key={index} src={index + 1 <= GET_STATE.step ? require('../assets/icon-dot-orange.svg') : require('../assets/icon-dot-gray.svg')} alt="dot" style={{ width: '12px', marginLeft: '7px' }} />
@@ -114,9 +114,14 @@ const SignUpForm = () => {
           </SignUpCompanyContainer>
         </SignUpTransition>
       </SignUpTransitionWrapper>
-    </>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  background-color: ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
+  padding: 2rem 0;
+`;
 
 const SwitchWrapper = styled.div`
   div {
@@ -125,9 +130,9 @@ const SwitchWrapper = styled.div`
     align-items: center;
     justify-items: center;
     height: 70px;
-    background: white;
+    background: ${({ brightMode }) => brightMode ? 'white' : COLORS.black};
     color: ${COLORS.darkGray};
-    margin: 2rem auto 0;
+    margin: 0 auto 0;
     text-align: center;
     padding: .3rem;
     border-radius: 5px;
@@ -135,7 +140,7 @@ const SwitchWrapper = styled.div`
     cursor: pointer;
 
     button {
-      background: white;
+      background: ${({ brightMode }) => brightMode ? 'white' : COLORS.black};;
       height: 25px;
       color: ${COLORS.darkGray};
     }

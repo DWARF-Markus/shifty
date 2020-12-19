@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import PopUpBanner from './PopUpBanner';
-import { COLORS } from '../styles/globals';
+import { COLORS, BP } from '../styles/globals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
@@ -66,7 +66,7 @@ const Layout = (props) => {
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
-      <PageWrapper>
+      <PageWrapper brightTheme={brightMode}>
         <LightToggle brightTheme={brightMode} onClick={() => handleToggleClick()}><FontAwesomeIcon style={{ width: '10px' }} icon={faLightbulb} /></LightToggle>
         {props.children}
         <PopUpBanner />
@@ -78,12 +78,13 @@ const Layout = (props) => {
 const PageWrapper = styled.div`
   min-height: 100vh;
   padding: 75px 0 0rem 0;
+  background-color: ${({ brightTheme }) => brightTheme ? COLORS.white : COLORS.black}
 `;
 
 const LightToggle = styled.div`
   cursor: pointer;
   position: fixed;
-  bottom: 4.7rem;
+  bottom: 7.7rem;
   display: grid;
   align-content: center;
   justify-items: center;
@@ -95,6 +96,10 @@ const LightToggle = styled.div`
   border-radius: 50%;
   animation: slidein 1.2s ease;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
+
+  @media (min-width: ${BP.small}) {
+    bottom: 4.7rem;
+  }
 
   svg {
       color: ${COLORS.white};

@@ -7,7 +7,7 @@ import Router from 'next/router';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const SignUpEmployee = () => {
+const SignUpEmployee = ({ brightMode }) => {
 
   const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
@@ -70,17 +70,17 @@ const SignUpEmployee = () => {
       <SignUpEmployeeWrapper submitting={submitting}>
         {submitting ? <SignUpSpinner><FontAwesomeIcon icon={faSpinner} /></SignUpSpinner> : ''}
         <SignUpOpacity submitting={submitting}>
-          <SignUpEmployeeHeader>
+          <SignUpEmployeeHeader brightMode={brightMode}>
             <h3>Employee</h3>
           </SignUpEmployeeHeader>
-          <SignUpEmployeeContent>
-            <InputField type="text" required={true} label="First name" setter={'SET_FIRST_NAME'} getter={'firstName'} />
-            <InputField type="text" required={true} label="Last name" setter={'SET_LAST_NAME'} getter={'lastName'} />
-            <InputField type="email" required={true} label="Email" setter={'SET_EMAIL'} getter={'email'} />
-            <InputField type="password" required={true} label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
-            <InputField type="password" required={true} label="Password confirm" setter={'SIGN_UP_PASSWORD_CONFIRM'} getter={'signUpPasswordConfirm'} />
+          <SignUpEmployeeContent brightMode={brightMode}>
+            <InputField brightMode={brightMode} type="text" required={true} label="First name" setter={'SET_FIRST_NAME'} getter={'firstName'} />
+            <InputField brightMode={brightMode} type="text" required={true} label="Last name" setter={'SET_LAST_NAME'} getter={'lastName'} />
+            <InputField brightMode={brightMode} type="email" required={true} label="Email" setter={'SET_EMAIL'} getter={'email'} />
+            <InputField brightMode={brightMode} type="password" required={true} label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
+            <InputField brightMode={brightMode} type="password" required={true} label="Password confirm" setter={'SIGN_UP_PASSWORD_CONFIRM'} getter={'signUpPasswordConfirm'} />
           </SignUpEmployeeContent>
-          <SignUpEmployeeAction>
+          <SignUpEmployeeAction brightMode={brightMode}>
             <button onClick={() => handleEmployeeSignup()} className="btn--primary">Sign up</button>
           </SignUpEmployeeAction>
         </SignUpOpacity>
@@ -102,17 +102,16 @@ const SignUpEmployeeHeader = styled.div`
   align-items: center;
   height: 6rem;
   display: grid;
-
-}
+  /* box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1); */
 `;
 
 const SignUpEmployeeContent = styled.div`
-  background-color: ${COLORS.white};
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
   padding: .5rem;
 `;
 
 const SignUpEmployeeAction = styled.div`
-  background-color: ${COLORS.white};
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
   padding: 1rem 0;
 `;
 
