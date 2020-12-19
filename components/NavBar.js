@@ -63,7 +63,7 @@ const NavBar = () => {
 
   return (
     <>
-      <NavDesktop>
+      <NavDesktop brightTheme={GET_STATE.toggleLightBright}>
         <NavSide>
           <NavImage>
             <Link href="/"><img src={require('../assets/logo-shifty-orange.svg')} alt="shifty" style={{ width: '75px' }} /></Link>
@@ -72,13 +72,13 @@ const NavBar = () => {
         <NavSide>
           <NavLinks>
             {session ? <>
-              <WrapperLink>
+              <WrapperLink brightTheme={GET_STATE.toggleLightBright}>
                 <Link href="/">Home</Link>
               </WrapperLink>
-              <WrapperLink>
+              <WrapperLink brightTheme={GET_STATE.toggleLightBright}>
                 <Link href="/about">About</Link>
               </WrapperLink>
-              <WrapperLink>
+              <WrapperLink brightTheme={GET_STATE.toggleLightBright}>
                 <Link href="/app">Overview</Link>
               </WrapperLink>
               <UserWrapper onClick={() => handleNotificationsOpen()}>
@@ -193,7 +193,7 @@ const NavMobile = styled.div`
 const NavDesktop = styled.div`
   position: fixed;
   display: none;
-  background: ${COLORS.lightGray};
+  background: ${({ brightTheme }) => brightTheme ? COLORS.lightGray : COLORS.black};
   color: white;
   z-index: 10000;
   width: 100%;
@@ -223,7 +223,7 @@ const NavLinks = styled.div`
 `;
 
 const WrapperLink = styled.li`
-  color: ${COLORS.black};
+  color: ${({ brightTheme }) => brightTheme ? COLORS.black : COLORS.white};
   list-style: none;
   margin: 0 ${SIZES.small};
   display: grid;

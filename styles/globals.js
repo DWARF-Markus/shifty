@@ -21,5 +21,5 @@ export const BUTTON = {
 }
 
 export const BP = {
-  small: '870px' 
+  small: '870px'
 }
