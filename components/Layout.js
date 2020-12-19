@@ -7,7 +7,7 @@ import { COLORS, BP } from '../styles/globals';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Layout = (props) => {
 
@@ -15,6 +15,7 @@ const Layout = (props) => {
   const [session, loading] = useSession();
 
   const dispatch = useDispatch();
+  const GET_TOGGLE = useSelector((state) => state.toggleLightBright);
 
   useEffect(async () => {
     if (session && session.hasOwnProperty('user')) {
@@ -66,8 +67,8 @@ const Layout = (props) => {
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
-      <PageWrapper brightTheme={brightMode}>
-        <LightToggle brightTheme={brightMode} onClick={() => handleToggleClick()}><FontAwesomeIcon style={{ width: '10px' }} icon={faLightbulb} /></LightToggle>
+      <PageWrapper brightTheme={GET_TOGGLE}>
+        <LightToggle brightTheme={GET_TOGGLE} onClick={() => handleToggleClick()}><FontAwesomeIcon style={{ width: '10px' }} icon={faLightbulb} /></LightToggle>
         {props.children}
         <PopUpBanner />
       </PageWrapper>

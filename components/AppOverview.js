@@ -149,12 +149,12 @@ export default function AppOverview({ state }) {
       <OverviewOverlay show={state.shiftModalOpen || state.shiftEditorModalOpen} onClick={(e) => handleModalClose(e)}>
         {state.shiftModalOpen ?
           <>
-            <OverviewModal>
-              <ShiftForm />
+            <OverviewModal brightMode={state.toggleLightBright}>
+              <ShiftForm brightMode={state.toggleLightBright} />
             </OverviewModal>
           </>
           : ''}
-        {state.shiftEditorModalOpen ? <ShiftEditorModal active={state.shiftEditorModalOpen} shiftObj={state.shiftGettingEdited} employeesList={employees} /> : ''}
+        {state.shiftEditorModalOpen ? <ShiftEditorModal brightMode={state.toggleLightBright} active={state.shiftEditorModalOpen} shiftObj={state.shiftGettingEdited} employeesList={employees} /> : ''}
       </OverviewOverlay>
       <OverviewWrapper>
         <OverviewTop brightMode={state.toggleLightBright}>
@@ -240,9 +240,9 @@ const OverviewModal = styled.div`
   width: 100%;
   max-width: 620px;
   height: auto;
-  background-color: ${COLORS.white};
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
   padding: 1rem;
-  border: 1px solid ${COLORS.darkGray};
+  border: 1px solid ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
   z-index: 300;
 `;
 

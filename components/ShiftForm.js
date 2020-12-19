@@ -2,8 +2,9 @@ import InputField from './InputField';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { format } from 'date-fns';
+import { COLORS } from '../styles/globals';
 
-const ShiftForm = () => {
+const ShiftForm = ({ brightMode }) => {
 
   const GET_STATE = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -56,12 +57,12 @@ const ShiftForm = () => {
   }
 
   return (
-    <ShiftFormWrapper>
+    <ShiftFormWrapper brightMode={brightMode}>
       <p>Add shift</p>
-      <InputField type="text" label="Title" setter={'SET_SHIFT_TITLE'} getter={'newShiftTitle'} />
-      <InputField type="datetime-local" label="Start time" setter={'SET_SHIFT_STARTTIME'} getter={'newShiftStartTime'} />
-      <InputField type="datetime-local" label="End time" setter={'SET_SHIFT_ENDTIME'} getter={'newShiftEndTime'} />
-      <InputField type="number" label="Employees" setter={'SET_SHIFT_EMPLOYEE_AMOUNT'} getter={'newShiftEmployeeAmount'} />
+      <InputField brightMode={brightMode} type="text" label="Title" setter={'SET_SHIFT_TITLE'} getter={'newShiftTitle'} />
+      <InputField brightMode={brightMode} type="datetime-local" label="Start time" setter={'SET_SHIFT_STARTTIME'} getter={'newShiftStartTime'} />
+      <InputField brightMode={brightMode} type="datetime-local" label="End time" setter={'SET_SHIFT_ENDTIME'} getter={'newShiftEndTime'} />
+      <InputField brightMode={brightMode} type="number" label="Employees" setter={'SET_SHIFT_EMPLOYEE_AMOUNT'} getter={'newShiftEmployeeAmount'} />
       <button onClick={() => handleNewShiftSubmit()} className="btn--primary">Add</button>
     </ShiftFormWrapper>
   );
@@ -69,6 +70,7 @@ const ShiftForm = () => {
 
 const ShiftFormWrapper = styled.div`
   p {
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     font-size: 20px;
   }
   
