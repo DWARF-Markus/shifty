@@ -308,7 +308,7 @@ const DayWrapper = styled.div`
   position: relative;
 
   ${props => props.active && `
-     background-color: ${props.brightMode ? COLORS.white : COLORS.black}; 
+     background-color: ${props.brightMode ? COLORS.lightGray : COLORS.black}; 
   `};
 
   ${props => !props.active && `
