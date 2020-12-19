@@ -127,7 +127,7 @@ const ShiftEditorModal = ({ brightMode, shiftObj, employeesList }) => {
         </ShiftEditorHeader>
         <ShiftEditorBody>
           <EmployeesCount isFull={shiftObj.CompanyShiftEmployee.length === shiftObj.employeeAmount}>
-            <p><FontAwesomeIcon style={{ width: '30px' }} icon={shiftObj.CompanyShiftEmployee.length === shiftObj.employeeAmount ? faCheckCircle : faExclamationTriangle} />{shiftObj.CompanyShiftEmployee.length}/{shiftObj.employeeAmount} employees</p>
+            <p><FontAwesomeIcon icon={shiftObj.CompanyShiftEmployee.length === shiftObj.employeeAmount ? faCheckCircle : faExclamationTriangle} />{shiftObj.CompanyShiftEmployee.length}/{shiftObj.employeeAmount} employees</p>
           </EmployeesCount>
           <EmployeesContainer>
             {employeesList ? employeesList.map((employee) => {
@@ -251,6 +251,13 @@ const ShiftEditorActions = styled.div`
 const EmployeesCount = styled.div`
   color: ${({ isFull }) => isFull ? COLORS.green : COLORS.red};
   font-weight: ${({ isFull }) => isFull ? 'bold' : 'thin'};
+
+  p {
+    svg {
+      width: 15px;
+      margin-right: 5px;
+    }
+  }
 `;
 
 const EmployeeCard = styled.div`
@@ -273,6 +280,7 @@ const EmployeeCard = styled.div`
 
   p {
     margin: auto .5rem;
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
 
     svg {
       max-width: 15px;
