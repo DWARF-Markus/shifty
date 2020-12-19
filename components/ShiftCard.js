@@ -160,7 +160,7 @@ const ShiftCard = ({ brightMode, employeesList, shift, isAdmin, userId, loginDat
       <PlaceholderWrapper>
         {spotsLeft ? spotsLeft.map(() => {
           return (
-            <EmployeeEntryPlaceholder />
+            <EmployeeEntryPlaceholder brightMode={brightMode} />
           )
         }) : ''}
       </PlaceholderWrapper>
@@ -185,6 +185,9 @@ const Wrapper = styled.div`
   margin: .3rem;
   border-radius: 5px;
   pointer-events: ${({ isFull, isAdmin }) => isFull && !isAdmin ? 'none' : 'all'};
+  border-top: 1px solid ${COLORS.darkGray};
+  border-right: 1px solid ${COLORS.darkGray};
+  border-bottom: 1px solid ${COLORS.darkGray};
 
   ${props => props.isAdmin && `
      border-left: 5px solid ${props.isFull ? COLORS.green : COLORS.red}; 
@@ -229,8 +232,9 @@ const Wrapper = styled.div`
     }
   } 
 
-  background-color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.orange : COLORS.lightGray};
-  color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black};
+  background-color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.orange : 'transparent'};
+  /* color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black}; */
+  color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
   opacity: ${({ isOver }) => isOver ? '0.7' : '1'};
   transition: .2s ease;
   text-align: center;
@@ -249,7 +253,8 @@ const Wrapper = styled.div`
 
   .title {
     text-align: center;
-    color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black};
+    /* color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black}; */
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     font-size: 9px;
     font-weight: 800;
     margin-left: 11px;
@@ -313,7 +318,7 @@ const EmployeeEntryPlaceholder = styled.div`
   height: 25px;
   border: 1px solid ${COLORS.darkGray};
   border-radius: 50%;
-  background-color: ${COLORS.white};
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
   z-index: 1;
   margin-right: -5px;
 `;

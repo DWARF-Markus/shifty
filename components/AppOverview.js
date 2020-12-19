@@ -164,7 +164,7 @@ export default function AppOverview({ state }) {
               {employees ? employees.map((employee) => {
                 if (employee.acceptedCompany) {
                   return (
-                    <EmployeeCard key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} vacations={employee.EmployeeVacation} />
+                    <EmployeeCard brightMode={state.toggleLightBright} key={employee.id} id={employee.id} firstName={employee.firstName} lastName={employee.lastName} image={employee.profileImage} vacations={employee.EmployeeVacation} />
                   )
                 }
               }) : ''}
@@ -185,7 +185,7 @@ export default function AppOverview({ state }) {
                   {state.shifts.map((shift) => {
                     if (format(new Date(shift.startTime), 'iiii') === day.dayName && day.active && format(new Date(day.trueDate), 'dd/MMM') === format(new Date(shift.startTime), 'dd/MMM')) {
                       return (
-                        <ShiftCard loginData={state.loginData} userId={state.loginData.id} companyId={state.loginData.companyId} isAdmin={state.isAdmin} key={shift.id} employeesList={employees} shift={shift} />
+                        <ShiftCard brightMode={state.toggleLightBright} loginData={state.loginData} userId={state.loginData.id} companyId={state.loginData.companyId} isAdmin={state.isAdmin} key={shift.id} employeesList={employees} shift={shift} />
                       );
                     }
                   })}
