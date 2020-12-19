@@ -233,7 +233,8 @@ const Wrapper = styled.div`
     }
   } 
 
-  background-color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.orange : 'transparent'};
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : 'black'};
+  background-color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.orange : 'none'};
   /* color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black}; */
   color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
   opacity: ${({ isOver }) => isOver ? '0.7' : '1'};
