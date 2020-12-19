@@ -70,6 +70,7 @@ const ConceptCard = styled.div`
     width: 100%;
     object-fit: cover;
     opacity: .8;
+    border-bottom: 1px solid ${COLORS.darkGray};
   }
 
   h4 {
