@@ -1,5 +1,6 @@
 import Layout from '../components/Layout';
 import HomeHero from '../components/HomeHero';
+import HomeConceptDescription from '../components/HomeConceptDescription';
 import { useQuery } from 'react-query';
 import { motion } from 'framer-motion';
 
@@ -42,6 +43,7 @@ export default function HomePage() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Layout>
         <HomeHero />
+        <HomeConceptDescription />
       </Layout>
     </motion.div>
   )
