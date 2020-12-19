@@ -16,6 +16,7 @@ export default async function (req, res) {
           email: companyData.email,
           password: hash,
           days: companyData.days,
+          profileImage: '',
           CompanySize: {
             create: [
               { size: companyData.size }

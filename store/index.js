@@ -313,7 +313,14 @@ const reducer = (state = initialState, action) => {
           }
         })
       }
-
+    case 'SET_LOGIN_DAYS':
+      return {
+        ...state,
+        loginData: {
+          ...state.loginData,
+          days: action.payload
+        }
+      }
     default:
       return state
   }
