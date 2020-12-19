@@ -144,6 +144,13 @@
     {
       "tag": "CreateField",
       "model": "Company",
+      "field": "profileImage",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Company",
       "field": "CompanyType",
       "type": "CompanyType",
       "arity": "List"

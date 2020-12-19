@@ -12,7 +12,9 @@ export default function AppSettings() {
   const [loading, setLoading] = useState(false);
   const [firstNameChanged, setFirstNameChanged] = useState(false);
   const [lastNameChanged, setLastNameChanged] = useState(false);
+  const [companyNameChanged, setCompanyNameChanged] = useState(false);
   const [imageChanged, setImageChanged] = useState(false);
+  const [daysLoading, setDaysLoading] = useState(true);
 
   const dispatch = useDispatch();
   const GET_STATE = useSelector((state) => state);
@@ -20,6 +22,19 @@ export default function AppSettings() {
   useEffect(() => {
     if (GET_STATE.loginData.profileImage) {
       setImage(GET_STATE.loginData.profileImage);
+    }
+
+    if (GET_STATE.isAdmin) {
+      GET_STATE.loginData.days.split('').map((day, index) => {
+        if (index === 0) dispatch({ type: 'SET_MONDAY', payload: parseInt(day) });
+        if (index === 1) dispatch({ type: 'SET_TUESDAY', payload: parseInt(day) });
+        if (index === 2) dispatch({ type: 'SET_WEDNESDAY', payload: parseInt(day) });
+        if (index === 3) dispatch({ type: 'SET_THURSDAY', payload: parseInt(day) });
+        if (index === 4) dispatch({ type: 'SET_FRIDAY', payload: parseInt(day) });
+        if (index === 5) dispatch({ type: 'SET_SATURDAY', payload: parseInt(day) });
+        if (index === 6) dispatch({ type: 'SET_SUNDAY', payload: parseInt(day) });
+      })
+      setDaysLoading(false);
     }
   }, [])
 
@@ -60,8 +75,15 @@ export default function AppSettings() {
     })
   };
 
+  const handleCompanyName = (e) => {
+    setCompanyNameChanged(true);
+    dispatch({
+      type: 'SET_COMPANY_NAME',
+      payload: e.target.value
+    })
+  }
+
   const handleSave = async () => {
-    console.log(GET_STATE.loginData.id);
     await fetch('/api/updateuser', {
       method: 'PUT',
       headers: {
@@ -92,20 +114,79 @@ export default function AppSettings() {
       })
   }
 
+  const handleSaveAdmin = async () => {
+
+    const newOpeningDays = `${GET_STATE.monday ? 1 : 0}${GET_STATE.tuesday ? 1 : 0}${GET_STATE.wednesday ? 1 : 0}${GET_STATE.thursday ? 1 : 0}${GET_STATE.friday ? 1 : 0}${GET_STATE.saturday ? 1 : 0}${GET_STATE.sunday ? 1 : 0}`;
+
+    await fetch('/api/updateadmin', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify({
+        data: {
+          id: GET_STATE.loginData.id,
+          name: companyNameChanged ? GET_STATE.companyName : GET_STATE.loginData.name,
+          days: newOpeningDays,
+          image: imageChanged ? image : GET_STATE.loginData.profileImage
+        }
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 200) {
+          dispatch({
+            type: 'SET_LOGIN_DAYS',
+            payload: newOpeningDays
+          })
+          dispatch({
+            type: 'SET_POP_UP',
+            payload: 'Profile updated!'
+          });
+        } else {
+          dispatch({
+            type: 'SET_POP_UP_ERROR',
+            payload: 'Something went wrong! Try again later',
+          });
+        }
+      })
+  }
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <SettingsWrapper>
         {GET_STATE.isAdmin ? (
           <>
-              <h3>Settings</h3>
-              <h4>Opening days</h4>
-              <CheckBox title={'Monday'} index={0} setter={'SET_MONDAY'} getter={'monday'} />
-              <CheckBox title={'Tuesday'} index={1} setter={'SET_TUESDAY'} getter={'tuesday'} />
-              <CheckBox title={'Wednesday'} index={2} setter={'SET_WEDNESDAY'} getter={'wednesday'} />
-              <CheckBox title={'Thursday'} index={3} setter={'SET_THURSDAY'} getter={'thursday'} />
-              <CheckBox title={'Friday'} index={4} setter={'SET_FRIDAY'} getter={'friday'} />
-              <CheckBox title={'Saturday'} index={5} setter={'SET_SATURDAY'} getter={'saturday'} />
-              <CheckBox title={'Sunday'} index={6} setter={'SET_SUNDAY'} getter={'sunday'} />
+            <h3>Settings</h3>
+            <h4>Change company name</h4>
+            <span>Current: {GET_STATE.loginData.name}</span>
+            <input placeholder="First name" type="text" onChange={(e) => handleCompanyName(e)} />
+            <h4>Opening days</h4>
+            {daysLoading ? <p>Loading opening days...</p> : (
+              <>
+                <CheckBox title={'Monday'} index={0} setter={'SET_MONDAY'} getter={'monday'} />
+                <CheckBox title={'Tuesday'} index={1} setter={'SET_TUESDAY'} getter={'tuesday'} />
+                <CheckBox title={'Wednesday'} index={2} setter={'SET_WEDNESDAY'} getter={'wednesday'} />
+                <CheckBox title={'Thursday'} index={3} setter={'SET_THURSDAY'} getter={'thursday'} />
+                <CheckBox title={'Friday'} index={4} setter={'SET_FRIDAY'} getter={'friday'} />
+                <CheckBox title={'Saturday'} index={5} setter={'SET_SATURDAY'} getter={'saturday'} />
+                <CheckBox title={'Sunday'} index={6} setter={'SET_SUNDAY'} getter={'sunday'} />
+              </>
+            )}
+            <h4>Choose company logo</h4>
+            <input
+              type="file"
+              name="file"
+              onChange={(e) => handleImageUpload(e)}
+            />
+            {loading ? <p>Loading image...</p> : (
+              <div>
+                <img src={image} style={{ width: '120px', marginTop: '15px' }} />
+              </div>
+            )}
+            <div>
+              <button onClick={() => handleSaveAdmin()} className="btn--primary">Save</button>
+            </div>
           </>
         ) : (
             <>
