@@ -61,7 +61,7 @@ export default function AppInvite() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <InviteWrapper>
+      <InviteWrapper brightMode={GET_STATE.toggleLightBright}>
         <h3>Invite people to your workspace</h3>
         <InviteSearchWrapper>
           <input className="shifty__search" onChange={(e) => handleUsersSearch(e)} value={query} type="search" placeholder="Search users ..." />
@@ -72,7 +72,7 @@ export default function AppInvite() {
             )}
           </SearchResults>
         </InviteSearchWrapper>
-        <InviteOverview>
+        <InviteOverview brightMode={GET_STATE.toggleLightBright}>
           <OverviewHead>
             <p>Name</p>
             <p>Email</p>
@@ -96,6 +96,7 @@ export default function AppInvite() {
 
 const InviteWrapper = styled.div`
   h3 {
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white}; 
     font-weight: 300;
     line-height: 1.2;
   }
@@ -142,7 +143,8 @@ const InviteOverview = styled.div`
   width: 100%;
   min-height: 10rem;
   height: auto;
-  background: ${COLORS.white};
+  background: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
+  color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
   border-radius: 5px;
   margin-top: 2rem;
   padding: 0 10px;

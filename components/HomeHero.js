@@ -2,16 +2,16 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { COLORS, SIZES, BP, BUTTON } from '../styles/globals';
 
-const HomeHero = () => {
+const HomeHero = ({ brightMode }) => {
   return (
     <HomeHeroWrapper image={require('../assets/logo-shifty-orange.svg')}>
       <HeroText>
         <div>
           <h1>Let's get you sorted</h1>
           <p>Sign up to Shifty and take full control over your workspace!</p>
-            <Link href="/signup">
-              <HeroButton>Sign up</HeroButton>
-            </Link>
+          <Link href="/signup">
+            <HeroButton>Sign up</HeroButton>
+          </Link>
         </div>
       </HeroText>
       <img src={require('../assets/bar-image-two.jpg')} alt="shifty" style={{ width: '100%' }} />

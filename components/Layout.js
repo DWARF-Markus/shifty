@@ -3,14 +3,19 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import PopUpBanner from './PopUpBanner';
+import { COLORS, BP } from '../styles/globals';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Layout = (props) => {
 
+  const [brightMode, setBrightMode] = useState(true);
   const [session, loading] = useSession();
 
   const dispatch = useDispatch();
+  const GET_TOGGLE = useSelector((state) => state.toggleLightBright);
 
   useEffect(async () => {
     if (session && session.hasOwnProperty('user')) {
@@ -48,6 +53,13 @@ const Layout = (props) => {
     }
   }, []);
 
+  const handleToggleClick = () => {
+    setBrightMode(!brightMode);
+    dispatch({
+      type: 'SET_LIGHT_TOGGLE',
+    })
+  }
+
   return (
     <div>
       <Head>
@@ -55,7 +67,8 @@ const Layout = (props) => {
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
-      <PageWrapper>
+      <PageWrapper brightTheme={GET_TOGGLE}>
+        <LightToggle brightTheme={GET_TOGGLE} onClick={() => handleToggleClick()}><FontAwesomeIcon style={{ width: '10px' }} icon={faLightbulb} /></LightToggle>
         {props.children}
         <PopUpBanner />
       </PageWrapper>
@@ -66,6 +79,52 @@ const Layout = (props) => {
 const PageWrapper = styled.div`
   min-height: 100vh;
   padding: 75px 0 0rem 0;
+  background-color: ${({ brightTheme }) => brightTheme ? COLORS.white : COLORS.black}
+`;
+
+const LightToggle = styled.div`
+  cursor: pointer;
+  position: fixed;
+  bottom: 7.7rem;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  z-index: 10000;
+  background-color: ${({ brightTheme }) => brightTheme ? COLORS.orange : COLORS.black};
+  height: 2rem;
+  right: 1.5rem;
+  width: 2rem;
+  border-radius: 50%;
+  animation: slidein 1.2s ease;
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
+
+  @media (min-width: ${BP.small}) {
+    bottom: 4.7rem;
+  }
+
+  svg {
+      color: ${COLORS.white};
+    }
+
+  :hover {
+    background-color: ${COLORS.white};
+
+    svg {
+      color: ${COLORS.orange};
+    }
+  }
+
+  @keyframes slidein {
+    0% {
+      transform: translate(10rem, 0);
+    }
+    66% {
+      transform: translate(10rem, 0);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
 `;
 
 export default Layout;

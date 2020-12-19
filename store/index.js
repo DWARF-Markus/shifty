@@ -40,6 +40,7 @@ const initialState = {
   vacationStart: '',
   vacationEnd: '',
   notifications: 0,
+  toggleLightBright: true,
 }
 
 const reducer = (state = initialState, action) => {
@@ -320,6 +321,11 @@ const reducer = (state = initialState, action) => {
           ...state.loginData,
           days: action.payload
         }
+      }
+    case 'SET_LIGHT_TOGGLE':
+      return {
+        ...state,
+        toggleLightBright: !state.toggleLightBright
       }
     default:
       return state

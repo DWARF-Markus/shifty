@@ -1,23 +1,23 @@
 import styled from 'styled-components';
 import { BP, COLORS } from '../styles/globals';
 
-const HomeConceptDescription = () => {
+const HomeConceptDescription = ({ brightMode }) => {
   return (
-    <Wrapper>
+    <Wrapper brightMode={brightMode}>
       <h3>Why Shifty?</h3>
       <p className="subheadline">Shifty allows you to get full control over your workplace - and make it joyful for your employees to get an overview over their shifts! Shifty will be your platform to handle your employees, their shifts, their vacations, and much more!</p>
       <div className="content">
-        <ConceptCard>
+        <ConceptCard brightMode={brightMode}>
           <img src={require('../assets/home-image.png')} alt="shifty" style={{ width: '100%' }} />
           <h4>Get an overview</h4>
           <p>Shifty allows you to view all your shifts and its employees in a minimalistic and elegant weekly calendar view.</p>
         </ConceptCard>
-        <ConceptCard>
+        <ConceptCard brightMode={brightMode}>
           <img src={require('../assets/home-image-2.png')} alt="shifty" style={{ width: '100%' }} />
           <h4>Help your employees</h4>
           <p>By using Shifty you'll improve the communication of your workspace so employees always will be notified regarding shifts, vacations and much more.</p>
         </ConceptCard>
-        <ConceptCard>
+        <ConceptCard brightMode={brightMode}>
           <img src={require('../assets/home-image-3.png')} alt="shifty" style={{ width: '100%' }} />
           <h4>Easy to use</h4>
           <p>Shifty is build to be as easy as possible to use for managing shifts. Our goal is making shift management the easiest part of a day.</p>
@@ -28,13 +28,13 @@ const HomeConceptDescription = () => {
 }
 
 const Wrapper = styled.div`
-  padding: 1rem;
-  margin: 0 0 5rem 0;
+  padding: 1rem 1rem 5rem 1rem;
+  background: ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
 
   h3 {
     margin: 4rem 0 0;
     font-weight: 100;
-    color: ${COLORS.orange};
+    color: ${({ brightMode }) => brightMode ? COLORS.orange : COLORS.white};
     text-align: center;
   }
 
@@ -43,7 +43,7 @@ const Wrapper = styled.div`
     font-size: 18px;
     line-height: 30px;
     text-align: center;
-    color: ${COLORS.black};
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
   }
 
   .content {
@@ -60,27 +60,29 @@ const Wrapper = styled.div`
 
 const ConceptCard = styled.div`
   text-align: center;
-  border-radius: 5px;
-  border: 1px solid #E3E3E3;
-  background-color: ${COLORS.white};
+  border-radius: 10px;
+  border: 1px solid ${({ brightMode }) => brightMode ? '#E3E3E3' : 'black'};
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
   img {
     height: 18rem;
     width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     object-fit: cover;
     opacity: .8;
     border-bottom: 1px solid ${COLORS.darkGray};
   }
 
   h4 {
-      color: ${COLORS.black};
+      color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
       font-weight: 400;
       font-size: 25px;
     }
 
   p {
-    color: ${COLORS.black};
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     padding: 1rem;
   }
 `;

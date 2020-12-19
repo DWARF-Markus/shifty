@@ -3,7 +3,7 @@ import { COLORS } from '../styles/globals';
 import { useDrag } from 'react-dnd';
 import { ItemTypes } from '../utils/items';
 
-const EmployeeCard = ({ id, companyId, firstName, lastName, image, vacations }) => {
+const EmployeeCard = ({ brightMode, id, companyId, firstName, lastName, image, vacations }) => {
 
   const [{ isDragging }, drag] = useDrag({
     item: {
@@ -21,7 +21,7 @@ const EmployeeCard = ({ id, companyId, firstName, lastName, image, vacations }) 
   });
 
   return (
-    <Wrapper isDragging={isDragging} ref={drag}>
+    <Wrapper brightMode={brightMode} isDragging={isDragging} ref={drag}>
       <img src={image ? image : require('../assets/icon-dot-orange.svg')} alt="shifty" style={{ width: '20px', height: '20px', objectFit: 'cover', borderRadius: '50%' }} />
       <p>{firstName} {lastName}</p>
     </Wrapper>
@@ -29,7 +29,8 @@ const EmployeeCard = ({ id, companyId, firstName, lastName, image, vacations }) 
 }
 
 const Wrapper = styled.div`
-  background-color: ${COLORS.white};
+  border: 1px solid ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
+  color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
   display: flex;
   margin: 5px;
   padding: 3px 6px;
@@ -39,7 +40,8 @@ const Wrapper = styled.div`
   transition: .15s ease;
   box-shadow: none;
   border-radius: 5px;
-  opacity: ${({ isDragging }) => isDragging ? '.4' : '.9'};
+  opacity: ${({ isDragging }) => isDragging ? '.7' : '.9'};
+  background: ${({ isDragging }) => isDragging ? COLORS.darkGray : 'transparent'};
 
   &:hover {
     transform: scale(1.07);

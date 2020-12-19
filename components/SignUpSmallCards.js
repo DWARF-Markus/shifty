@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SIZES, COLORS, BP } from '../styles/globals';
 import styled from 'styled-components';
 
-const SignUpSmallCards = ({ businessTypes }) => {
+const SignUpSmallCards = ({ brightMode, businessTypes }) => {
 
   const dispatch = useDispatch();
   const [selected, setSelected] = useState('');
@@ -15,7 +15,7 @@ const SignUpSmallCards = ({ businessTypes }) => {
       setSelected(GET_BUSINESS_TYPE)
     }
   }, [])
-  
+
   const handleSelect = (val) => {
     setSelected(val);
     SET_BUSINESS_TYPE(val);
@@ -32,10 +32,10 @@ const SignUpSmallCards = ({ businessTypes }) => {
     <>
       {businessTypes.map((entry, index) => {
         return (
-          <Card active={selected === entry.name} key={index} onClick={() => handleSelect(entry.name)}>
+          <Card brightMode={brightMode} active={selected === entry.name} key={index} onClick={() => handleSelect(entry.name)}>
             <div>
               <FontAwesomeIcon icon={entry.icon} />
-              <p>{ entry.name }</p>
+              <p>{entry.name}</p>
             </div>
           </Card>
         )
@@ -55,7 +55,7 @@ const Card = styled.div`
     align-content: center;
     justify-items: center;
     color: ${COLORS.darkGray};
-    border: 2px solid ${COLORS.lightGray};
+    border: 2px solid ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.darkGray};
     cursor: pointer;
     transition: .2s ease;
     ${props => props.active && { backgroundColor: COLORS.orange + '!important' }}
@@ -76,10 +76,13 @@ const Card = styled.div`
   }
 
   &:hover {
-    background-color: ${COLORS.lightGray};
+    background-color: ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.darkGray};
     div {
+      svg {
+        color: ${({ brightMode }) => brightMode ? COLORS.darkGray : COLORS.black};
+      }
       p {
-        color: ${COLORS.darkGray};
+        color: ${COLORS.black};
       }
     }
   }

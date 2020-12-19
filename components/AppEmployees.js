@@ -46,7 +46,7 @@ export default function AppEmployee() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <EmployeesWrapper>
+      <EmployeesWrapper brightMode={GET_STATE.toggleLightBright}>
         <h3>Employees {submitting ? <span><FontAwesomeIcon className="spinner-animation" width={'15px'} icon={faSpinner} /></span> : ''}</h3>
         {loading ? <EmployeesLoader><FontAwesomeIcon className="spinner-animation" width={'30px'} icon={faSpinner} /></EmployeesLoader> : (
           <EmployeesContainer>
@@ -54,7 +54,7 @@ export default function AppEmployee() {
               return (
                 <EmployeeWrapper>
                   <EmployeeNotAccepted accepted={employee.acceptedCompany}>Not accepted yet</EmployeeNotAccepted>
-                  <Employee accepted={employee.acceptedCompany}>
+                  <Employee brightMode={GET_STATE.toggleLightBright} accepted={employee.acceptedCompany}>
                     <EmployeeAdded accepted={employee.acceptedCompany}><p>Added {formatDistanceToNow(new Date(employee.acceptedCompanyDateTime))} ago</p></EmployeeAdded>
                     <EmployeeRemoveBtn onClick={() => handleEmployeeRemove(employee.id)}><FontAwesomeIcon icon={faTimes} /></EmployeeRemoveBtn>
                     <img src={employee.profileImage ? employee.profileImage : require('../assets/icon-dot-orange.svg')} alt="shifty" />
@@ -75,6 +75,7 @@ export default function AppEmployee() {
 
 const EmployeesWrapper = styled.div`
   h3 {
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     font-weight: 300;
     line-height: 1.2;
   }
@@ -108,7 +109,8 @@ const EmployeeWrapper = styled.div`
 const Employee = styled.div`
   width: 100%;
   border-radius: 5px;
-  background-color: ${COLORS.white};
+  border: ${({ brightMode }) => brightMode ? 'none' : '1px solid #242424'};
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
   padding: 25px 5px 5px;
   display: flex;
@@ -117,6 +119,10 @@ const Employee = styled.div`
   transition: .15s ease;
   pointer-events: ${({ accepted }) => accepted ? 'all' : 'none'};
   opacity: ${({ accepted }) => accepted ? '1' : '.15'};
+
+  p {
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
+  }
 
   img {
     width: 65px;

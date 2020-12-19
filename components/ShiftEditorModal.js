@@ -7,7 +7,7 @@ import { faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-sv
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector, useDispatch } from 'react-redux';
 
-const ShiftEditorModal = ({ shiftObj, employeesList }) => {
+const ShiftEditorModal = ({ brightMode, shiftObj, employeesList }) => {
 
   const [employees, setEmployees] = useState([]);
   const [active, setActive] = useState(false);
@@ -106,13 +106,13 @@ const ShiftEditorModal = ({ shiftObj, employeesList }) => {
       transition={{ duration: 4 }}
       style={{ width: '100%', display: 'grid', alignItems: 'center', justifyItems: 'center' }}
     >
-      <ShiftEditorContainer>
-        <ShiftEditorHeader>
+      <ShiftEditorContainer brightMode={brightMode}>
+        <ShiftEditorHeader brightMode={brightMode}>
           <div>
             <p>{format(new Date(shiftObj.startTime), 'dd MMMM yyyy @ HH:mm')} to {format(new Date(shiftObj.endTime), 'HH:mm')}</p>
             <h1>{shiftObj.title}</h1>
           </div>
-          <Employees>
+          <Employees brightMode={brightMode}>
             {employeesList ? employeesList.map((employee) => {
               if (employees.includes(employee.id)) {
                 return (
@@ -127,7 +127,7 @@ const ShiftEditorModal = ({ shiftObj, employeesList }) => {
         </ShiftEditorHeader>
         <ShiftEditorBody>
           <EmployeesCount isFull={shiftObj.CompanyShiftEmployee.length === shiftObj.employeeAmount}>
-            <p><FontAwesomeIcon style={{ width: '30px' }} icon={shiftObj.CompanyShiftEmployee.length === shiftObj.employeeAmount ? faCheckCircle : faExclamationTriangle} />{shiftObj.CompanyShiftEmployee.length}/{shiftObj.employeeAmount} employees</p>
+            <p><FontAwesomeIcon icon={shiftObj.CompanyShiftEmployee.length === shiftObj.employeeAmount ? faCheckCircle : faExclamationTriangle} />{shiftObj.CompanyShiftEmployee.length}/{shiftObj.employeeAmount} employees</p>
           </EmployeesCount>
           <EmployeesContainer>
             {employeesList ? employeesList.map((employee) => {
@@ -138,7 +138,7 @@ const ShiftEditorModal = ({ shiftObj, employeesList }) => {
                     variants={variants}
                     transition={{ duration: 4 }}
                   >
-                    <EmployeeCard>
+                    <EmployeeCard brightMode={brightMode}>
                       <img src={employee.profileImage ? employee.profileImage : require('../assets/icon-dot-orange.svg')} />
                       <div>
                         <p>{employee.firstName} {employee.lastName}</p>
@@ -151,7 +151,7 @@ const ShiftEditorModal = ({ shiftObj, employeesList }) => {
             }) : ''}
           </EmployeesContainer>
         </ShiftEditorBody>
-        <ShiftEditorActions>
+        <ShiftEditorActions brightMode={brightMode}>
           <button onClick={() => handleShiftDelete()} class="btn--danger">Delete shift</button>
         </ShiftEditorActions>
       </ShiftEditorContainer >
@@ -164,8 +164,8 @@ const ShiftEditorContainer = styled.div`
   max-width: 45rem;
   min-height: 30rem;
   position: absolute;
-  background-color: white;
-  border: 1px solid ${COLORS.lightGray};
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
+  border: 1px solid ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
   padding: 1rem;
 `;
 
@@ -183,10 +183,14 @@ const ShiftEditorHeader = styled.div`
   }
 
   p {
-    color: ${COLORS.black};
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     margin: 0;
     font-size: 11px;
     opacity: .6;
+  }
+
+  h1 {
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
   }
 `;
 
@@ -236,8 +240,9 @@ const ShiftEditorActions = styled.div`
   position: absolute;
   width: calc(100% - 2rem);
   bottom: 1rem;
-
+  
   button {
+    background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
     float: right;
   }
 
@@ -246,6 +251,13 @@ const ShiftEditorActions = styled.div`
 const EmployeesCount = styled.div`
   color: ${({ isFull }) => isFull ? COLORS.green : COLORS.red};
   font-weight: ${({ isFull }) => isFull ? 'bold' : 'thin'};
+
+  p {
+    svg {
+      width: 15px;
+      margin-right: 5px;
+    }
+  }
 `;
 
 const EmployeeCard = styled.div`
@@ -268,6 +280,7 @@ const EmployeeCard = styled.div`
 
   p {
     margin: auto .5rem;
+    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
 
     svg {
       max-width: 15px;
@@ -277,7 +290,7 @@ const EmployeeCard = styled.div`
 
   button {
     height: 60px;
-    background: ${COLORS.white};
+    background: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
     color: ${COLORS.red};
     transition: .15s ease;
   }

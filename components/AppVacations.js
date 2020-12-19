@@ -87,17 +87,17 @@ export default function AppVacations() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <VacationsWrapper>
-        <VacationsTop>
+        <VacationsTop brightMode={GET_STATE.toggleLightBright}>
           <h3>{GET_STATE.isAdmin ? 'Vacations' : 'Register your vacation'}</h3>
           {GET_STATE.isAdmin ? <></> : (
             <>
-              <InputField type="date" label="Start date" getter="vacationStart" setter="SET_VACATION_START" />
-              <InputField type="date" label="End date" getter="vacationEnd" setter="SET_VACATION_END" />
+              <InputField brightMode={GET_STATE.toggleLightBright} type="date" label="Start date" getter="vacationStart" setter="SET_VACATION_START" />
+              <InputField brightMode={GET_STATE.toggleLightBright} type="date" label="End date" getter="vacationEnd" setter="SET_VACATION_END" />
               <button onClick={() => handleVacationSubmit()} className="btn--primary">Submit</button>
             </>
           )}
         </VacationsTop>
-        <VacationOverview>
+        <VacationOverview brightMode={GET_STATE.toggleLightBright}>
           {GET_STATE.isAdmin && vacations ? (
             <>
               <AdminOverviewHead>
@@ -178,16 +178,18 @@ const VacationsWrapper = styled.div``;
 
 const VacationsTop = styled.div`
   h3 {
-        font-weight: 300;
+      font-weight: 300;
       line-height: 1.2;
+      color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     }
   `;
 
 const VacationOverview = styled.div`
-    width: 100%;
-    max-width: 45rem;
-  background-color: ${COLORS.white};
-      margin-top: 1rem;
+  width: 100%;
+  max-width: 45rem;
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
+  color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
+  margin-top: 1rem;
   border: 1px solid ${COLORS.darkGray};
     `;
 

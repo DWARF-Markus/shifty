@@ -10,7 +10,7 @@ import InputField from './InputField';
 import { faCoffee, faBeer, faPizzaSlice, faHotel, faClinicMedical, faQuestionCircle, faUserFriends, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 
-const SignUpSheet = ({ data, step, handlePrevClick, handleNextClick, loading }) => {
+const SignUpSheet = ({ brightMode, data, step, handlePrevClick, handleNextClick, loading }) => {
 
   const GET_STATE = useSelector((state) => state);
 
@@ -79,12 +79,12 @@ const SignUpSheet = ({ data, step, handlePrevClick, handleNextClick, loading }) 
           <p>{data[step - 1].stepHead}</p>
           <h3>{data[step - 1].stepTitle}</h3>
         </SignUpSidebar>
-        <SignUpContent loading={loading ? 1 : 0}>
+        <SignUpContent brightMode={brightMode} loading={loading ? 1 : 0}>
           <SignUpContentText loading={loading ? 1 : 0}>{data[step - 1].stepDescribtion}{data[step - 1].required ? <span>*</span> : ''}</SignUpContentText>
 
           {step === 1 ?
             <StepOne loading={loading ? 1 : 0}>
-              <SignUpSmallCards businessTypes={businessTypes} />
+              <SignUpSmallCards brightMode={brightMode} businessTypes={businessTypes} />
             </StepOne>
             : ''}
 
@@ -108,10 +108,10 @@ const SignUpSheet = ({ data, step, handlePrevClick, handleNextClick, loading }) 
 
           {step === 4 ?
             <>
-              <InputField type="text" label="Company name" setter={'SET_COMPANY_NAME'} getter={'companyName'} />
-              <InputField type="email" label="Email" setter={'SET_EMAIL'} getter={'email'} />
-              <InputField type="password" label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
-              <InputField type="password" label="Confirm password" setter={'SIGN_UP_PASSWORD_CONFIRM'} getter={'signUpPasswordConfirm'} />
+              <InputField brightMode={brightMode} type="text" label="Company name" setter={'SET_COMPANY_NAME'} getter={'companyName'} />
+              <InputField brightMode={brightMode} type="email" label="Email" setter={'SET_EMAIL'} getter={'email'} />
+              <InputField brightMode={brightMode} type="password" label="Password" setter={'SIGN_UP_PASSWORD'} getter={'signUpPassword'} />
+              <InputField brightMode={brightMode} type="password" label="Confirm password" setter={'SIGN_UP_PASSWORD_CONFIRM'} getter={'signUpPasswordConfirm'} />
             </>
             : ''}
 
@@ -170,7 +170,7 @@ const SignUpSidebar = styled.div`
 `;
 
 const SignUpContent = styled.div`
-  background-color: ${COLORS.white};
+  background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
   color: ${COLORS.black};
   width: 100%;
   border-bottom-right-radius: 5px;
