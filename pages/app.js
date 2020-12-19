@@ -34,7 +34,7 @@ const App = () => {
           {GET_STATE.activeAppPage === 'Employees' ? <AppEmployees /> : ''}
           {GET_STATE.activeAppPage === 'Templates' ? <AppTemplates /> : ''}
           {GET_STATE.activeAppPage === 'Vacations' ? <AppVacations /> : ''}
-          {GET_STATE.activeAppPage === 'Notifications' ? <AppNotifications /> : ''}
+          {GET_STATE.activeAppPage === 'Notifications' ? <AppNotifications admin={GET_STATE.isAdmin} notifications={GET_STATE.loginData.CompanyEmployeeNotifications} /> : ''}
           {GET_STATE.activeAppPage === 'Settings' ? <AppSettings /> : ''}
           {GET_STATE.activeAppPage === 'Invite' ? <AppInvite /> : ''}
         </AppContent>
