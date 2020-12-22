@@ -108,7 +108,7 @@ const HomeHero = ({ brightMode }) => {
 }
 
 const HomeHeroWrapper = styled.div`
-  height: 23rem;
+  height: 43rem;
   background: ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
 
   @media (min-width: ${BP.small}) {
@@ -119,12 +119,16 @@ const HomeHeroWrapper = styled.div`
 const HeroText = styled.div`
   position: absolute;
   z-index: 3;
-  height: 23rem;
+  top: 10rem;
+  height: 43rem;
   display: grid;
   align-items: center;
   padding: 0 5rem;
 
   div {
+    h1 {
+      line-height: 38px;
+    }
     h1, p {
       color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
     }
@@ -132,6 +136,7 @@ const HeroText = styled.div`
 
   @media (min-width: ${BP.small}) {
     height: 30rem;
+    top: 0;
   }
 `;
 
@@ -155,41 +160,68 @@ const HeroAnimationPackage = styled.div`
 
   img {
     object-fit: cover;
+
+    @media (min-width: ${BP.small}) {
+      opacity: 1;
+    }
   }
 
   .calendar {
-    width: 40rem;
+    width: calc(40rem * 0.55);
     margin-top: 6rem;
     box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1); 
+
+    @media (min-width: ${BP.small}) {
+      width: 40rem;
+    }
   }
 
   .shift {
-    width: 12rem;
+    width: calc(12rem * 0.55);
     position: absolute;
-    margin-top: -12rem;
+    margin-top: -8rem;
+
+    @media (min-width: ${BP.small}) {
+      width: 12rem;
+      margin-top: -12rem;
+    }
   }
 
   .shift-two {
-    width: 8rem;
-    margin-top: -19rem;
+    width: calc(8rem * 0.55);
+    margin-top: -7rem;
+
+    @media (min-width: ${BP.small}) {
+      width: 8rem;
+      margin-top: -19rem;
+    }
   }
 
   .employee-one {
-    width: 9rem;
-    margin-top: -35rem;
+    width: calc(9rem * 0.55);
+    margin-top: -20rem;
     animation-name: floating; 
     animation-duration: 3s; 
     animation-iteration-count: infinite; 
     animation-timing-function: ease-in-out; 
+
+    @media (min-width: ${BP.small}) {
+      width: 9rem;
+      margin-top: -35rem;
+    }
   }
 
   .employee-two {
-    width: 11rem;
+    width: calc(11rem * 0.55);
     margin-top: 1rem;
     animation-name: floating2; 
     animation-duration: 2.3s; 
     animation-iteration-count: infinite; 
     animation-timing-function: ease-in-out; 
+
+    @media (min-width: ${BP.small}) {
+      width: 11rem;
+    }
   }
 
   @keyframes floating { 
