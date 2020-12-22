@@ -15,7 +15,7 @@ const HomeCallToAction = ({ brightMode }) => {
 
 const Wrapper = styled.div`
 
-  background: ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
+  background: ${({ brightMode }) => brightMode ? '#ececec' : COLORS.black};
   color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
 
   h4 {
