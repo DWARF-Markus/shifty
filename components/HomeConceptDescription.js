@@ -29,7 +29,7 @@ const HomeConceptDescription = ({ brightMode }) => {
 
 const Wrapper = styled.div`
   padding: 1rem 1rem 5rem 1rem;
-  background: ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
+  background: ${({ brightMode }) => brightMode ? '#ececec' : COLORS.black};
 
   h3 {
     margin: 4rem 0 0;
