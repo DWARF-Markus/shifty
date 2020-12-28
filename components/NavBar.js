@@ -181,7 +181,7 @@ const NavMobile = styled.div`
   z-index: 10000;
   display: flex;
   padding: 0 ${SIZES.small};
-  background: ${({ brightTheme }) => brightTheme ? COLORS.lightGray : COLORS.black};
+  background: ${({ brightTheme }) => brightTheme ? '#ffffff' : '#1e1e1e'};
   height: 75px;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05), 0 3px 5px rgba(0,0,0,0.1);
 
@@ -193,7 +193,7 @@ const NavMobile = styled.div`
 const NavDesktop = styled.div`
   position: fixed;
   display: none;
-  background: ${({ brightTheme }) => brightTheme ? COLORS.lightGray : COLORS.black};
+  background: ${({ brightTheme }) => brightTheme ? '#ffffff' : '#1e1e1e'};
   color: white;
   z-index: 10000;
   width: 100%;
@@ -265,7 +265,7 @@ const NavMobileMenu = styled.div`
   padding-top: 70px;
   height: 0px;
   position: fixed;
-  background-color: ${({ brightTheme }) => brightTheme ? COLORS.lightGray : COLORS.black};
+  background-color: ${({ brightTheme }) => brightTheme ? '#ffffff' : '#1e1e1e'};
   width: 100%;
   overflow: hidden;
   transition: .3s ease;
