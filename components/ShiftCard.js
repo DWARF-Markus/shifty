@@ -64,7 +64,7 @@ const ShiftCard = ({ brightMode, employeesList, shift, isAdmin, userId, loginDat
       });
       return
     } else {
-      if (employees.length <= shift.employeeAmount) {
+      if (employees.length <= (shift.employeeAmount - 1)) {
         setEmployees(employees.concat([item.id]));
         await fetch('/api/addusertoshift', {
           method: 'POST',

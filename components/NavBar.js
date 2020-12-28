@@ -344,7 +344,7 @@ const NotificationCard = styled.div`
   border-bottom: 1px solid ${({ brightTheme }) => brightTheme ? COLORS.darkGray : '#525252'};
   display: flex;
   position: relative;
-  color: ${({ brightTheme }) => brightTheme ? 'rgba(197, 197, 197, .9)' : 'rgba(0, 0, 0, .7)'};
+  color: ${({ brightTheme }) => brightTheme ? COLORS.darkGray : COLORS.lightGray}; 
 
   ${props => props.active && `
      background-color: ${props.brightTheme ? COLORS.orange : COLORS.orange}; 
@@ -378,6 +378,14 @@ const NotificationCard = styled.div`
       padding: 0;
       font-size: 11px;
       line-height: 14px;
+
+      ${props => props.active && `
+         color: ${props.brightTheme ? COLORS.white : COLORS.white}; 
+     `};
+
+      ${props => !props.active && `
+          color: ${props.brightTheme ? COLORS.darkGray : COLORS.lightGray}; 
+      `};
     } 
   }
 
