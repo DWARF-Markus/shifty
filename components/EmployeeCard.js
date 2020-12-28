@@ -41,7 +41,14 @@ const Wrapper = styled.div`
   box-shadow: none;
   border-radius: 5px;
   opacity: ${({ isDragging }) => isDragging ? '.7' : '.9'};
-  background: ${({ isDragging }) => isDragging ? COLORS.darkGray : 'transparent'};
+
+  ${props => props.brightMode && `
+     background-color: ${props.isDragging ? 'white' : '#e9e9e9'}; 
+  `};
+
+  ${props => !props.brightMode && `
+     background-color: ${props.isDragging ? '#484848' : '#252525'}; 
+  `};
 
   &:hover {
     transform: scale(1.07);

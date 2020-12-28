@@ -191,6 +191,7 @@ const ShiftEditorHeader = styled.div`
 
   h1 {
     color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
+    white-space: pre;
   }
 `;
 
