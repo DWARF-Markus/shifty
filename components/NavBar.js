@@ -371,6 +371,7 @@ const NotificationCard = styled.div`
       font-size: 8px;
       margin: 0;
       padding: 0;
+      color: ${({ brightTheme }) => brightTheme ? COLORS.darkGray : COLORS.lightGray}; 
     }
 
     .content {
@@ -378,6 +379,13 @@ const NotificationCard = styled.div`
       padding: 0;
       font-size: 11px;
       line-height: 14px;
+      ${props => props.active && `
+          color: ${props.brightTheme ? COLORS.white : COLORS.white}; 
+      `};
+
+      ${props => !props.active && `
+          color: ${props.brightTheme ? COLORS.darkGray : COLORS.lightGray}; 
+      `};
     } 
   }
 
