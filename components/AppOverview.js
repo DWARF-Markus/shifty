@@ -5,7 +5,7 @@ import { COLORS, BP } from '../styles/globals';
 import { faSpinner, faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch } from 'react-redux';
-import { addDays, addWeeks, format, getWeek, isToday, startOfWeek } from 'date-fns';
+import { addDays, addWeeks, format, getISOWeek, isToday, startOfWeek } from 'date-fns';
 
 import ShiftForm from './ShiftForm';
 import EmployeeCard from './EmployeeCard';
@@ -37,7 +37,7 @@ export default function AppOverview({ state }) {
       const today = new Date();
       const weekFirstDay = startOfWeek(today, { weekStartsOn: 1 });
 
-      setWeek(getWeek(today, { weekStartsOn: 1 }));
+      setWeek(getISOWeek(today, { weekStartsOn: 1 }));
       setFirstDayOfWeek(weekFirstDay);
 
       days.map((day, index) => {
@@ -74,9 +74,10 @@ export default function AppOverview({ state }) {
 
   const handleNextWeekClick = async () => {
     setFirstDayOfWeek(addWeeks(firstDayOfWeek, 1));
-    setWeek(prev => prev + 1);
-
+    
     const weekFirstDay = startOfWeek(addWeeks(firstDayOfWeek, 1), { weekStartsOn: 1 });
+    
+    setWeek(getISOWeek(weekFirstDay, { weekStartsOn: 1 }));
 
     const days = state.isAdmin ? state.loginData.days.split('') : state.loginData.companyForeign.days.split('');
 
@@ -95,9 +96,10 @@ export default function AppOverview({ state }) {
 
   const handlePrevWeekClick = async () => {
     setFirstDayOfWeek(addWeeks(firstDayOfWeek, -1));
-    setWeek(prev => prev - 1);
 
     const weekFirstDay = startOfWeek(addWeeks(firstDayOfWeek, -1), { weekStartsOn: 1 });
+
+    setWeek(getISOWeek(weekFirstDay, { weekStartsOn: 1 }));
 
     const days = state.isAdmin ? state.loginData.days.split('') : state.loginData.companyForeign.days.split('');
 
