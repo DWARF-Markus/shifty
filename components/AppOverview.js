@@ -248,7 +248,12 @@ const OverviewModal = styled.div`
   z-index: 300;
 `;
 
-const OverviewWrapper = styled.div``;
+const OverviewWrapper = styled.div`
+  -webkit-user-select: none;     
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+`;
 
 const OverviewTop = styled.div`
   display: grid;
@@ -300,17 +305,15 @@ const OverViewPreLoader = styled.div`
 `;
 
 const DayWrapper = styled.div`
-  /* background-color: ${({ active }) => active ? COLORS.white : '#e3e3e3'}; */
   pointer-events: ${({ active }) => active ? 'all' : 'none'};
   height: 25rem;
   width: 100%;
   border-left: 1px solid ${({ brightMode }) => brightMode ? COLORS.darkGray : '#2a2a2a'};
-  /* opacity: ${({ active }) => active ? '1' : '.4'}; */
   display: ${({ active }) => !active ? 'none' : 'block'};
   position: relative;
 
   ${props => props.active && `
-     background-color: ${props.brightMode ? COLORS.lightGray : COLORS.black}; 
+     background-color: ${props.brightMode ? COLORS.white : COLORS.black}; 
   `};
 
   ${props => !props.active && `
@@ -380,6 +383,8 @@ const OverviewButtonWrapper = styled.div`
   transition: .2s ease;
   transform: ${({ active }) => active ? 'rotate(-45deg)' : 'rotate(0deg)'};
   transform-origin: center;
+  pointer-events: ${({ active }) => active ? 'none' : 'all'};
+  cursor: pointer;
 
   button {
     width: 50px;
