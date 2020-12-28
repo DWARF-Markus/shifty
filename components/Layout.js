@@ -79,7 +79,7 @@ const Layout = (props) => {
 const PageWrapper = styled.div`
   min-height: 100vh;
   padding: 75px 0 0rem 0;
-  background-color: ${({ brightTheme }) => brightTheme ? COLORS.lightGray : COLORS.black};
+  background-color: ${({ brightTheme }) => brightTheme ? COLORS.lightGray : '#484848'};
 `;
 
 const LightToggle = styled.div`
