@@ -195,7 +195,8 @@ const Wrapper = styled.div`
  `};
 
   ${props => !props.isAdmin && props.isFull && `
-      border-left: 5px solid ${COLORS.lightGray}; 
+      border-left: 5px solid ${props.brightMode ? COLORS.lightGray : '#484848'}; 
+      opacity: 0.5!important;
   `};
 
   ${props => !props.isAdmin && !props.isFull && `
@@ -203,7 +204,8 @@ const Wrapper = styled.div`
   `};
 
   ${props => props.isAssigned && `
-      border-left: 5px solid ${COLORS.orange}!important
+      border-left: 5px solid ${COLORS.orange}!important;
+      opacity: 1!important;
   `};
 
   ${props => props.shiftLength <= 5 && `
@@ -235,8 +237,15 @@ const Wrapper = styled.div`
 
   background-color: ${({ brightMode }) => brightMode ? COLORS.white : 'black'};
   background-color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.orange : 'none'};
-  /* color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black}; */
-  color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
+
+  ${props => props.isAssigned && `
+      color: ${props.brightMode ? COLORS.white : COLORS.white};
+  `};
+
+  ${props => !props.isAssigned && `
+      color: ${props.brightMode ? COLORS.black : COLORS.white};
+  `};
+
   opacity: ${({ isOver }) => isOver ? '0.7' : '1'};
   transition: .2s ease;
   text-align: center;
@@ -255,10 +264,8 @@ const Wrapper = styled.div`
 
   .title {
     text-align: center;
-    /* color: ${({ isOver, isAssigned }) => isOver || isAssigned ? COLORS.white : COLORS.black}; */
-    color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
-    font-size: 9px;
-    font-weight: 800;
+    font-size: 10px;
+    font-weight: 600;
     margin-left: 11px;
     line-height: 1.3;
   }
@@ -278,7 +285,7 @@ const Wrapper = styled.div`
 
   @media (min-width: ${BP.small}) {
     p {
-      font-size: 12px;
+      font-size: 10px;
     }
   }
 `;
@@ -321,6 +328,7 @@ const EmployeeEntryPlaceholder = styled.div`
   border: 1px solid ${COLORS.darkGray};
   border-radius: 50%;
   background-color: ${({ brightMode }) => brightMode ? COLORS.white : COLORS.black};
+  box-shadow: ${({ brightMode }) => brightMode ? `inset 0px 2px 4px ${COLORS.darkGray}` : 'inset 0px 2px 4px black'};
   z-index: 1;
   margin-right: -5px;
 `;

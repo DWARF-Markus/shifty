@@ -109,7 +109,7 @@ const HomeHero = ({ brightMode }) => {
 
 const HomeHeroWrapper = styled.div`
   height: 43rem;
-  background: ${({ brightMode }) => brightMode ? COLORS.lightGray : COLORS.black};
+  background: ${({ brightMode }) => brightMode ? COLORS.lightGray : '#484848'};
 
   @media (min-width: ${BP.small}) {
     height: 30rem;
