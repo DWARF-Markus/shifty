@@ -306,7 +306,8 @@ const OverViewPreLoader = styled.div`
 
 const DayWrapper = styled.div`
   pointer-events: ${({ active }) => active ? 'all' : 'none'};
-  height: 25rem;
+  height: 35rem;
+  overflow: scroll;
   width: 100%;
   border-left: 1px solid ${({ brightMode }) => brightMode ? COLORS.darkGray : '#2a2a2a'};
   display: ${({ active }) => !active ? 'none' : 'block'};
