@@ -1,3 +1,5 @@
+import { useSession, getSession } from 'next-auth/client';
+import Router from 'next/router';
 import { useState, useEffect } from 'react';
 import { csrfToken, providers, signIn } from 'next-auth/client';
 import Layout from '../components/Layout';
@@ -12,6 +14,14 @@ import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 
 export default function SignIn({ csrfToken, providers }) {
+
+  const [session, loading] = useSession();
+
+  if (loading) return null
+
+  if (!loading && session) {
+    Router.push('/app');
+  }
 
   const router = useRouter();
   const { pid } = router.query;
