@@ -14,7 +14,7 @@ import AppInvite from '../components/AppInvite';
 import { BP } from '../styles/globals';
 import { motion } from 'framer-motion';
 
-const App = ({ employees }) => {
+const App = () => {
 
   const [session, loading] = useSession();
   const GET_STATE = useSelector((state) => state);
@@ -54,15 +54,15 @@ const AppContent = styled.div`
 `;
 
 
-export async function getStaticProps() {
-  const res = await fetch(`http://localhost:3000/api/getcompanyusers?company=1`);
-  const employees = await res.json();
-  return {
-    props: {
-      employees,
-    },
-  }
-}
+// export async function getStaticProps() {
+//   const res = await fetch(`https://shifty-seven.vercel.app/api/getcompanyusers?company=1`);
+//   const employees = await res.json();
+//   return {
+//     props: {
+//       employees,
+//     },
+//   }
+// }
 
 
 export default App;
