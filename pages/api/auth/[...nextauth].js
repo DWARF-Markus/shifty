@@ -13,7 +13,7 @@ export default (req, res) =>
           password: { label: "Password", type: "password" }
         },
         authorize: async (credentials) => {
-          const user = await fetch('http://localhost:3000/api/getcompanyoruser', {
+          const user = await fetch('https://shifty-seven.vercel.app/api/getcompanyoruser', {
             method: 'POST',
             headers: {
               'Content-type': 'application/json'
