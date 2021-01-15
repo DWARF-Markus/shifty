@@ -29,6 +29,7 @@ const initialState = {
   sideBarToggle: true,
   activeAppPage: 'Overview',
   newShiftEmployeeAmount: 0,
+  newShiftDate: '',
   newShiftStartTime: '',
   newShiftEndTime: '',
   newShiftTitle: '',
@@ -187,6 +188,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         newShiftTitle: action.payload
+      }
+    case 'SET_SHIFT_DATE':
+      return {
+        ...state,
+        newShiftDate: action.payload
       }
     case 'SET_SHIFT_STARTTIME':
       return {

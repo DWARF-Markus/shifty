@@ -18,8 +18,8 @@ const ShiftForm = ({ brightMode }) => {
       body: JSON.stringify({
         shift: {
           title: GET_STATE.newShiftTitle,
-          startTime: GET_STATE.newShiftStartTime,
-          endTime: GET_STATE.newShiftEndTime,
+          startTime: `${GET_STATE.newShiftDate} ${GET_STATE.newShiftStartTime}`,
+          endTime: `${GET_STATE.newShiftDate} ${GET_STATE.newShiftEndTime}`,
           employees: parseInt(GET_STATE.newShiftEmployeeAmount),
           company: parseInt(GET_STATE.loginData.id)
         }
@@ -36,8 +36,8 @@ const ShiftForm = ({ brightMode }) => {
             payload: {
               id: data.response.id,
               title: GET_STATE.newShiftTitle,
-              startTime: GET_STATE.newShiftStartTime,
-              endTime: GET_STATE.newShiftEndTime,
+              startTime: `${GET_STATE.newShiftDate} ${GET_STATE.newShiftStartTime}`,
+              endTime: `${GET_STATE.newShiftDate} ${GET_STATE.newShiftEndTime}`,
               employeeAmount: parseInt(GET_STATE.newShiftEmployeeAmount),
               companyId: parseInt(GET_STATE.loginData.id),
               CompanyShiftEmployee: [],
@@ -45,7 +45,7 @@ const ShiftForm = ({ brightMode }) => {
           });
           dispatch({
             type: 'SET_POP_UP',
-            payload: `Shift added on ${format(new Date(GET_STATE.newShiftStartTime), 'dd MMM')}`
+            payload: `Shift added on ${format(new Date(GET_STATE.newShiftDate), 'dd MMM')}`
           });
         } else {
           dispatch({
@@ -60,8 +60,9 @@ const ShiftForm = ({ brightMode }) => {
     <ShiftFormWrapper brightMode={brightMode}>
       <p>Add shift</p>
       <InputField brightMode={brightMode} type="text" label="Title" setter={'SET_SHIFT_TITLE'} getter={'newShiftTitle'} />
-      <InputField brightMode={brightMode} type="datetime-local" label="Start time" setter={'SET_SHIFT_STARTTIME'} getter={'newShiftStartTime'} />
-      <InputField brightMode={brightMode} type="datetime-local" label="End time" setter={'SET_SHIFT_ENDTIME'} getter={'newShiftEndTime'} />
+      <InputField brightMode={brightMode} type="date" label="Date" setter={'SET_SHIFT_DATE'} getter={'newShiftDate'} />
+      <InputField brightMode={brightMode} type="time" label="Start time" setter={'SET_SHIFT_STARTTIME'} getter={'newShiftStartTime'} />
+      <InputField brightMode={brightMode} type="time" label="End time" setter={'SET_SHIFT_ENDTIME'} getter={'newShiftEndTime'} />
       <InputField brightMode={brightMode} type="number" label="Employees" setter={'SET_SHIFT_EMPLOYEE_AMOUNT'} getter={'newShiftEmployeeAmount'} />
       <button onClick={() => handleNewShiftSubmit()} className="btn--primary">Add</button>
     </ShiftFormWrapper>
