@@ -207,6 +207,36 @@ export default function AppOverview({ state }) {
               </OverViewPreLoader>
             )}
         </Overview>
+        <ShiftExplainer brightMode={state.toggleLightBright}>
+          {state.isAdmin ? (
+            <>
+              <div>
+                <img src={require(state.toggleLightBright ? '../assets/icon-admin-red.svg' : '../assets/icon-admin-red-dark.svg')} alt="explainer" />
+                <p>Needs employees</p>
+              </div>
+              <div>
+                <img src={require(state.toggleLightBright ? '../assets/icon-admin-green.svg' : '../assets/icon-admin-green-dark.svg')} alt="explainer" />
+                <p>Full</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <img src={require('../assets/icon-employee-orange.svg')} alt="explainer" />
+                <p>Assigned</p>
+              </div>
+              <div>
+                <img src={require(state.toggleLightBright ? '../assets/icon-employee-half-orange.svg' : '../assets/icon-employee-half-orange-dark.svg')} alt="explainer" />
+                <p>Available</p>
+              </div>
+              <div>
+                <img src={require(state.toggleLightBright ? '../assets/icon-employee-white.svg' : '../assets/icon-employee-dark.svg')} alt="explainer" />
+                <p>Full</p>
+              </div>
+            </>
+          )}
+
+        </ShiftExplainer>
         <OverviewWeekButtons brightMode={state.toggleLightBright}>
           <button onClick={() => handlePrevWeekClick()}><FontAwesomeIcon icon={faCaretLeft} /></button>
           <p>{week}</p>
@@ -288,7 +318,6 @@ const EmployeesBox = styled.div`
 const Overview = styled.div`
   display: flex;
   justify-content: space-around;
-  /* background-color: ${COLORS.white}; */
 `;
 
 const OverViewPreLoader = styled.div`
@@ -374,6 +403,29 @@ const DayHeader = styled.div`
 `;
 
 const DayContent = styled.div``;
+
+const ShiftExplainer = styled.div`
+  display: flex;
+  position: relative;
+
+  @media (min-width: ${BP.small}) {
+    position: absolute;
+  }
+
+  div {
+    display: flex;
+    margin: 0 0.5rem;
+
+    p {
+      color: ${({ brightMode }) => brightMode ? COLORS.black : COLORS.white};
+    }
+
+    img {
+      max-width: 15px;
+      margin: 0 0.2rem;
+    }
+  }
+`;
 
 const OverviewButtonWrapper = styled.div`
   position: fixed;
