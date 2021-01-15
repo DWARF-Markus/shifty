@@ -64,7 +64,9 @@ const ShiftEditorModal = ({ brightMode, shiftObj, employeesList }) => {
   }
 
   const handleEmployeeRemove = async (employeeId) => {
-    await fetch(`/api/removeuserfromshift?employeeId=${employeeId}&shiftId=${shiftObj.id}`)
+    await fetch(`/api/shift/employee?employeeId=${employeeId}&shiftId=${shiftObj.id}`, {
+      method: 'DELETE'
+    })
       .then(res => res.json())
       .then(data => {
         if (data.status === 200) {
@@ -79,7 +81,9 @@ const ShiftEditorModal = ({ brightMode, shiftObj, employeesList }) => {
   }
 
   const handleShiftDelete = async () => {
-    await fetch(`/api/removeshift?id=${shiftObj.id}`)
+    await fetch(`/api/shift?id=${shiftObj.id}`, {
+      method: 'DELETE'
+    })
       .then(res => res.json())
       .then(data => {
         if (data.status === 200) {

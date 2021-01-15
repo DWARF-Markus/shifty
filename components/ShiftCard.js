@@ -66,7 +66,7 @@ const ShiftCard = ({ brightMode, employeesList, shift, isAdmin, userId, loginDat
     } else {
       if (employees.length <= (shift.employeeAmount - 1)) {
         setEmployees(employees.concat([item.id]));
-        await fetch('/api/addusertoshift', {
+        await fetch('/api/shift/employee', {
           method: 'POST',
           headers: {
             'Content-Type': "application/json"
@@ -114,7 +114,7 @@ const ShiftCard = ({ brightMode, employeesList, shift, isAdmin, userId, loginDat
 
       if (employees.length <= shift.employeeAmount) {
         setEmployees(employees.concat([userId]));
-        await fetch('/api/addusertoshift', {
+        await fetch('/api/shift/employee', {
           method: 'POST',
           headers: {
             'Content-Type': "application/json"

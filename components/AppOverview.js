@@ -52,7 +52,7 @@ export default function AppOverview({ state }) {
 
       const companyId = state.isAdmin ? state.loginData.id : state.loginData.companyForeign.id;
 
-      await fetch(`/api/getshifts?company=${parseInt(companyId)}`)
+      await fetch(`/api/company/shifts?company=${parseInt(companyId)}`)
         .then(res => res.json())
         .then(data => {
           dispatch({
@@ -62,7 +62,7 @@ export default function AppOverview({ state }) {
           setLoading(false);
         });
 
-      await fetch(`/api/getcompanyusers?company=${companyId}`)
+      await fetch(`/api/company/employees?company=${companyId}`)
         .then(res => res.json())
         .then(data => {
           if (data.result.length > 0) {
@@ -137,7 +137,7 @@ export default function AppOverview({ state }) {
   }
 
   const handleCompanyAccept = async () => {
-    await fetch(`/api/acceptcompany?id=${state.loginData.id}`)
+    await fetch(`/api/employee/accept?id=${state.loginData.id}`)
       .then(res => res.json())
       .then(data => {
         if (data.status === 200) {

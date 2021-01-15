@@ -10,7 +10,7 @@ const ShiftForm = ({ brightMode }) => {
   const dispatch = useDispatch();
 
   const handleNewShiftSubmit = async () => {
-    await fetch(`/api/addshift`, {
+    await fetch(`/api/shift`, {
       method: 'POST',
       headers: {
         'Content-Type': "application/json"

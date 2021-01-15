@@ -84,7 +84,7 @@ export default function AppSettings() {
   }
 
   const handleSave = async () => {
-    await fetch('/api/updateuser', {
+    await fetch('/api/employee', {
       method: 'PUT',
       headers: {
         'Content-Type': "application/json"
@@ -118,7 +118,7 @@ export default function AppSettings() {
 
     const newOpeningDays = `${GET_STATE.monday ? 1 : 0}${GET_STATE.tuesday ? 1 : 0}${GET_STATE.wednesday ? 1 : 0}${GET_STATE.thursday ? 1 : 0}${GET_STATE.friday ? 1 : 0}${GET_STATE.saturday ? 1 : 0}${GET_STATE.sunday ? 1 : 0}`;
 
-    await fetch('/api/updateadmin', {
+    await fetch('/api/company', {
       method: 'PUT',
       headers: {
         'Content-Type': "application/json"

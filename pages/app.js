@@ -53,16 +53,4 @@ const AppContent = styled.div`
   }
 `;
 
-
-// export async function getStaticProps() {
-//   const res = await fetch(`https://shifty-seven.vercel.app/api/getcompanyusers?company=1`);
-//   const employees = await res.json();
-//   return {
-//     props: {
-//       employees,
-//     },
-//   }
-// }
-
-
 export default App;

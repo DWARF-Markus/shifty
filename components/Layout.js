@@ -19,7 +19,7 @@ const Layout = (props) => {
 
   useEffect(async () => {
     if (session && session.hasOwnProperty('user')) {
-      const info = await fetch('/api/getcompanyoruser', {
+      const info = await fetch('/api/user', {
         method: 'POST',
         headers: {
           'Content-Type': "application/json"

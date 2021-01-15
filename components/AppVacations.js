@@ -15,7 +15,7 @@ export default function AppVacations() {
 
   useEffect(async () => {
     if (!GET_STATE.isAdmin) {
-      await fetch(`/api/getuservacations?id=${GET_STATE.loginData.id}`)
+      await fetch(`/api/employee/vacations?id=${GET_STATE.loginData.id}`)
         .then(res => res.json())
         .then(data => {
           if (data.status === 201) {
@@ -23,7 +23,7 @@ export default function AppVacations() {
           }
         })
     } else {
-      await fetch(`/api/getcompanyvacations?id=${GET_STATE.loginData.id}`)
+      await fetch(`/api/company/vacations?id=${GET_STATE.loginData.id}`)
         .then(res => res.json())
         .then(data => {
           if (data.status === 201) {
@@ -34,7 +34,7 @@ export default function AppVacations() {
   }, [])
 
   const handleVacationSubmit = async () => {
-    await fetch('/api/addvacationtouser', {
+    await fetch('/api/vacation', {
       method: 'POST',
       headers: {
         'Content-Type': "application/json"
@@ -65,7 +65,7 @@ export default function AppVacations() {
   }
 
   const handleVacationAccept = async (id, employeeId, companyId, firstName, lastName) => {
-    await fetch(`/api/acceptvacation?id=${id}&employeeId=${employeeId}&companyId=${companyId}&firstName=${firstName}&lastName=${lastName}`)
+    await fetch(`/api/vacation/accept?id=${id}&employeeId=${employeeId}&companyId=${companyId}&firstName=${firstName}&lastName=${lastName}`)
       .then(res => res.json())
       .then(data => {
         if (data.status === 200) {

@@ -18,7 +18,7 @@ export default function AppEmployee() {
 
   useEffect(async () => {
     const companyId = GET_STATE.loginData.id;
-    await fetch(`/api/getcompanyusers?company=${companyId}`)
+    await fetch(`/api/company/employees?company=${companyId}`)
       .then(res => res.json())
       .then(data => {
         if (data.result.length > 0) {
@@ -30,7 +30,9 @@ export default function AppEmployee() {
 
   const handleEmployeeRemove = async (id) => {
     setSubmitting(true);
-    await fetch(`/api/removeuserfromcompany?id=${id}`)
+    await fetch(`/api/company/employees?id=${id}`, {
+      method: 'DELETE'
+    })
       .then(res => res.json())
       .then(data => {
         if (data.status === 200) {

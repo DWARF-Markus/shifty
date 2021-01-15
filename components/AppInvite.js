@@ -17,7 +17,7 @@ export default function AppInvite() {
 
   useEffect(async () => {
     const companyId = GET_STATE.loginData.id;
-    await fetch(`/api/getcompanyusers?company=${companyId}`)
+    await fetch(`/api/company/employees?company=${companyId}`)
       .then(res => res.json())
       .then(data => {
         if (data.result.length > 0) {
@@ -34,7 +34,7 @@ export default function AppInvite() {
   const handleUsersSearch = async (e) => {
     setQuery(e.target.value);
     if (e.target.value.length > 0) {
-      await fetch(`/api/getusers?query=${e.target.value}`)
+      await fetch(`/api/user/all?query=${e.target.value}`)
         .then(res => res.json())
         .then(data => {
           setUsers(data.result);
@@ -49,7 +49,7 @@ export default function AppInvite() {
     setSelectedUsers(selectedUsers.concat([user]));
     setQuery('');
 
-    await fetch(`/api/addusertocompany?company=${companyId}&employee=${employeeId}`)
+    await fetch(`/api/company/invite?company=${companyId}&employee=${employeeId}`)
       .then(res => res.json())
       .then(data => {
         dispatch({

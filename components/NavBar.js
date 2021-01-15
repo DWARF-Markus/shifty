@@ -35,7 +35,7 @@ const NavBar = () => {
       }
     }
 
-    await fetch(`/api/clearnotifications?id=${GET_STATE.loginData.id}&type=${GET_STATE.isAdmin ? 'admin' : 'employee'}`)
+    await fetch(`/api/notifications/clear?id=${GET_STATE.loginData.id}&type=${GET_STATE.isAdmin ? 'admin' : 'employee'}`)
       .then(res => res.json())
       .then(() => { })
 
